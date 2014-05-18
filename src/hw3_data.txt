@@ -1,0 +1,96 @@
+cs@ubuntu:~/Desktop/GitHub/pbrt-v2/src$ bin/pbrt ../scenes/hw3_dgauss.pbrt
+pbrt version 2.0.0 of May 17 2014 at 20:39:07 [Detected 8 core(s)]
+Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
+The source code to pbrt (but *not* the book contents) is covered by the BSD License.
+See the file LICENSE.txt for the conditions of the license.
+../scenes/hw3_dgauss.pbrt(37): Warning: Scaling detected in world-to-camera 
+    transformation! The system has numerous assumptions, implicit and 
+    explicit, that this transform will have no scale factors in it. Proceed at 
+    your own risk; your image may have errors or the system may crash as a 
+    result of this. 
+Read in 11 lens from dgauss.50mm.dat
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (64.0s)        
+cs@ubuntu:~/Desktop/GitHub/pbrt-v2/src$ bin/pbrt ../scenes/hw3_wide.pbrt
+pbrt version 2.0.0 of May 17 2014 at 20:39:07 [Detected 8 core(s)]
+Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
+The source code to pbrt (but *not* the book contents) is covered by the BSD License.
+See the file LICENSE.txt for the conditions of the license.
+../scenes/hw3_wide.pbrt(38): Warning: Scaling detected in world-to-camera 
+    transformation! The system has numerous assumptions, implicit and 
+    explicit, that this transform will have no scale factors in it. Proceed at 
+    your own risk; your image may have errors or the system may crash as a 
+    result of this. 
+Read in 13 lens from wide.22mm.dat
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (22.7s)        
+cs@ubuntu:~/Desktop/GitHub/pbrt-v2/src$ bin/pbrt ../scenes/hw3_fisheye.pbrt
+pbrt version 2.0.0 of May 17 2014 at 20:39:07 [Detected 8 core(s)]
+Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
+The source code to pbrt (but *not* the book contents) is covered by the BSD License.
+See the file LICENSE.txt for the conditions of the license.
+../scenes/hw3_fisheye.pbrt(37): Warning: Scaling detected in world-to-camera 
+    transformation! The system has numerous assumptions, implicit and 
+    explicit, that this transform will have no scale factors in it. Proceed at 
+    your own risk; your image may have errors or the system may crash as a 
+    result of this. 
+Read in 12 lens from fisheye.10mm.dat
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (39.2s)        
+cs@ubuntu:~/Desktop/GitHub/pbrt-v2/src$ bin/pbrt ../scenes/hw3_telephoto.pbrt
+pbrt version 2.0.0 of May 17 2014 at 20:39:07 [Detected 8 core(s)]
+Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
+The source code to pbrt (but *not* the book contents) is covered by the BSD License.
+See the file LICENSE.txt for the conditions of the license.
+../scenes/hw3_telephoto.pbrt(37): Warning: Scaling detected in world-to-camera 
+    transformation! The system has numerous assumptions, implicit and 
+    explicit, that this transform will have no scale factors in it. Proceed at 
+    your own risk; your image may have errors or the system may crash as a 
+    result of this. 
+Read in 7 lens from telephoto.250mm.dat
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (62.6s)
+cs@ubuntu:~/Desktop/GitHub/pbrt-v2/src$ bin/pbrt ../scenes/hw3_fisheye.pbrt
+pbrt version 2.0.0 of May 17 2014 at 20:39:07 [Detected 8 core(s)]
+Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
+The source code to pbrt (but *not* the book contents) is covered by the BSD License.
+See the file LICENSE.txt for the conditions of the license.
+../scenes/hw3_fisheye.pbrt(37): Warning: Scaling detected in world-to-camera 
+    transformation! The system has numerous assumptions, implicit and 
+    explicit, that this transform will have no scale factors in it. Proceed at 
+    your own risk; your image may have errors or the system may crash as a 
+    result of this. 
+Read in 12 lens from fisheye.10mm.dat
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.3s)       
+cs@ubuntu:~/Desktop/GitHub/pbrt-v2/src$ bin/pbrt ../scenes/hw3_telephoto.pbrt
+pbrt version 2.0.0 of May 17 2014 at 20:39:07 [Detected 8 core(s)]
+Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
+The source code to pbrt (but *not* the book contents) is covered by the BSD License.
+See the file LICENSE.txt for the conditions of the license.
+../scenes/hw3_telephoto.pbrt(37): Warning: Scaling detected in world-to-camera 
+    transformation! The system has numerous assumptions, implicit and 
+    explicit, that this transform will have no scale factors in it. Proceed at 
+    your own risk; your image may have errors or the system may crash as a 
+    result of this. 
+Read in 7 lens from telephoto.250mm.dat
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.4s)       
+cs@ubuntu:~/Desktop/GitHub/pbrt-v2/src$ bin/pbrt ../scenes/hw3_wide.pbrt
+pbrt version 2.0.0 of May 17 2014 at 20:39:07 [Detected 8 core(s)]
+Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
+The source code to pbrt (but *not* the book contents) is covered by the BSD License.
+See the file LICENSE.txt for the conditions of the license.
+../scenes/hw3_wide.pbrt(38): Warning: Scaling detected in world-to-camera 
+    transformation! The system has numerous assumptions, implicit and 
+    explicit, that this transform will have no scale factors in it. Proceed at 
+    your own risk; your image may have errors or the system may crash as a 
+    result of this. 
+Read in 13 lens from wide.22mm.dat
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.2s)       
+cs@ubuntu:~/Desktop/GitHub/pbrt-v2/src$ bin/pbrt ../scenes/hw3_dgauss.pbrt
+pbrt version 2.0.0 of May 17 2014 at 20:39:07 [Detected 8 core(s)]
+Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
+The source code to pbrt (but *not* the book contents) is covered by the BSD License.
+See the file LICENSE.txt for the conditions of the license.
+../scenes/hw3_dgauss.pbrt(37): Warning: Scaling detected in world-to-camera 
+    transformation! The system has numerous assumptions, implicit and 
+    explicit, that this transform will have no scale factors in it. Proceed at 
+    your own risk; your image may have errors or the system may crash as a 
+    result of this. 
+Read in 11 lens from dgauss.50mm.dat
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.5s) 

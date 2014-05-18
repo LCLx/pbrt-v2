@@ -1,0 +1,4 @@
+
+# AF Zone for close-up with dgauss
+
+.58 .64 .38 .46

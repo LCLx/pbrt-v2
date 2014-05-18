@@ -1,0 +1,79 @@
+#if defined(_MSC_VER)
+#pragma once
+#endif
+
+#ifndef PBRT_CAMERAS_REALISTIC_H
+#define PBRT_CAMERAS_REALISTIC_H
+
+#include "pbrt.h"
+#include "camera.h"
+#include "film.h"
+
+// Example representation of an autofocus zone.
+class AfZone {
+	public:
+	  // from the data file
+	  float left, right;
+	  float top, bottom;
+	  int xres,yres;
+};
+//	add lens class
+//	Tao Du
+//	taodu@stanford.edu
+//	May 17, 2014
+class Lens
+{
+	public:
+	float radius;
+	float thickness;
+	float refraction;
+	float aperture;
+	float zPos;	//	the position in the camera frame
+};
+
+
+class RealisticCamera : public Camera {
+public:
+   RealisticCamera(const AnimatedTransform &cam2world,
+      float hither, float yon, float sopen,
+      float sclose, float filmdistance, float aperture_diameter,
+      const string &specfile,
+	  const string &autofocusfile,
+      float filmdiag,
+	  Film *film);
+   ~RealisticCamera();
+   float GenerateRay(const CameraSample &sample, Ray *) const;
+   void  AutoFocus(Renderer * renderer, const Scene * scene, Sample * origSample);
+   void  ParseAfZones(const string& filename);
+	//	parse data file
+	void ParseLens(const string& filename);
+
+private:
+   bool  autofocus;
+   vector<AfZone> afZones;
+   float ShutterOpen;
+   float ShutterClose;
+   Film * film;
+	//	store the size of the file
+	float filmDiag;
+	float filmLengthInX;
+	float filmLengthInY;
+	//	film position in the camera space
+	float filmDist;
+	//	absolute film distance in the camera space
+	float filmPos;
+	//	real aperture
+	float aperture;
+
+	//	add a vector of lens
+	vector<Lens> lenses;
+
+	bool RefractFromLens(int lensId, Ray Rin, Ray &Rout) const;
+};
+
+RealisticCamera *CreateRealisticCamera(const ParamSet &params,
+        const AnimatedTransform &cam2world, Film *film);
+
+
+
+#endif
