@@ -149,24 +149,24 @@ RealisticCamera::~RealisticCamera()
 	
 }
 
-bool RealisticCamera::RefractFromLens(int lensId, Ray Rin, Ray &Rout) const
+bool RefractFromLens(Lens lens, Ray Rin, Ray &Rout, float n1, float n2)
 {
-	//	compute the intersection of lenses[lensId] and Rin
+	//	compute the intersection of lens and Rin
 	//	if they intersect
 	//	return true and build a refracted ray in Rout
 	//	otherwise return false
 	//	compute the center of the circle
 
 	//	if we encounter the aperture stop
-	if (lenses[lensId].radius == 0.0f)
+	if (lens.radius == 0.0f)
 	{
 		//	the aperture shot
 		//	Rin.o + t * Rin.d
-		float zPos = lenses[lensId].zPos;
+		float zPos = lens.zPos;
 		float t = (zPos - Rin.o.z) / Rin.d.z;
 		Point Pinter = Rin(t);
 		//	decide whether Pinter is inside the aperture
-		float aper = lenses[lensId].aperture;
+		float aper = lens.aperture;
 		if (Pinter.x * Pinter.x + Pinter.y * Pinter.y > aper * aper / 4)
 			return false;
 		else
@@ -176,7 +176,6 @@ bool RealisticCamera::RefractFromLens(int lensId, Ray Rin, Ray &Rout) const
 		}
 	}
 	//	else
-	Lens lens = lenses[lensId];
 	float lensAper = lens.aperture;
 	float radius = lens.radius;
 	float radiusSq = radius * radius;
@@ -212,21 +211,17 @@ bool RealisticCamera::RefractFromLens(int lensId, Ray Rin, Ray &Rout) const
 	Vector normal = Normalize(Pinter - center);
 	if (radius < 0.0f)
 		normal = -normal;
-	float n2 = lens.refraction;
-	float n1 = 1.0f;
-	if (lensId > 0)
-		n1 = lenses[lensId - 1].refraction;
-	float cos2 = Dot(normal, Rin.d) / dLen;
-	float sin2 = sqrt(1 - cos2 * cos2);
-	float sin1 = n2 * sin2 / n1;
-	if (sin1 > 1.0f)
+	float cos1 = Dot(normal, Rin.d) / dLen;
+	float sin1 = sqrt(1 - cos1 * cos1);
+	float sin2 = n1 * sin1 / n2;
+	if (sin2 > 1.0f)
 		return false;
 	//	now let's build the dir vector
-	float cos1 = sqrt(1 - sin1 * sin1);
-	float tan1 = sin1 / cos1;
+	float cos2 = sqrt(1 - sin2 * sin2);
+	float tan2 = sin2 / cos2;
 	Vector v1 = Cross(Rin.d, normal);
 	Vector v2 = Normalize(Cross(normal, v1));
-	Rout.d = normal + tan1 * v2;
+	Rout.d = normal + tan2 * v2;
 	return true;
 }
 
@@ -259,9 +254,14 @@ float RealisticCamera::GenerateRay(const CameraSample &sample, Ray *ray) const
 	Ray Rin(Pcamera, Phit - Pcamera, 0.f, INFINITY);
 	//	start to iterate all the lenses
 	Ray Rout;
+	float n2;
 	for (int i = nLens - 1; i >= 0; i--)
 	{
-		bool succeed = RefractFromLens(i, Rin, Rout);
+		if (i > 0)
+			n2 = lenses[i - 1].refraction;
+		else
+			n2 = 1.0f;
+		bool succeed = RefractFromLens(lenses[i], Rin, Rout, lenses[i].refraction, n2);
 		//	if Rin and lens won't intersect
 		//	the function will return false		
 		if (!succeed)
@@ -292,9 +292,17 @@ void  RealisticCamera::AutoFocus(Renderer * renderer, const Scene * scene, Sampl
 
 	if(!autofocus)
 		return;
-
-	for (size_t i=0; i<afZones.size(); i++) {
-
+	//filmPos += 25;
+	float maxVar = 0.0;
+	float maxFilmPos = 0.0;
+	float start, end;
+	start = filmPos + 30;
+	end = filmPos - 30;
+	//scanf("%f %f", &start, &end);
+	for (size_t i=0; i<afZones.size(); i++) 
+	{
+	for (filmPos = start; filmPos >= end; filmPos--)
+	{
 		AfZone & zone = afZones[i];
 
 		RNG rng;
@@ -378,12 +386,33 @@ void  RealisticCamera::AutoFocus(Renderer * renderer, const Scene * scene, Sampl
 		// YOUR CODE HERE! The rbg contents of the image for this zone
 		// are now stored in the array 'rgb'.  You can now do whatever
 		// processing you wish
-
-
+		
+		//	first, scale the color to [0, 1]
+		float maxColor = 0.0;
+		for (int c = 0; c < width * height * 3; c++)
+			if (rgb[c] > maxColor)
+				maxColor = rgb[c];
+		if (maxColor == 0.f)
+			continue;
+		for (int c = 0; c < width * height * 3; c++)
+			rgb[c] /= maxColor;
+		
+		//	the layout of rgb:
+		//	width, width, width, ... width
+		//	rgbrgbrgbrgb ... rgbrgbrgb
+		//	compute the focus measure
+		//float fMeasure = varMeasurement(rgb, height, width);
+		float fMeasure = smlMeasurement(rgb, height, width);
+		printf("filmPos = %f fMeasure = %f\n", filmPos, fMeasure);
+		if (fMeasure > maxVar)
+		{
+			maxVar = fMeasure;
+			maxFilmPos = filmPos;
+		}
 		//you own rgb  now so make sure to delete it:
 		delete [] rgb;
 		//if you want to see the output rendered from your sensor, uncomment this line (it will write a file called foo.exr)
-		//sensor.WriteImage(1.f);
+		sensor.WriteImage(1.f);
 
 
 		delete[] samples;
@@ -392,4 +421,72 @@ void  RealisticCamera::AutoFocus(Renderer * renderer, const Scene * scene, Sampl
 		delete[] Ts;
 		delete[] isects;
 	}
+	}
+
+	filmPos = maxFilmPos;
+	printf("filmPos = %f\n", filmPos);
+}
+
+float varMeasurement(float *rgb, int height, int width)
+{
+	//	compute the variance in three channels
+	float fMeasure = 0.f;
+	float mean[3] = {0.f, 0.f, 0.f};
+	float var[3] = {0.f, 0.f, 0.f};
+	for (int c = 0; c < height * width; c++)
+	{
+		mean[0] += rgb[3 * c];
+		mean[1] += rgb[3 * c + 1];
+		mean[2] += rgb[3 * c + 2];
+	}
+	mean[0] /= (height * width);
+	mean[1] /= (height * width);
+	mean[2] /= (height * width);
+	printf("mean = %f %f %f\n", mean[0], mean[1], mean[2]);
+	for (int c = 0; c < height * width; c++)
+	{
+		var[0] += ((rgb[3 * c] - mean[0]) * (rgb[3 * c] - mean[0]));	
+		var[1] += ((rgb[3 * c + 1] - mean[1]) * (rgb[3 * c + 1] - mean[1]));	
+		var[2] += ((rgb[3 * c + 2] - mean[2]) * (rgb[3 * c + 2] - mean[2]));	
+	}
+	var[0] /= (height * width);
+	var[1] /= (height * width);
+	var[2] /= (height * width);
+	var[0] = sqrt(var[0]);
+	var[1] = sqrt(var[1]);
+	var[2] = sqrt(var[2]);
+	printf("std = %f %f %f\n", var[0], var[1], var[2]);
+	fMeasure = var[0] + var[1] + var[2];
+	return fMeasure;
+}
+
+float smlMeasurement(float *rgb, int height, int width)
+{
+	float fMeasure = 0.f;
+	//	let's use a 3x3 window, i.e., step = 1
+	int step = 1;
+	for (int w = step; w < width - step; w++)
+	{
+		for (int h = step; h < height - step; h++)
+		{
+			//	extract r g and b
+			int id = h * width + w;
+			int left = id - step;
+			int right = id + step;
+			int up = id - width * step;
+			int down = id + width * step;
+			for (int channel = 0; channel < 3; channel++)
+			{
+				float color = rgb[3 * id + channel];
+				fMeasure += (fabs(2 * color - rgb[3 * left + channel] - rgb[3 * right + channel]) 
+					+ fabs(2 * color - rgb[3 * up + channel] - rgb[3 * down + channel]));
+			}
+		}	
+	}
+	return fMeasure;
+}
+
+float sqrtMeasurement(float *rgb, int height, int width)
+{
+	return 0.f;
 }

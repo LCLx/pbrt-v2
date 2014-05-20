@@ -67,13 +67,19 @@ private:
 
 	//	add a vector of lens
 	vector<Lens> lenses;
-
-	bool RefractFromLens(int lensId, Ray Rin, Ray &Rout) const;
 };
+
+//	n1 represents the refraction in the side of Rin
+//	n2 is the refraction on the other side
+bool RefractFromLens(Lens lens, Ray Rin, Ray &Rout, float n1, float n2);
 
 RealisticCamera *CreateRealisticCamera(const ParamSet &params,
         const AnimatedTransform &cam2world, Film *film);
 
+//	f measure we use
+float varMeasurement(float *rgb, int height, int width);
+float smlMeasurement(float *rgb, int height, int width);
+float sqrtMeasurement(float *rgb, int height, int width);
 
 
 #endif
