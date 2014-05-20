@@ -58,6 +58,9 @@ public:
 	//	thick lens approximation
 	void CompThickLens();
 
+	//	estimate the filmPos in autofocus
+	float EstimateAutoFocusPos(AfZone &zone, Renderer * renderer, const Scene * scene, Sample * origSample);
+
 private:
    bool  autofocus;
    vector<AfZone> afZones;
@@ -80,6 +83,7 @@ private:
 
 	//	thick lens approximation
 	ThickLens tLens;
+
 };
 
 //	n1 represents the refraction in the side of Rin

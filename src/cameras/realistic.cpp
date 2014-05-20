@@ -9,6 +9,7 @@
 #include "samplers/stratified.h"
 #include "intersection.h"
 #include "renderer.h"
+#include "reflection.h"
 
 #include <fstream>
 #include <algorithm>
@@ -21,7 +22,11 @@ using namespace std;
 //	thick lens approximation
 float ThickLens::ImgPos(float z)
 {
-	return 0.f;
+//	printf("F = %f P = %f Fprime = %f Pprime = %f f = %f fprime = %f\n",
+//		F, P, Fprime, Pprime, f, fprime);
+	float zprime = 1 / (1 / fprime + 1 / (z - P));
+//	printf("zprime = %f pprime = %f\n", zprime, Pprime);
+	return Pprime + zprime;
 }
 
 RealisticCamera *CreateRealisticCamera(const ParamSet &params,
@@ -95,7 +100,89 @@ RealisticCamera::RealisticCamera(const AnimatedTransform &cam2world,
 
 void RealisticCamera::CompThickLens()
 {
+	//	fill out the value in tLens: F P Fprime Pprime f fprime
+	//	trace the ray to compute P and F
+		//	Tao Du
+	//	thick lens approximation
+	//	we first compute 
+	int nLens = (int)lenses.size();
+	Point Pstart(lenses[nLens - 1].aperture / 4, 0.f, filmPos);
+	//	check for Pstart
+	//printf("Pstart %f %f %f\n", Pstart.x, Pstart.y, Pstart.z);
+	Ray Rin(Pstart, Vector(0.f, 0.f, 1.f), 0.f, INFINITY);
+	//	start to iterate all the lenses
+	Ray Rout;
+	float n2;
+	for (int i = nLens - 1; i >= 0; i--)
+	{
+		if (i > 0)
+			n2 = lenses[i - 1].refraction;
+		else
+			n2 = 1.0f;
+		bool succeed = RefractFromLens(lenses[i], Rin, Rout, lenses[i].refraction, n2);
+		//	if Rin and lens won't intersect
+		//	the function will return false		
+		if (!succeed)
+		{
+			//	we don't want to see that actually
+			//	otherwise we have to try another ray parallel
+			//	and closer to z-axis...
+			printf("fail in forward!\n");
+			break;
+		}		
+		//	update Rin
+		Rin = Rout;
+	}
+	//	compute the intersection point in z axis
+	float t = -Rin.o.x / Rin.d.x;
+	Point p = Rin(t);
+	tLens.F = p.z;
+	//	now, compute tLens.P
+	t = (Pstart.x - Rin.o.x) / Rin.d.x;
+	tLens.P = Rin.o.z + t * Rin.d.z;
+	//	compute f
+	tLens.f = tLens.F - tLens.P;
 
+	//	now, shoot another ray from the object space
+//	printf("another ray\n");
+	Rin.o.z = 5.f;
+	Rin.d = Vector(0.f, 0.f, -1.f);
+	Ray Rstart = Rin;
+	float n1;
+	for (int i = 0; i < nLens; i++)
+	{
+		if (i == 0)
+			n1 = 1.f;
+		else
+			n1 = lenses[i - 1].refraction;
+		bool succeed = RefractFromLens(lenses[i], Rin, Rout, n1, lenses[i].refraction);
+		//	if Rin and lens won't intersect
+		//	the function will return false		
+		if (!succeed)
+		{
+			printf("%d\n", i);
+			//	we don't want to see that actually
+			//	otherwise we have to try another ray parallel
+			//	and closer to z-axis...
+			printf("fail!\n");
+			break;
+		}
+		//	update Rin
+		Rin = Rout;
+		//printf("%f %f %f\n", Rin.d.x, Rin.d.y, Rin.d.z);
+	}
+	//	compute the intersection point in z axis
+	t = -Rin.o.x / Rin.d.x;
+	p = Rin(t);
+	tLens.Fprime = p.z;
+	//	now, compute tLens.Pprime
+	t = (Rstart.o.x - Rin.o.x) / Rin.d.x;
+	tLens.Pprime = Rin.o.z + t * Rin.d.z;
+	//	compute fprime
+	tLens.fprime = tLens.Fprime - tLens.Pprime;
+	//	print the results to double check
+//	printf("F = %f P = %f F' = %f p' = %f\n",
+//		tLens.F, tLens.P, tLens.Fprime, tLens.Pprime);
 }
 
 void RealisticCamera::ParseLens(const string& filename)
@@ -196,6 +283,14 @@ bool RefractFromLens(Lens lens, Ray Rin, Ray &Rout, float n1, float n2)
 	float radius = lens.radius;
 	float radiusSq = radius * radius;
 	float zCenter = lens.zPos - radius;
+	//	if zCenter and ray.o.z are in the same side of lens.zPos
+	//	we should move the ray closer in case it will intersect with
+	//	the other half
+	if ((Rin.o.z - lens.zPos) * (zCenter - lens.zPos) >= 0.f)
+	{
+		float t = (zCenter - Rin.o.z) / Rin.d.z;
+		Rin.o = Rin(t);
+	}
 	//	compute the distance between center and the ray
 	Point center(0.0, 0.0, zCenter);
 	//	(Rin.o + t * Rin.d - center) * Rin.d = 0
@@ -225,7 +320,7 @@ bool RefractFromLens(Lens lens, Ray Rin, Ray &Rout, float n1, float n2)
 	Rout.o = Pinter;
 	//	now decide the direction of the refracted light
 	Vector normal = Normalize(Pinter - center);
-	if (radius < 0.0f)
+	if (Rin.d.z * normal.z < 0.f)
 		normal = -normal;
 	float cos1 = Dot(normal, Rin.d) / dLen;
 	float sin1 = sqrt(1 - cos1 * cos1);
@@ -234,10 +329,18 @@ bool RefractFromLens(Lens lens, Ray Rin, Ray &Rout, float n1, float n2)
 		return false;
 	//	now let's build the dir vector
 	float cos2 = sqrt(1 - sin2 * sin2);
-	float tan2 = sin2 / cos2;
 	Vector v1 = Cross(Rin.d, normal);
+	//	in some weird case, Rin.d // normal
+	if (v1.Length() == 0.f)
+	{
+		Rout = Rin;
+		return true;
+	}
 	Vector v2 = Normalize(Cross(normal, v1));
-	Rout.d = normal + tan2 * v2;
+	Rout.d = cos2 * normal + sin2 * v2;
+//	printf("lens: %f, Rin o.x = %f o.z = %f d.x = %f d.z = %f\t Rout o.x = %f o.z = %f d.x = %f d.z = %f\n", 
+//		lens.zPos, Rin.o.x, Rin.o.z, Rin.d.x, Rin.d.z,
+//		Rout.o.x, Rout.o.z, Rout.d.x, Rout.d.z);
 	return true;
 }
 
@@ -296,6 +399,114 @@ float RealisticCamera::GenerateRay(const CameraSample &sample, Ray *ray) const
 	return M_PI * w * w;
 }
 
+float RealisticCamera::EstimateAutoFocusPos(AfZone &zone, Renderer * renderer, const Scene * scene, Sample * origSample)
+{
+	RNG rng;
+	MemoryArena arena;
+	Filter * filter = new BoxFilter(.5f,.5f);
+	//	consider only the central part of the zone
+	float xcenter = (zone.left + zone.right) / 2;
+	float ycenter = (zone.top + zone.bottom) / 2;
+	float xsize = zone.left - xcenter;
+	float ysize = zone.top - ycenter;
+	float scale = 0.125;
+	const float crop[] = {xcenter + scale * xsize, 
+		xcenter - scale * xsize, 
+		ycenter + scale * ysize,
+		ycenter - scale * ysize};
+	printf("%f %f %f %f\n", crop[0], crop[1], crop[2], crop[3]);
+	printf("%f %f %f %f\n", zone.left, zone.right, zone.top, zone.bottom);
+
+	ImageFilm sensor(film->xResolution, film->yResolution, filter, crop, "foo.exr", false);
+	int xstart,xend,ystart,yend;
+	sensor.GetSampleExtent(&xstart,&xend,&ystart,&yend);
+
+	StratifiedSampler sampler(xstart, xend, ystart, yend,
+	                          16, 16, true, ShutterOpen, ShutterClose);
+
+	// Allocate space for samples and intersections
+	int maxSamples = sampler.MaximumSampleCount();
+	Sample *samples = origSample->Duplicate(maxSamples);
+	RayDifferential *rays = new RayDifferential[maxSamples];
+	Spectrum *Ls = new Spectrum[maxSamples];
+	Spectrum *Ts = new Spectrum[maxSamples];
+	Intersection *isects = new Intersection[maxSamples];
+
+	// Get samples from _Sampler_ and update image
+	int sampleCount;
+	float zVal = 0.f;
+	int zCnt = 0;
+	Transform transform;
+	while ((sampleCount = sampler.GetMoreSamples(samples, rng)) > 0) {
+		// Generate camera rays and compute radiance along rays
+		for (int i = 0; i < sampleCount; ++i) {
+			// Find camera ray for _sample[i]_
+
+			float rayWeight = this->GenerateRayDifferential(samples[i], &rays[i]);
+			rays[i].ScaleDifferentials(1.f / sqrtf(sampler.samplesPerPixel));
+
+
+			// Evaluate radiance along camera ray
+
+			if (rayWeight > 0.f)
+			{
+				Ls[i] = rayWeight * renderer->Li(scene, rays[i], &samples[i], rng,
+												 arena, &isects[i], &Ts[i]);
+				//	extract the z value    
+				BSDF *bsdf = isects[i].GetBSDF(rays[i], arena);
+    			const Point &p = bsdf->dgShading.p;		
+				CameraToWorld.Interpolate(samples[i].time, &transform);
+				transform = Inverse(transform);
+				Point Pcamera = transform(p);
+				float z = Pcamera.z;
+				zVal += z;
+				//printf("%f %f %f\n", Pcamera.x, Pcamera.y, Pcamera.z);
+				zCnt++;			
+			}			
+			else {
+				Ls[i] = 0.f;
+				Ts[i] = 1.f;
+			}
+
+			// Issue warning if unexpected radiance value returned
+			if (Ls[i].HasNaNs()) {
+				Error("Not-a-number radiance value returned "
+					  "for image sample.  Setting to black.");
+				Ls[i] = Spectrum(0.f);
+			}
+			else if (Ls[i].y() < -1e-5) {
+				Error("Negative luminance value, %f, returned"
+					  "for image sample.  Setting to black.", Ls[i].y());
+				Ls[i] = Spectrum(0.f);
+			}
+			else if (isinf(Ls[i].y())) {
+				Error("Infinite luminance value returned"
+					  "for image sample.  Setting to black.");
+				Ls[i] = Spectrum(0.f);
+			}
+
+		}
+
+		// Report sample results to _Sampler_, add contributions to image
+		if (sampler.ReportResults(samples, rays, Ls, isects, sampleCount))
+		{
+			for (int i = 0; i < sampleCount; ++i)
+			{
+				sensor.AddSample(samples[i], Ls[i]);
+			}
+		}
+
+		// Free _MemoryArena_ memory from computing image sample values
+		arena.FreeAll();
+	}
+	//	report the average zVal
+	zVal /= zCnt;
+	printf("zVal = %f\n", zVal);
+	float zImg = tLens.ImgPos(zVal);
+	printf("%f\n", zImg);
+	return zImg;
+}
+
 void  RealisticCamera::AutoFocus(Renderer * renderer, const Scene * scene, Sample * origSample) {
 	// YOUR CODE HERE:
 	// The current code shows how to create a new Sampler, and Film cropped to the size of the auto focus zone.
@@ -306,60 +517,35 @@ void  RealisticCamera::AutoFocus(Renderer * renderer, const Scene * scene, Sampl
 	// 3. Search over the space of film planes to find the best-focused plane.
 
 	//	now we have a ray from Pcamera, and it points towards
-
-	//	Tao Du
-	//	thick lens approximation
-	//	we first compute 
-	float lensU = 1.f, lensV = 0.2f;
-	Point Phit(lensU, lensV, filmPos);
-	
-	Ray Rin(Phit, Vector(0.f, 0.f, 1.f), 0.f, INFINITY);
-	//	start to iterate all the lenses
-	Ray Rout;
-	float n2;
-	int nLens = (int)lenses.size();
-	for (int i = nLens - 1; i >= 0; i--)
-	{
-		if (i > 0)
-			n2 = lenses[i - 1].refraction;
-		else
-			n2 = 1.0f;
-		bool succeed = RefractFromLens(lenses[i], Rin, Rout, lenses[i].refraction, n2);
-		//	if Rin and lens won't intersect
-		//	the function will return false		
-		if (!succeed)
-		{
-			printf("fail\n");
-			break;
-		}		
-		//	update Rin
-		Rin = Rout;
-	}
-	//	compute the intersection point in z axis
-	float t = -Rin.o.x/Rin.d.x;
-	Point p = Rin(t);
-	printf("%f %f %f\n", p.x, p.y, p.z);
-
-
-
-
-
-
 	if(!autofocus)
 		return;
-	//filmPos += 25;
+	float *estFilmPos = new float[(int)afZones.size()];
+	for (size_t i = 0; i < afZones.size(); i++)
+	{
+		estFilmPos[i] = EstimateAutoFocusPos(afZones[i], renderer, scene, origSample);
+	}
+	//	select the proper filmPos here
+	//	a naive method:	focus on the closest object
+	//	which corresponds to the minimal estFilmPos
+	filmPos = 1.f;
+	int zoneId = -1;
+	for (int i = 0; i < (int)afZones.size(); i++)
+		if (filmPos > estFilmPos[i])
+		{
+			filmPos = estFilmPos[i];
+			zoneId = i;		
+		}	
+	//for (size_t i=0; i<afZones.size(); i++) 
+	//{
+	//	now, search in a small region
 	float maxVar = 0.0;
 	float maxFilmPos = 0.0;
 	float start, end;
-	start = filmPos + 30;
-	end = filmPos - 30;
-	//scanf("%f %f", &start, &end);
-	for (size_t i=0; i<afZones.size(); i++) 
-	{
+	start = filmPos + 5;
+	end = filmPos - 5;
 	for (filmPos = start; filmPos >= end; filmPos--)
 	{
-		AfZone & zone = afZones[i];
-
+		AfZone & zone = afZones[zoneId];
 		RNG rng;
 		MemoryArena arena;
 		Filter * filter = new BoxFilter(.5f,.5f);
@@ -476,7 +662,7 @@ void  RealisticCamera::AutoFocus(Renderer * renderer, const Scene * scene, Sampl
 		delete[] Ts;
 		delete[] isects;
 	}
-	}
+	//}
 
 	filmPos = maxFilmPos;
 	printf("filmPos = %f\n", filmPos);
