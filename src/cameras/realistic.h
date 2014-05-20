@@ -31,6 +31,14 @@ class Lens
 	float zPos;	//	the position in the camera frame
 };
 
+class ThickLens
+{
+public:
+	float ImgPos(float z);
+	float F, P;
+	float Fprime, Pprime;
+	float f, fprime;
+};
 
 class RealisticCamera : public Camera {
 public:
@@ -47,6 +55,8 @@ public:
    void  ParseAfZones(const string& filename);
 	//	parse data file
 	void ParseLens(const string& filename);
+	//	thick lens approximation
+	void CompThickLens();
 
 private:
    bool  autofocus;
@@ -67,6 +77,9 @@ private:
 
 	//	add a vector of lens
 	vector<Lens> lenses;
+
+	//	thick lens approximation
+	ThickLens tLens;
 };
 
 //	n1 represents the refraction in the side of Rin
@@ -79,7 +92,5 @@ RealisticCamera *CreateRealisticCamera(const ParamSet &params,
 //	f measure we use
 float varMeasurement(float *rgb, int height, int width);
 float smlMeasurement(float *rgb, int height, int width);
-float sqrtMeasurement(float *rgb, int height, int width);
-
 
 #endif

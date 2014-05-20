@@ -17,6 +17,13 @@
 
 using namespace std;
 
+//	Tao Du
+//	thick lens approximation
+float ThickLens::ImgPos(float z)
+{
+	return 0.f;
+}
+
 RealisticCamera *CreateRealisticCamera(const ParamSet &params,
         const AnimatedTransform &cam2world, Film *film) {
 	   // Extract common camera parameters from \use{ParamSet}
@@ -72,6 +79,10 @@ RealisticCamera::RealisticCamera(const AnimatedTransform &cam2world,
 	//	parse the specfile
 	ParseLens(specfile);
 
+	//	Tao Du
+	//	thick lens approximation
+	CompThickLens();
+
 	// If 'autofocusfile' is the empty string, then you should do
 	// nothing in any subsequent call to AutoFocus()
 	autofocus = false;
@@ -80,6 +91,11 @@ RealisticCamera::RealisticCamera(const AnimatedTransform &cam2world,
 		ParseAfZones(autofocusfile);
 		autofocus = true;
 	}
+}
+
+void RealisticCamera::CompThickLens()
+{
+
 }
 
 void RealisticCamera::ParseLens(const string& filename)
@@ -227,7 +243,6 @@ bool RefractFromLens(Lens lens, Ray Rin, Ray &Rout, float n1, float n2)
 
 float RealisticCamera::GenerateRay(const CameraSample &sample, Ray *ray) const
 {
-
   // YOUR CODE HERE -- make that ray!
 
   // use sample->imageX and sample->imageY to get raster-space coordinates
@@ -289,6 +304,46 @@ void  RealisticCamera::AutoFocus(Renderer * renderer, const Scene * scene, Sampl
 	// 1. Modify this code so that it can adjust film plane of the camera
 	// 2. Use the results of raytracing to evaluate whether the image is in focus
 	// 3. Search over the space of film planes to find the best-focused plane.
+
+	//	now we have a ray from Pcamera, and it points towards
+
+	//	Tao Du
+	//	thick lens approximation
+	//	we first compute 
+	float lensU = 1.f, lensV = 0.2f;
+	Point Phit(lensU, lensV, filmPos);
+	
+	Ray Rin(Phit, Vector(0.f, 0.f, 1.f), 0.f, INFINITY);
+	//	start to iterate all the lenses
+	Ray Rout;
+	float n2;
+	int nLens = (int)lenses.size();
+	for (int i = nLens - 1; i >= 0; i--)
+	{
+		if (i > 0)
+			n2 = lenses[i - 1].refraction;
+		else
+			n2 = 1.0f;
+		bool succeed = RefractFromLens(lenses[i], Rin, Rout, lenses[i].refraction, n2);
+		//	if Rin and lens won't intersect
+		//	the function will return false		
+		if (!succeed)
+		{
+			printf("fail\n");
+			break;
+		}		
+		//	update Rin
+		Rin = Rout;
+	}
+	//	compute the intersection point in z axis
+	float t = -Rin.o.x/Rin.d.x;
+	Point p = Rin(t);
+	printf("%f %f %f\n", p.x, p.y, p.z);
+
+
+
+
+
 
 	if(!autofocus)
 		return;
@@ -484,9 +539,4 @@ float smlMeasurement(float *rgb, int height, int width)
 		}	
 	}
 	return fMeasure;
-}
-
-float sqrtMeasurement(float *rgb, int height, int width)
-{
-	return 0.f;
 }
