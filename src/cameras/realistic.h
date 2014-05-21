@@ -59,7 +59,7 @@ public:
 	void CompThickLens();
 
 	//	estimate the filmPos in autofocus
-	float EstimateAutoFocusPos(AfZone &zone, Renderer * renderer, const Scene * scene, Sample * origSample);
+	Point EstimateAutoFocusPos(AfZone &zone, Renderer * renderer, const Scene * scene, Sample * origSample);
 
 private:
    bool  autofocus;

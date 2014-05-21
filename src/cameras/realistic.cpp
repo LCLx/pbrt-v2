@@ -399,7 +399,7 @@ float RealisticCamera::GenerateRay(const CameraSample &sample, Ray *ray) const
 	return M_PI * w * w;
 }
 
-float RealisticCamera::EstimateAutoFocusPos(AfZone &zone, Renderer * renderer, const Scene * scene, Sample * origSample)
+Point RealisticCamera::EstimateAutoFocusPos(AfZone &zone, Renderer * renderer, const Scene * scene, Sample * origSample)
 {
 	RNG rng;
 	MemoryArena arena;
@@ -414,8 +414,8 @@ float RealisticCamera::EstimateAutoFocusPos(AfZone &zone, Renderer * renderer, c
 		xcenter - scale * xsize, 
 		ycenter + scale * ysize,
 		ycenter - scale * ysize};
-	printf("%f %f %f %f\n", crop[0], crop[1], crop[2], crop[3]);
-	printf("%f %f %f %f\n", zone.left, zone.right, zone.top, zone.bottom);
+	//printf("%f %f %f %f\n", crop[0], crop[1], crop[2], crop[3]);
+	//printf("%f %f %f %f\n", zone.left, zone.right, zone.top, zone.bottom);
 
 	ImageFilm sensor(film->xResolution, film->yResolution, filter, crop, "foo.exr", false);
 	int xstart,xend,ystart,yend;
@@ -434,8 +434,8 @@ float RealisticCamera::EstimateAutoFocusPos(AfZone &zone, Renderer * renderer, c
 
 	// Get samples from _Sampler_ and update image
 	int sampleCount;
-	float zVal = 0.f;
-	int zCnt = 0;
+	Point pVal = Point(0.f, 0.f, 0.f);
+	int pCnt = 0;
 	Transform transform;
 	while ((sampleCount = sampler.GetMoreSamples(samples, rng)) > 0) {
 		// Generate camera rays and compute radiance along rays
@@ -458,10 +458,8 @@ float RealisticCamera::EstimateAutoFocusPos(AfZone &zone, Renderer * renderer, c
 				CameraToWorld.Interpolate(samples[i].time, &transform);
 				transform = Inverse(transform);
 				Point Pcamera = transform(p);
-				float z = Pcamera.z;
-				zVal += z;
-				//printf("%f %f %f\n", Pcamera.x, Pcamera.y, Pcamera.z);
-				zCnt++;			
+				pVal += Pcamera;
+				pCnt++;			
 			}			
 			else {
 				Ls[i] = 0.f;
@@ -500,11 +498,9 @@ float RealisticCamera::EstimateAutoFocusPos(AfZone &zone, Renderer * renderer, c
 		arena.FreeAll();
 	}
 	//	report the average zVal
-	zVal /= zCnt;
-	printf("zVal = %f\n", zVal);
-	float zImg = tLens.ImgPos(zVal);
-	printf("%f\n", zImg);
-	return zImg;
+	pVal /= pCnt;
+	printf("pval = %f %f %f\n", pVal.x, pVal.y, pVal.z);
+	return pVal;
 }
 
 void  RealisticCamera::AutoFocus(Renderer * renderer, const Scene * scene, Sample * origSample) {
@@ -519,22 +515,24 @@ void  RealisticCamera::AutoFocus(Renderer * renderer, const Scene * scene, Sampl
 	//	now we have a ray from Pcamera, and it points towards
 	if(!autofocus)
 		return;
-	float *estFilmPos = new float[(int)afZones.size()];
+	Point *estPos = new Point[(int)afZones.size()];
 	for (size_t i = 0; i < afZones.size(); i++)
 	{
-		estFilmPos[i] = EstimateAutoFocusPos(afZones[i], renderer, scene, origSample);
+		estPos[i] = EstimateAutoFocusPos(afZones[i], renderer, scene, origSample);
 	}
 	//	select the proper filmPos here
 	//	a naive method:	focus on the closest object
 	//	which corresponds to the minimal estFilmPos
-	filmPos = 1.f;
+	float objPos = 0.f;
 	int zoneId = -1;
 	for (int i = 0; i < (int)afZones.size(); i++)
-		if (filmPos > estFilmPos[i])
+		if (i == 0 || filmPos > estPos[i].z)
 		{
-			filmPos = estFilmPos[i];
+			objPos = estPos[i].z;
 			zoneId = i;		
 		}	
+	delete []estPos;
+	filmPos = tLens.ImgPos(objPos);
 	//for (size_t i=0; i<afZones.size(); i++) 
 	//{
 	//	now, search in a small region
