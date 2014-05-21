@@ -273,11 +273,6 @@ bool RefractFromLens(Lens lens, Ray Rin, Ray &Rout, float n1, float n2)
 	//	if zCenter and ray.o.z are in the same side of lens.zPos
 	//	we should move the ray closer in case it will intersect with
 	//	the other half
-	if ((Rin.o.z - lens.zPos) * (zCenter - lens.zPos) >= 0.f)
-	{
-		float t = (zCenter - Rin.o.z) / Rin.d.z;
-		Rin.o = Rin(t);
-	}
 	//	compute the distance between center and the ray
 	Point center(0.0, 0.0, zCenter);
 	//	(Rin.o + t * Rin.d - center) * Rin.d = 0
@@ -294,12 +289,32 @@ bool RefractFromLens(Lens lens, Ray Rin, Ray &Rout, float n1, float n2)
 	float t0 = t - deltaT;
 	float t1 = t + deltaT;
 	float tInt;
-	if (t0 > 0.0)
-		tInt = t0;
-	else if (t1 > 0.0)
+	//	three cases:
+	//	t1 > t0 > 0.f
+	//	t1 > 0.f > t0
+	//	0.f > t1 > t0
+	if (t1 <= 0.f)
+		return false;
+	else if (t0 < 0.f)
 		tInt = t1;
-	else
-		return false;		//	no intersection with t > 0.0
+	else	//	t0 > 0.f && t1 > 0.f
+	{
+		//	find the correct intersection point
+		//	test whether t0 is a valid intersection point
+		Point p = Rin(t0);
+		if ((p.z - lens.zPos) * (p.z - zCenter) < 0.f
+			&& p.x * p.x + p.y * p.y < lensAper * lensAper / 4)
+			tInt = t0;
+		else
+		{
+			//	t0 is invalid, test t1
+			p = Rin(t1);
+			if ((p.z -lens.zPos) * (p.z - zCenter) < 0.f)
+				tInt = t1;
+			else
+				return false;
+		}
+	}		
 	Point Pinter = Rin(tInt);
 	float apSq = Pinter.x * Pinter.x + Pinter.y * Pinter.y;
 	if (apSq > lensAper * lensAper / 4)
@@ -348,11 +363,21 @@ float RealisticCamera::GenerateRay(const CameraSample &sample, Ray *ray) const
 	ConcentricSampleDisk(sample.lensU, sample.lensV, &lensU, &lensV);
 	//	the last lens
 	int nLens = (int)lenses.size();
-	double LensRadius = lenses[nLens - 1].aperture / 2;
+	float LensRadius = lenses[nLens - 1].aperture / 2;
 	lensU *= LensRadius;
 	lensV *= LensRadius;
-	//	now we have a ray from Pcamera, and it points towards 
-	Point Phit(lensU, lensV, lenses[nLens - 1].zPos);
+	float r = lenses[nLens - 1].radius;
+	float delta = fabs(r) - sqrt(r * r - LensRadius * LensRadius);
+	float z = lenses[nLens - 1].zPos;	
+	if (r > 0.f)
+	{
+		z -= delta;
+	}
+	else
+	{	
+		z += delta;
+	}
+	Point Phit(lensU, lensV, z);
 	Ray Rin(Pcamera, Phit - Pcamera, 0.f, INFINITY);
 	//	start to iterate all the lenses
 	Ray Rout;
