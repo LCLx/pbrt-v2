@@ -509,11 +509,10 @@ void  RealisticCamera::AutoFocus(Renderer * renderer, const Scene * scene, Sampl
 	else
 	{
 		printf("select the auto focus mode:\n");
-		printf("1: closest object");
-		printf("2: object in the middle of the scene");
-		printf("3: farest object");
-		int afOption;
-		int retVal = scanf("%d\n", &afOption);
+		printf("1: closest object\n");
+		printf("2: object in the middle of the image\n");
+		printf("3: farthest object\n");
+		int retVal = scanf("%d", &afOption);
 		if (retVal == EOF)
 		{	
 			//	do nothing
@@ -523,6 +522,7 @@ void  RealisticCamera::AutoFocus(Renderer * renderer, const Scene * scene, Sampl
 		//	default: 1: closest object
 		if (afOption < 1 || afOption > 3)
 			afOption = 1;
+		
 	}
 	float objPos = 0.f;
 	int zoneId = -1;
@@ -546,6 +546,9 @@ void  RealisticCamera::AutoFocus(Renderer * renderer, const Scene * scene, Sampl
 				}
 			}
 			objPos = estPos[zoneId].z;
+			AfZone zone = afZones[zoneId];
+			printf("select zones: %f %f %f %f\n", 
+				zone.left, zone.right, zone.top, zone.bottom);
 		}
 		break;
 	case 3:
