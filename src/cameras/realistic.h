@@ -61,6 +61,8 @@ public:
 	//	estimate the filmPos in autofocus
 	Point EstimateAutoFocusPos(AfZone &zone, Renderer * renderer, const Scene * scene, Sample * origSample);
 
+	//	evaluate the auto focus results
+	float EvalAutoFocus(Renderer * renderer, const Scene * scene, Sample * origSample, float fPos, AfZone &zone);
 private:
    bool  autofocus;
    vector<AfZone> afZones;

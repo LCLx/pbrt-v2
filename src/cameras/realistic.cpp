@@ -22,10 +22,7 @@ using namespace std;
 //	thick lens approximation
 float ThickLens::ImgPos(float z)
 {
-//	printf("F = %f P = %f Fprime = %f Pprime = %f f = %f fprime = %f\n",
-//		F, P, Fprime, Pprime, f, fprime);
 	float zprime = 1 / (1 / fprime + 1 / (z - P));
-//	printf("zprime = %f pprime = %f\n", zprime, Pprime);
 	return Pprime + zprime;
 }
 
@@ -108,7 +105,6 @@ void RealisticCamera::CompThickLens()
 	int nLens = (int)lenses.size();
 	Point Pstart(lenses[nLens - 1].aperture / 4, 0.f, filmPos);
 	//	check for Pstart
-	//printf("Pstart %f %f %f\n", Pstart.x, Pstart.y, Pstart.z);
 	Ray Rin(Pstart, Vector(0.f, 0.f, 1.f), 0.f, INFINITY);
 	//	start to iterate all the lenses
 	Ray Rout;
@@ -127,7 +123,6 @@ void RealisticCamera::CompThickLens()
 			//	we don't want to see that actually
 			//	otherwise we have to try another ray parallel
 			//	and closer to z-axis...
-			printf("fail in forward!\n");
 			break;
 		}		
 		//	update Rin
@@ -144,7 +139,6 @@ void RealisticCamera::CompThickLens()
 	tLens.f = tLens.F - tLens.P;
 
 	//	now, shoot another ray from the object space
-//	printf("another ray\n");
 	Rin.o.z = 5.f;
 	Rin.d = Vector(0.f, 0.f, -1.f);
 	Ray Rstart = Rin;
@@ -160,16 +154,13 @@ void RealisticCamera::CompThickLens()
 		//	the function will return false		
 		if (!succeed)
 		{
-			printf("%d\n", i);
 			//	we don't want to see that actually
 			//	otherwise we have to try another ray parallel
 			//	and closer to z-axis...
-			printf("fail!\n");
 			break;
 		}
 		//	update Rin
 		Rin = Rout;
-		//printf("%f %f %f\n", Rin.d.x, Rin.d.y, Rin.d.z);
 	}
 	//	compute the intersection point in z axis
 	t = -Rin.o.x / Rin.d.x;
@@ -181,8 +172,6 @@ void RealisticCamera::CompThickLens()
 	//	compute fprime
 	tLens.fprime = tLens.Fprime - tLens.Pprime;
 	//	print the results to double check
-//	printf("F = %f P = %f F' = %f p' = %f\n",
-//		tLens.F, tLens.P, tLens.Fprime, tLens.Pprime);
 }
 
 void RealisticCamera::ParseLens(const string& filename)
@@ -213,11 +202,9 @@ void RealisticCamera::ParseLens(const string& filename)
 			}
 			lens.zPos = filmPos;
 			filmPos -= lens.thickness;
-			//printf("zPos = %f aperture = %f\n", lens.zPos, lens.aperture);
 		}
 	}
 	filmPos -= filmDist;
-	//printf("filmPos = %f\n", filmPos);
 	printf("Read in %zu lens from %s\n", lenses.size(), filename.c_str());
 
 }
@@ -338,9 +325,6 @@ bool RefractFromLens(Lens lens, Ray Rin, Ray &Rout, float n1, float n2)
 	}
 	Vector v2 = Normalize(Cross(normal, v1));
 	Rout.d = cos2 * normal + sin2 * v2;
-//	printf("lens: %f, Rin o.x = %f o.z = %f d.x = %f d.z = %f\t Rout o.x = %f o.z = %f d.x = %f d.z = %f\n", 
-//		lens.zPos, Rin.o.x, Rin.o.z, Rin.d.x, Rin.d.z,
-//		Rout.o.x, Rout.o.z, Rout.d.x, Rout.d.z);
 	return true;
 }
 
@@ -414,8 +398,6 @@ Point RealisticCamera::EstimateAutoFocusPos(AfZone &zone, Renderer * renderer, c
 		xcenter - scale * xsize, 
 		ycenter + scale * ysize,
 		ycenter - scale * ysize};
-	//printf("%f %f %f %f\n", crop[0], crop[1], crop[2], crop[3]);
-	//printf("%f %f %f %f\n", zone.left, zone.right, zone.top, zone.bottom);
 
 	ImageFilm sensor(film->xResolution, film->yResolution, filter, crop, "foo.exr", false);
 	int xstart,xend,ystart,yend;
@@ -499,7 +481,6 @@ Point RealisticCamera::EstimateAutoFocusPos(AfZone &zone, Renderer * renderer, c
 	}
 	//	report the average zVal
 	pVal /= pCnt;
-	printf("pval = %f %f %f\n", pVal.x, pVal.y, pVal.z);
 	return pVal;
 }
 
@@ -515,155 +496,221 @@ void  RealisticCamera::AutoFocus(Renderer * renderer, const Scene * scene, Sampl
 	//	now we have a ray from Pcamera, and it points towards
 	if(!autofocus)
 		return;
-	Point *estPos = new Point[(int)afZones.size()];
-	for (size_t i = 0; i < afZones.size(); i++)
+	int nZones = (int)afZones.size();
+	Point *estPos = new Point[nZones];
+	for (int i = 0; i < nZones; i++)
 	{
 		estPos[i] = EstimateAutoFocusPos(afZones[i], renderer, scene, origSample);
 	}
 	//	select the proper filmPos here
-	//	a naive method:	focus on the closest object
-	//	which corresponds to the minimal estFilmPos
+	int afOption;
+	if (nZones == 1)
+		afOption = 1;
+	else
+	{
+		printf("select the auto focus mode:\n");
+		printf("1: closest object");
+		printf("2: object in the middle of the scene");
+		printf("3: farest object");
+		int afOption;
+		int retVal = scanf("%d\n", &afOption);
+		if (retVal == EOF)
+		{	
+			//	do nothing
+			printf("fail to input!\n");
+			return;
+		}
+		//	default: 1: closest object
+		if (afOption < 1 || afOption > 3)
+			afOption = 1;
+	}
 	float objPos = 0.f;
 	int zoneId = -1;
-	for (int i = 0; i < (int)afZones.size(); i++)
-		if (i == 0 || filmPos > estPos[i].z)
-		{
-			objPos = estPos[i].z;
-			zoneId = i;		
-		}	
-	delete []estPos;
-	filmPos = tLens.ImgPos(objPos);
-	//for (size_t i=0; i<afZones.size(); i++) 
-	//{
-	//	now, search in a small region
-	float maxVar = 0.0;
-	float maxFilmPos = 0.0;
-	float start, end;
-	start = filmPos + 5;
-	end = filmPos - 5;
-	for (filmPos = start; filmPos >= end; filmPos--)
+	switch (afOption)
 	{
-		AfZone & zone = afZones[zoneId];
-		RNG rng;
-		MemoryArena arena;
-		Filter * filter = new BoxFilter(.5f,.5f);
-		const float crop[] = {zone.left,zone.right,zone.top,zone.bottom};
-		ImageFilm sensor(film->xResolution, film->yResolution, filter, crop,"foo.exr",false);
-		int xstart,xend,ystart,yend;
-		sensor.GetSampleExtent(&xstart,&xend,&ystart,&yend);
-
-		StratifiedSampler sampler(xstart, xend, ystart, yend,
-		                          16, 16, true, ShutterOpen, ShutterClose);
-
-		// Allocate space for samples and intersections
-		int maxSamples = sampler.MaximumSampleCount();
-		Sample *samples = origSample->Duplicate(maxSamples);
-		RayDifferential *rays = new RayDifferential[maxSamples];
-		Spectrum *Ls = new Spectrum[maxSamples];
-		Spectrum *Ts = new Spectrum[maxSamples];
-		Intersection *isects = new Intersection[maxSamples];
-
-		// Get samples from _Sampler_ and update image
-		int sampleCount;
-		while ((sampleCount = sampler.GetMoreSamples(samples, rng)) > 0) {
-			// Generate camera rays and compute radiance along rays
-			for (int i = 0; i < sampleCount; ++i) {
-				// Find camera ray for _sample[i]_
-
-				float rayWeight = this->GenerateRayDifferential(samples[i], &rays[i]);
-				rays[i].ScaleDifferentials(1.f / sqrtf(sampler.samplesPerPixel));
-
-
-				// Evaluate radiance along camera ray
-
-				if (rayWeight > 0.f)
-					Ls[i] = rayWeight * renderer->Li(scene, rays[i], &samples[i], rng,
-													 arena, &isects[i], &Ts[i]);
-				else {
-					Ls[i] = 0.f;
-					Ts[i] = 1.f;
-				}
-
-				// Issue warning if unexpected radiance value returned
-				if (Ls[i].HasNaNs()) {
-					Error("Not-a-number radiance value returned "
-						  "for image sample.  Setting to black.");
-					Ls[i] = Spectrum(0.f);
-				}
-				else if (Ls[i].y() < -1e-5) {
-					Error("Negative luminance value, %f, returned"
-						  "for image sample.  Setting to black.", Ls[i].y());
-					Ls[i] = Spectrum(0.f);
-				}
-				else if (isinf(Ls[i].y())) {
-					Error("Infinite luminance value returned"
-						  "for image sample.  Setting to black.");
-					Ls[i] = Spectrum(0.f);
-				}
-
-			}
-
-			// Report sample results to _Sampler_, add contributions to image
-			if (sampler.ReportResults(samples, rays, Ls, isects, sampleCount))
-			{
-				for (int i = 0; i < sampleCount; ++i)
-				{
-
-					sensor.AddSample(samples[i], Ls[i]);
-
-				}
-			}
-
-			// Free _MemoryArena_ memory from computing image sample values
-			arena.FreeAll();
-		}
-
-		float * rgb;
-		int width;
-		int height;
-		sensor.WriteRGB(&rgb,&width,&height,1.f);
-		// YOUR CODE HERE! The rbg contents of the image for this zone
-		// are now stored in the array 'rgb'.  You can now do whatever
-		// processing you wish
-		
-		//	first, scale the color to [0, 1]
-		float maxColor = 0.0;
-		for (int c = 0; c < width * height * 3; c++)
-			if (rgb[c] > maxColor)
-				maxColor = rgb[c];
-		if (maxColor == 0.f)
-			continue;
-		for (int c = 0; c < width * height * 3; c++)
-			rgb[c] /= maxColor;
-		
-		//	the layout of rgb:
-		//	width, width, width, ... width
-		//	rgbrgbrgbrgb ... rgbrgbrgb
-		//	compute the focus measure
-		//float fMeasure = varMeasurement(rgb, height, width);
-		float fMeasure = smlMeasurement(rgb, height, width);
-		printf("filmPos = %f fMeasure = %f\n", filmPos, fMeasure);
-		if (fMeasure > maxVar)
+	case 2:
 		{
-			maxVar = fMeasure;
-			maxFilmPos = filmPos;
+			//	scan all the afZones, find the one closest to (0.5, 0.5)
+			float minDist = 0.f;
+			for (int i = 0; i < nZones; i++)
+			{
+				AfZone zone = afZones[i];
+				float xmid = (zone.left + zone.right) / 2;
+				float ymid = (zone.top + zone.bottom) / 2;
+				float dist = (xmid - 0.5f) * (xmid - 0.5f) 
+					+ (ymid - 0.5f) * (ymid - 0.5f);
+				if (i == 0 || dist < minDist)
+				{
+					minDist = dist;
+					zoneId = i;
+				}
+			}
+			objPos = estPos[zoneId].z;
 		}
-		//you own rgb  now so make sure to delete it:
-		delete [] rgb;
-		//if you want to see the output rendered from your sensor, uncomment this line (it will write a file called foo.exr)
-		sensor.WriteImage(1.f);
-
-
-		delete[] samples;
-		delete[] rays;
-		delete[] Ls;
-		delete[] Ts;
-		delete[] isects;
+		break;
+	case 3:
+		for (int i = 0; i < nZones; i++)
+		{
+			if (i == 0 || objPos < estPos[i].z)
+			{
+				objPos = estPos[i].z;
+				zoneId = i;		
+			}	
+		}
+		break;	
+	default:	//	case 1
+		for (int i = 0; i < nZones; i++)
+		{
+			if (i == 0 || objPos > estPos[i].z)
+			{
+				objPos = estPos[i].z;
+				zoneId = i;		
+			}	
+		}
 	}
-	//}
-
-	filmPos = maxFilmPos;
+	filmPos = tLens.ImgPos(objPos);
+	delete []estPos;
+	//	now, do golden search in a small range of filmPos
+	float tau = (sqrt(5) - 1) / 2;
+	float a = filmPos - 5.f;
+	float b = filmPos + 5.f;
+	float x0 = a + (1 - tau) * (b - a);
+	float x1 = a + tau * (b - a);
+	AfZone zone = afZones[zoneId];
+	float f0 = -EvalAutoFocus(renderer, scene, origSample, x0, zone);
+	float f1 = -EvalAutoFocus(renderer, scene, origSample, x1, zone);
+	while (b - a >= 0.5)
+	{
+		if (f0 >= f1)
+		{
+			a = x0;
+			x0 = x1;
+			f0 = f1;
+			x1 = a + tau * (b - a);
+			f1 = -EvalAutoFocus(renderer, scene, origSample, x1, zone);
+		}
+		else
+		{
+			b = x1;
+			x1 = x0;
+			f1 = f0;
+			x0 = a + (1 - tau) * (b - a);
+			f0 = -EvalAutoFocus(renderer, scene, origSample, x0, zone);
+		}
+	}
+	filmPos = x1;
 	printf("filmPos = %f\n", filmPos);
+}
+
+float RealisticCamera::EvalAutoFocus(Renderer * renderer, const Scene * scene, Sample * origSample, float fPos, AfZone &zone)
+{
+	filmPos = fPos;
+	RNG rng;
+	MemoryArena arena;
+	Filter * filter = new BoxFilter(.5f,.5f);
+	const float crop[] = {zone.left,zone.right,zone.top,zone.bottom};
+	ImageFilm sensor(film->xResolution, film->yResolution, filter, crop,"foo.exr",false);
+	int xstart,xend,ystart,yend;
+	sensor.GetSampleExtent(&xstart,&xend,&ystart,&yend);
+	StratifiedSampler sampler(xstart, xend, ystart, yend,
+	                          16, 16, true, ShutterOpen, ShutterClose);
+	// Allocate space for samples and intersections
+	int maxSamples = sampler.MaximumSampleCount();
+	Sample *samples = origSample->Duplicate(maxSamples);
+	RayDifferential *rays = new RayDifferential[maxSamples];
+	Spectrum *Ls = new Spectrum[maxSamples];
+	Spectrum *Ts = new Spectrum[maxSamples];
+	Intersection *isects = new Intersection[maxSamples];
+	// Get samples from _Sampler_ and update image
+	int sampleCount;
+	while ((sampleCount = sampler.GetMoreSamples(samples, rng)) > 0) {
+		// Generate camera rays and compute radiance along rays
+		for (int i = 0; i < sampleCount; ++i) {
+			// Find camera ray for _sample[i]_
+
+			float rayWeight = this->GenerateRayDifferential(samples[i], &rays[i]);
+			rays[i].ScaleDifferentials(1.f / sqrtf(sampler.samplesPerPixel));
+
+
+			// Evaluate radiance along camera ray
+
+			if (rayWeight > 0.f)
+				Ls[i] = rayWeight * renderer->Li(scene, rays[i], &samples[i], rng,
+												 arena, &isects[i], &Ts[i]);
+			else {
+				Ls[i] = 0.f;
+				Ts[i] = 1.f;
+			}
+
+			// Issue warning if unexpected radiance value returned
+			if (Ls[i].HasNaNs()) {
+				Error("Not-a-number radiance value returned "
+					  "for image sample.  Setting to black.");
+				Ls[i] = Spectrum(0.f);
+			}
+			else if (Ls[i].y() < -1e-5) {
+				Error("Negative luminance value, %f, returned"
+					  "for image sample.  Setting to black.", Ls[i].y());
+				Ls[i] = Spectrum(0.f);
+			}
+			else if (isinf(Ls[i].y())) {
+				Error("Infinite luminance value returned"
+					  "for image sample.  Setting to black.");
+				Ls[i] = Spectrum(0.f);
+			}
+
+		}
+
+		// Report sample results to _Sampler_, add contributions to image
+		if (sampler.ReportResults(samples, rays, Ls, isects, sampleCount))
+		{
+			for (int i = 0; i < sampleCount; ++i)
+			{
+
+				sensor.AddSample(samples[i], Ls[i]);
+
+			}
+		}
+
+		// Free _MemoryArena_ memory from computing image sample values
+		arena.FreeAll();
+	}
+
+	float * rgb;
+	int width;
+	int height;
+	sensor.WriteRGB(&rgb,&width,&height,1.f);
+	// YOUR CODE HERE! The rbg contents of the image for this zone
+	// are now stored in the array 'rgb'.  You can now do whatever
+	// processing you wish
+	
+	//	first, scale the color to [0, 1]
+	float maxColor = 0.0;
+	for (int c = 0; c < width * height * 3; c++)
+		if (rgb[c] > maxColor)
+			maxColor = rgb[c];
+	if (maxColor == 0.f)
+		return -1.f;
+	for (int c = 0; c < width * height * 3; c++)
+		rgb[c] /= maxColor;
+	
+	//	the layout of rgb:
+	//	width, width, width, ... width
+	//	rgbrgbrgbrgb ... rgbrgbrgb
+	//	compute the focus measure
+	//float fMeasure = varMeasurement(rgb, height, width);
+	float fMeasure = smlMeasurement(rgb, height, width);
+	printf("filmPos = %f fMeasure = %f\n", filmPos, fMeasure);
+	//you own rgb  now so make sure to delete it:
+	delete [] rgb;
+	//if you want to see the output rendered from your sensor, uncomment this line (it will write a file called foo.exr)
+	//sensor.WriteImage(1.f);
+	delete[] samples;
+	delete[] rays;
+	delete[] Ls;
+	delete[] Ts;
+	delete[] isects;
+	return fMeasure;
 }
 
 float varMeasurement(float *rgb, int height, int width)
@@ -681,7 +728,6 @@ float varMeasurement(float *rgb, int height, int width)
 	mean[0] /= (height * width);
 	mean[1] /= (height * width);
 	mean[2] /= (height * width);
-	printf("mean = %f %f %f\n", mean[0], mean[1], mean[2]);
 	for (int c = 0; c < height * width; c++)
 	{
 		var[0] += ((rgb[3 * c] - mean[0]) * (rgb[3 * c] - mean[0]));	
@@ -694,7 +740,6 @@ float varMeasurement(float *rgb, int height, int width)
 	var[0] = sqrt(var[0]);
 	var[1] = sqrt(var[1]);
 	var[2] = sqrt(var[2]);
-	printf("std = %f %f %f\n", var[0], var[1], var[2]);
 	fMeasure = var[0] + var[1] + var[2];
 	return fMeasure;
 }
