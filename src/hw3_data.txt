@@ -16,6 +16,10 @@ telephoto:
 Read in 7 lens from telephoto.250mm.dat
 Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (55.4s)     
 
+telephoto decrease by half:
+Read in 7 lens from telephoto.250mm.dat
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (26.7s)  
+
 4 samples:
 ===	lens ===
 dgauss:
