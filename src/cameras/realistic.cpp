@@ -434,7 +434,11 @@ Point RealisticCamera::EstimateAutoFocusPos(AfZone &zone, Renderer * renderer, c
 			{
 				Ls[i] = rayWeight * renderer->Li(scene, rays[i], &samples[i], rng,
 												 arena, &isects[i], &Ts[i]);
-				//	extract the z value    
+				//	extract the z value
+				//	if we don't have intersection
+				//	skip this sample
+				if (!isects[i].primitive)
+					continue;
 				BSDF *bsdf = isects[i].GetBSDF(rays[i], arena);
     			const Point &p = bsdf->dgShading.p;		
 				CameraToWorld.Interpolate(samples[i].time, &transform);

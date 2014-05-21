@@ -2,41 +2,41 @@
 ===	lens ===
 dgauss:	
 Read in 11 lens from dgauss.50mm.dat
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (64.7s) 
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (69.4s)   
 
 wide:	
 Read in 13 lens from wide.22mm.dat
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (22.4s)  
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (22.3s)  
 
 fisheye:	
 Read in 12 lens from fisheye.10mm.dat
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (30.1s)    
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (31.1s)  
 
 telephoto:	
 Read in 7 lens from telephoto.250mm.dat
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (55.4s)     
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (54.1s)     
 
 telephoto decrease by half:
 Read in 7 lens from telephoto.250mm.dat
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (26.7s)  
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (31.7s)  
 
 4 samples:
 ===	lens ===
 dgauss:
 Read in 11 lens from dgauss.50mm.dat
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.4s)  
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.4s)   
 
 wide:
 Read in 13 lens from wide.22mm.dat
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.1s)  
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.1s)   
 
 fisheye:
 Read in 12 lens from fisheye.10mm.dat
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.2s)   
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.2s)    
 
 telephoto:
 Read in 7 lens from telephoto.250mm.dat
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.3s)  
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.3s) 
 
 ===	auto focus	===
 dgauss_closeup:
@@ -52,7 +52,7 @@ filmPos = -93.617264 fMeasure = 189.802597
 filmPos = -93.961685 fMeasure = 193.369904
 filmPos = -93.748817 fMeasure = 194.720520
 filmPos = -93.748817
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (90.8s)  
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (93.6s)    
 
 dgauss_bg:
 Read in 11 lens from dgauss.50mm.dat
@@ -67,7 +67,7 @@ filmPos = -72.072517 fMeasure = 157.171204
 filmPos = -71.728096 fMeasure = 165.129364
 filmPos = -71.646790 fMeasure = 166.385742
 filmPos = -71.646790
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (62.8s) 
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (63.8s)    
 
 telephoto:
 Read in 7 lens from telephoto.250mm.dat
@@ -82,7 +82,7 @@ filmPos = -219.485825 fMeasure = 182.227142
 filmPos = -219.141403 fMeasure = 177.814362
 filmPos = -219.354263 fMeasure = 188.911804
 filmPos = -219.272964
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (47.8s)  
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (53.3s)        
 
 512 samples:
 hw3_afspheres:
@@ -104,7 +104,7 @@ filmPos = -74.481522 fMeasure = 304.233826
 filmPos = -74.137100 fMeasure = 307.485809
 filmPos = -74.349968 fMeasure = 331.360931
 filmPos = -74.268661
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (98.0s)
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (104.0s)      
 
 2. object in the middle
 Read in 11 lens from dgauss.50mm.dat
@@ -125,7 +125,7 @@ filmPos = -70.823639 fMeasure = 335.322235
 filmPos = -70.692078 fMeasure = 323.096558
 filmPos = -70.904945 fMeasure = 332.719208
 filmPos = -70.823639
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (87.8s)  
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (89.6s)     
 
 3. farthest:
 Read in 11 lens from dgauss.50mm.dat
@@ -145,15 +145,67 @@ filmPos = -70.823639 fMeasure = 335.322235
 filmPos = -70.692078 fMeasure = 323.096558
 filmPos = -70.904945 fMeasure = 332.719208
 filmPos = -70.823639
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (87.8s) 
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (88.6s)  
 
 512 samples:
 hw3_bunnies:
 1. cloest object:
-
+Read in 11 lens from dgauss.50mm.dat
+Read in 9 AF zones from bunnies_zones.txt
+select the auto focus mode:
+1: closest object
+2: object in the middle of the image
+3: farthest object
+1
+filmPos = -74.301941 fMeasure = 20.363548
+filmPos = -71.941254 fMeasure = 32.630772
+filmPos = -70.482277 fMeasure = 29.919123
+filmPos = -72.842957 fMeasure = 24.585688
+filmPos = -71.383980 fMeasure = 28.250381
+filmPos = -72.285675 fMeasure = 25.561529
+filmPos = -71.728394 fMeasure = 34.500214
+filmPos = -71.596840 fMeasure = 28.644072
+filmPos = -71.809700 fMeasure = 29.932693
+filmPos = -71.728394
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (116.2s)     
 
 2. object in the middle:
-
-
+Read in 11 lens from dgauss.50mm.dat
+Read in 9 AF zones from bunnies_zones.txt
+select the auto focus mode:
+1: closest object
+2: object in the middle of the image
+3: farthest object
+2
+select zones: 0.487500 0.512500 0.483300 0.516700
+filmPos = -72.409676 fMeasure = 20.713530
+filmPos = -70.048996 fMeasure = 20.506905
+filmPos = -73.868652 fMeasure = 20.028938
+filmPos = -71.507973 fMeasure = 17.762491
+filmPos = -72.966949 fMeasure = 17.183502
+filmPos = -72.065254 fMeasure = 21.724802
+filmPos = -71.852394 fMeasure = 16.418335
+filmPos = -72.196815 fMeasure = 19.090475
+filmPos = -71.983948 fMeasure = 19.259644
+filmPos = -71.983948
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (123.7s)  
 
 3. farthest:
+Read in 11 lens from dgauss.50mm.dat
+Read in 9 AF zones from bunnies_zones.txt
+select the auto focus mode:
+1: closest object
+2: object in the middle of the image
+3: farthest object
+3
+filmPos = -70.386444 fMeasure = 29.185520
+filmPos = -68.025757 fMeasure = 26.515421
+filmPos = -71.845421 fMeasure = 22.639524
+filmPos = -69.484741 fMeasure = 44.126534
+filmPos = -68.927460 fMeasure = 32.850906
+filmPos = -69.829163 fMeasure = 37.954121
+filmPos = -69.271881 fMeasure = 40.637718
+filmPos = -69.616302 fMeasure = 38.727489
+filmPos = -69.403435 fMeasure = 43.603848
+filmPos = -69.403435
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (117.9s) 
