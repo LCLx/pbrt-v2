@@ -1,0 +1,42 @@
+occluder.pbrt:
+Sampler "lowdiscrepancy" "integer pixelsamples" [1]
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.1s)    
+
+Sampler "lowdiscrepancy" "integer pixelsamples" [2]
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.1s)    
+
+Sampler "lowdiscrepancy" "integer pixelsamples" [4]
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.2s)   
+
+Sampler "lowdiscrepancy" "integer pixelsamples" [8]
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.3s)   
+
+Sampler "lowdiscrepancy" "integer pixelsamples" [16]
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.5s)  
+
+Sampler "lowdiscrepancy" "integer pixelsamples" [32] 
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (1.1s)   
+
+Sampler "lowdiscrepancy" "integer pixelsamples" [64]
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (2.0s)      
+
+Sampler "random" "integer pixelsamples" [1]       
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.1s)   
+
+Sampler "random" "integer pixelsamples" [2]       
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.1s)      
+
+Sampler "random" "integer pixelsamples" [4]       
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.1s)   
+
+Sampler "random" "integer pixelsamples" [8]       
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.2s)       
+
+Sampler "random" "integer pixelsamples" [16]       
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.5s)   
+
+Sampler "random" "integer pixelsamples" [32]       
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (1.0s)    
+
+Sampler "random" "integer pixelsamples" [64]       
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (2.0s)   
