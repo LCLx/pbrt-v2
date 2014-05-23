@@ -5,7 +5,7 @@ See the file LICENSE.txt for the conditions of the license.
 manykilleroos_1_16.pbrt(19): Warning: This version of pbrt fixes a bug in the 
     LookAt transformation. If your rendered images unexpectedly change, add a 
     "Scale -1 1 1" to the start of your scene file. 
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (1.1s)        
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (1.0840s)       
 pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
 Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
 The source code to pbrt (but *not* the book contents) is covered by the BSD License.
@@ -13,7 +13,7 @@ See the file LICENSE.txt for the conditions of the license.
 manykilleroos_1_1.pbrt(19): Warning: This version of pbrt fixes a bug in the 
     LookAt transformation. If your rendered images unexpectedly change, add a 
     "Scale -1 1 1" to the start of your scene file. 
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.2s)       
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.1969s)       
 pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
 Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
 The source code to pbrt (but *not* the book contents) is covered by the BSD License.
@@ -21,7 +21,7 @@ See the file LICENSE.txt for the conditions of the license.
 manykilleroos_1_2.pbrt(19): Warning: This version of pbrt fixes a bug in the 
     LookAt transformation. If your rendered images unexpectedly change, add a 
     "Scale -1 1 1" to the start of your scene file. 
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.3s)       
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.2488s)       
 pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
 Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
 The source code to pbrt (but *not* the book contents) is covered by the BSD License.
@@ -29,7 +29,7 @@ See the file LICENSE.txt for the conditions of the license.
 manykilleroos_1_32.pbrt(19): Warning: This version of pbrt fixes a bug in the 
     LookAt transformation. If your rendered images unexpectedly change, add a 
     "Scale -1 1 1" to the start of your scene file. 
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (2.1s)        
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (2.0249s)       
 pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
 Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
 The source code to pbrt (but *not* the book contents) is covered by the BSD License.
@@ -37,7 +37,7 @@ See the file LICENSE.txt for the conditions of the license.
 manykilleroos_1_4.pbrt(19): Warning: This version of pbrt fixes a bug in the 
     LookAt transformation. If your rendered images unexpectedly change, add a 
     "Scale -1 1 1" to the start of your scene file. 
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.4s)       
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.3722s)       
 pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
 Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
 The source code to pbrt (but *not* the book contents) is covered by the BSD License.
@@ -45,7 +45,7 @@ See the file LICENSE.txt for the conditions of the license.
 manykilleroos_16_1.pbrt(19): Warning: This version of pbrt fixes a bug in the 
     LookAt transformation. If your rendered images unexpectedly change, add a 
     "Scale -1 1 1" to the start of your scene file. 
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (2.5s)        
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (2.4083s)       
 pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
 Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
 The source code to pbrt (but *not* the book contents) is covered by the BSD License.
@@ -53,7 +53,7 @@ See the file LICENSE.txt for the conditions of the license.
 manykilleroos_16_2.pbrt(19): Warning: This version of pbrt fixes a bug in the 
     LookAt transformation. If your rendered images unexpectedly change, add a 
     "Scale -1 1 1" to the start of your scene file. 
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (3.5s)        
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (3.4027s)       
 pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
 Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
 The source code to pbrt (but *not* the book contents) is covered by the BSD License.
@@ -61,7 +61,7 @@ See the file LICENSE.txt for the conditions of the license.
 manykilleroos_1_64.pbrt(19): Warning: This version of pbrt fixes a bug in the 
     LookAt transformation. If your rendered images unexpectedly change, add a 
     "Scale -1 1 1" to the start of your scene file. 
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (5.4s)        
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (5.6828s)       
 pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
 Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
 The source code to pbrt (but *not* the book contents) is covered by the BSD License.
@@ -69,7 +69,7 @@ See the file LICENSE.txt for the conditions of the license.
 manykilleroos_16_4.pbrt(19): Warning: This version of pbrt fixes a bug in the 
     LookAt transformation. If your rendered images unexpectedly change, add a 
     "Scale -1 1 1" to the start of your scene file. 
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (6.9s)        
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (6.6713s)       
 pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
 Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
 The source code to pbrt (but *not* the book contents) is covered by the BSD License.
@@ -77,7 +77,7 @@ See the file LICENSE.txt for the conditions of the license.
 manykilleroos_1_8.pbrt(19): Warning: This version of pbrt fixes a bug in the 
     LookAt transformation. If your rendered images unexpectedly change, add a 
     "Scale -1 1 1" to the start of your scene file. 
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.6s)       
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.6131s)       
 pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
 Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
 The source code to pbrt (but *not* the book contents) is covered by the BSD License.
@@ -85,7 +85,7 @@ See the file LICENSE.txt for the conditions of the license.
 manykilleroos_2_16.pbrt(19): Warning: This version of pbrt fixes a bug in the 
     LookAt transformation. If your rendered images unexpectedly change, add a 
     "Scale -1 1 1" to the start of your scene file. 
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (2.2s)        
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (2.1399s)       
 pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
 Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
 The source code to pbrt (but *not* the book contents) is covered by the BSD License.
@@ -93,7 +93,7 @@ See the file LICENSE.txt for the conditions of the license.
 manykilleroos_2_1.pbrt(19): Warning: This version of pbrt fixes a bug in the 
     LookAt transformation. If your rendered images unexpectedly change, add a 
     "Scale -1 1 1" to the start of your scene file. 
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.3s)       
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.3347s)       
 pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
 Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
 The source code to pbrt (but *not* the book contents) is covered by the BSD License.
@@ -101,7 +101,7 @@ See the file LICENSE.txt for the conditions of the license.
 manykilleroos_2_2.pbrt(19): Warning: This version of pbrt fixes a bug in the 
     LookAt transformation. If your rendered images unexpectedly change, add a 
     "Scale -1 1 1" to the start of your scene file. 
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.5s)       
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.4665s)       
 pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
 Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
 The source code to pbrt (but *not* the book contents) is covered by the BSD License.
@@ -109,7 +109,7 @@ See the file LICENSE.txt for the conditions of the license.
 manykilleroos_2_32.pbrt(19): Warning: This version of pbrt fixes a bug in the 
     LookAt transformation. If your rendered images unexpectedly change, add a 
     "Scale -1 1 1" to the start of your scene file. 
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (4.3s)        
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (4.4754s)       
 pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
 Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
 The source code to pbrt (but *not* the book contents) is covered by the BSD License.
@@ -117,7 +117,7 @@ See the file LICENSE.txt for the conditions of the license.
 manykilleroos_2_4.pbrt(19): Warning: This version of pbrt fixes a bug in the 
     LookAt transformation. If your rendered images unexpectedly change, add a 
     "Scale -1 1 1" to the start of your scene file. 
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.7s)       
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.7137s)       
 pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
 Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
 The source code to pbrt (but *not* the book contents) is covered by the BSD License.
@@ -125,7 +125,7 @@ See the file LICENSE.txt for the conditions of the license.
 manykilleroos_2_8.pbrt(19): Warning: This version of pbrt fixes a bug in the 
     LookAt transformation. If your rendered images unexpectedly change, add a 
     "Scale -1 1 1" to the start of your scene file. 
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (1.2s)        
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (1.1904s)       
 pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
 Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
 The source code to pbrt (but *not* the book contents) is covered by the BSD License.
@@ -133,7 +133,7 @@ See the file LICENSE.txt for the conditions of the license.
 manykilleroos_32_1.pbrt(19): Warning: This version of pbrt fixes a bug in the 
     LookAt transformation. If your rendered images unexpectedly change, add a 
     "Scale -1 1 1" to the start of your scene file. 
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (4.7s)        
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (4.8778s)       
 pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
 Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
 The source code to pbrt (but *not* the book contents) is covered by the BSD License.
@@ -141,7 +141,7 @@ See the file LICENSE.txt for the conditions of the license.
 manykilleroos_32_2.pbrt(19): Warning: This version of pbrt fixes a bug in the 
     LookAt transformation. If your rendered images unexpectedly change, add a 
     "Scale -1 1 1" to the start of your scene file. 
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (9.4s)        
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (8.4291s)       
 pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
 Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
 The source code to pbrt (but *not* the book contents) is covered by the BSD License.
@@ -149,7 +149,7 @@ See the file LICENSE.txt for the conditions of the license.
 manykilleroos_4_16.pbrt(19): Warning: This version of pbrt fixes a bug in the 
     LookAt transformation. If your rendered images unexpectedly change, add a 
     "Scale -1 1 1" to the start of your scene file. 
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (5.4s)        
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (5.1465s)       
 pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
 Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
 The source code to pbrt (but *not* the book contents) is covered by the BSD License.
@@ -157,7 +157,7 @@ See the file LICENSE.txt for the conditions of the license.
 manykilleroos_4_1.pbrt(19): Warning: This version of pbrt fixes a bug in the 
     LookAt transformation. If your rendered images unexpectedly change, add a 
     "Scale -1 1 1" to the start of your scene file. 
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.6s)       
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.6428s)       
 pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
 Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
 The source code to pbrt (but *not* the book contents) is covered by the BSD License.
@@ -165,7 +165,7 @@ See the file LICENSE.txt for the conditions of the license.
 manykilleroos_4_2.pbrt(19): Warning: This version of pbrt fixes a bug in the 
     LookAt transformation. If your rendered images unexpectedly change, add a 
     "Scale -1 1 1" to the start of your scene file. 
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.9s)       
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.8900s)       
 pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
 Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
 The source code to pbrt (but *not* the book contents) is covered by the BSD License.
@@ -173,7 +173,7 @@ See the file LICENSE.txt for the conditions of the license.
 manykilleroos_4_4.pbrt(19): Warning: This version of pbrt fixes a bug in the 
     LookAt transformation. If your rendered images unexpectedly change, add a 
     "Scale -1 1 1" to the start of your scene file. 
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (1.4s)        
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (1.3897s)       
 pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
 Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
 The source code to pbrt (but *not* the book contents) is covered by the BSD License.
@@ -181,7 +181,7 @@ See the file LICENSE.txt for the conditions of the license.
 manykilleroos_4_8.pbrt(19): Warning: This version of pbrt fixes a bug in the 
     LookAt transformation. If your rendered images unexpectedly change, add a 
     "Scale -1 1 1" to the start of your scene file. 
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (2.4s)        
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (2.3472s)       
 pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
 Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
 The source code to pbrt (but *not* the book contents) is covered by the BSD License.
@@ -189,7 +189,7 @@ See the file LICENSE.txt for the conditions of the license.
 manykilleroos_64_1.pbrt(19): Warning: This version of pbrt fixes a bug in the 
     LookAt transformation. If your rendered images unexpectedly change, add a 
     "Scale -1 1 1" to the start of your scene file. 
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (12.8s)       
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (13.1562s)       
 pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
 Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
 The source code to pbrt (but *not* the book contents) is covered by the BSD License.
@@ -197,7 +197,7 @@ See the file LICENSE.txt for the conditions of the license.
 manykilleroos_8_1.pbrt(19): Warning: This version of pbrt fixes a bug in the 
     LookAt transformation. If your rendered images unexpectedly change, add a 
     "Scale -1 1 1" to the start of your scene file. 
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (1.2s)        
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (1.2371s)       
 pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
 Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
 The source code to pbrt (but *not* the book contents) is covered by the BSD License.
@@ -205,7 +205,7 @@ See the file LICENSE.txt for the conditions of the license.
 manykilleroos_8_2.pbrt(19): Warning: This version of pbrt fixes a bug in the 
     LookAt transformation. If your rendered images unexpectedly change, add a 
     "Scale -1 1 1" to the start of your scene file. 
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (1.7s)        
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (1.7528s)       
 pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
 Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
 The source code to pbrt (but *not* the book contents) is covered by the BSD License.
@@ -213,7 +213,7 @@ See the file LICENSE.txt for the conditions of the license.
 manykilleroos_8_4.pbrt(19): Warning: This version of pbrt fixes a bug in the 
     LookAt transformation. If your rendered images unexpectedly change, add a 
     "Scale -1 1 1" to the start of your scene file. 
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (2.8s)        
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (3.7252s)       
 pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
 Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
 The source code to pbrt (but *not* the book contents) is covered by the BSD License.
@@ -221,4 +221,4 @@ See the file LICENSE.txt for the conditions of the license.
 manykilleroos_8_8.pbrt(19): Warning: This version of pbrt fixes a bug in the 
     LookAt transformation. If your rendered images unexpectedly change, add a 
     "Scale -1 1 1" to the start of your scene file. 
-Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (5.0s)   
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (5.5505s)       
