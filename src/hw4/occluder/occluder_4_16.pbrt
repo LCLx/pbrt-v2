@@ -13,7 +13,7 @@ Film "image" "string filename" ["occluder_4_16.exr"]
 # up in your final images.
 #
 
-Sampler "random" "integer pixelsamples" [4] 
+Sampler "lowdiscrepancy" "integer pixelsamples" [4] 
 
 #
 # Camera configuration: the camera is located on the Z axis, and is
