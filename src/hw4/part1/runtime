@@ -1,0 +1,112 @@
+pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
+Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
+The source code to pbrt (but *not* the book contents) is covered by the BSD License.
+See the file LICENSE.txt for the conditions of the license.
+occluder_ld_16.pbrt(24): Warning: This version of pbrt fixes a bug in the 
+    LookAt transformation. If your rendered images unexpectedly change, add a 
+    "Scale -1 1 1" to the start of your scene file. 
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.5s)       
+pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
+Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
+The source code to pbrt (but *not* the book contents) is covered by the BSD License.
+See the file LICENSE.txt for the conditions of the license.
+occluder_ld_1.pbrt(24): Warning: This version of pbrt fixes a bug in the 
+    LookAt transformation. If your rendered images unexpectedly change, add a 
+    "Scale -1 1 1" to the start of your scene file. 
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.1s)       
+pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
+Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
+The source code to pbrt (but *not* the book contents) is covered by the BSD License.
+See the file LICENSE.txt for the conditions of the license.
+occluder_ld_2.pbrt(24): Warning: This version of pbrt fixes a bug in the 
+    LookAt transformation. If your rendered images unexpectedly change, add a 
+    "Scale -1 1 1" to the start of your scene file. 
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.1s)       
+pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
+Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
+The source code to pbrt (but *not* the book contents) is covered by the BSD License.
+See the file LICENSE.txt for the conditions of the license.
+occluder_ld_32.pbrt(24): Warning: This version of pbrt fixes a bug in the 
+    LookAt transformation. If your rendered images unexpectedly change, add a 
+    "Scale -1 1 1" to the start of your scene file. 
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (1.0s)       
+pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
+Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
+The source code to pbrt (but *not* the book contents) is covered by the BSD License.
+See the file LICENSE.txt for the conditions of the license.
+occluder_ld_4.pbrt(24): Warning: This version of pbrt fixes a bug in the 
+    LookAt transformation. If your rendered images unexpectedly change, add a 
+    "Scale -1 1 1" to the start of your scene file. 
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.1s)       
+pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
+Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
+The source code to pbrt (but *not* the book contents) is covered by the BSD License.
+See the file LICENSE.txt for the conditions of the license.
+occluder_ld_64.pbrt(24): Warning: This version of pbrt fixes a bug in the 
+    LookAt transformation. If your rendered images unexpectedly change, add a 
+    "Scale -1 1 1" to the start of your scene file. 
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (2.0s)       
+pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
+Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
+The source code to pbrt (but *not* the book contents) is covered by the BSD License.
+See the file LICENSE.txt for the conditions of the license.
+occluder_ld_8.pbrt(24): Warning: This version of pbrt fixes a bug in the 
+    LookAt transformation. If your rendered images unexpectedly change, add a 
+    "Scale -1 1 1" to the start of your scene file. 
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.3s)       
+pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
+Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
+The source code to pbrt (but *not* the book contents) is covered by the BSD License.
+See the file LICENSE.txt for the conditions of the license.
+occluder_rd_16.pbrt(24): Warning: This version of pbrt fixes a bug in the 
+    LookAt transformation. If your rendered images unexpectedly change, add a 
+    "Scale -1 1 1" to the start of your scene file. 
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.5s)       
+pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
+Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
+The source code to pbrt (but *not* the book contents) is covered by the BSD License.
+See the file LICENSE.txt for the conditions of the license.
+occluder_rd_1.pbrt(24): Warning: This version of pbrt fixes a bug in the 
+    LookAt transformation. If your rendered images unexpectedly change, add a 
+    "Scale -1 1 1" to the start of your scene file. 
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.1s)       
+pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
+Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
+The source code to pbrt (but *not* the book contents) is covered by the BSD License.
+See the file LICENSE.txt for the conditions of the license.
+occluder_rd_2.pbrt(24): Warning: This version of pbrt fixes a bug in the 
+    LookAt transformation. If your rendered images unexpectedly change, add a 
+    "Scale -1 1 1" to the start of your scene file. 
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.1s)       
+pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
+Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
+The source code to pbrt (but *not* the book contents) is covered by the BSD License.
+See the file LICENSE.txt for the conditions of the license.
+occluder_rd_32.pbrt(24): Warning: This version of pbrt fixes a bug in the 
+    LookAt transformation. If your rendered images unexpectedly change, add a 
+    "Scale -1 1 1" to the start of your scene file. 
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.9s)       
+pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
+Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
+The source code to pbrt (but *not* the book contents) is covered by the BSD License.
+See the file LICENSE.txt for the conditions of the license.
+occluder_rd_4.pbrt(24): Warning: This version of pbrt fixes a bug in the 
+    LookAt transformation. If your rendered images unexpectedly change, add a 
+    "Scale -1 1 1" to the start of your scene file. 
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.1s)       
+pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
+Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
+The source code to pbrt (but *not* the book contents) is covered by the BSD License.
+See the file LICENSE.txt for the conditions of the license.
+occluder_rd_64.pbrt(24): Warning: This version of pbrt fixes a bug in the 
+    LookAt transformation. If your rendered images unexpectedly change, add a 
+    "Scale -1 1 1" to the start of your scene file. 
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (1.8s)       
+pbrt version 2.0.0 of May 21 2014 at 13:24:19 [Detected 8 core(s)]
+Copyright (c)1998-2012 Matt Pharr and Greg Humphreys.
+The source code to pbrt (but *not* the book contents) is covered by the BSD License.
+See the file LICENSE.txt for the conditions of the license.
+occluder_rd_8.pbrt(24): Warning: This version of pbrt fixes a bug in the 
+    LookAt transformation. If your rendered images unexpectedly change, add a 
+    "Scale -1 1 1" to the start of your scene file. 
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (0.2s)     

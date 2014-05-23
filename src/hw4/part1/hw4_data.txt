@@ -1,0 +1,56 @@
+occluder_ld_16.exr ../occluder_ref.exr
+	Images differ: 39772 big (14.73%), 150160 small (55.61%)
+	avg 1 = 0.0425221, avg2 = 0.0425184 (0.008586% delta)
+	MSE = 0.000163875, RMS = 1.280%
+occluder_ld_1.exr ../occluder_ref.exr
+	Images differ: 138458 big (51.28%), 189555 small (70.21%)
+	avg 1 = 0.0422049, avg2 = 0.0425184 (-0.742990% delta)
+	MSE = 0.0266358, RMS = 16.320%
+occluder_ld_2.exr ../occluder_ref.exr
+	Images differ: 109985 big (40.74%), 183767 small (68.06%)
+	avg 1 = 0.0428299, avg2 = 0.0425184 (0.732519% delta)
+	MSE = 0.00782313, RMS = 8.845%
+occluder_ld_32.exr ../occluder_ref.exr
+	Images differ: 30009 big (11.11%), 135065 small (50.02%)
+	avg 1 = 0.0425075, avg2 = 0.0425184 (-0.025729% delta)
+	MSE = 7.01577e-05, RMS = 0.838%
+occluder_ld_4.exr ../occluder_ref.exr
+	Images differ: 86023 big (31.86%), 176526 small (65.38%)
+	avg 1 = 0.0423021, avg2 = 0.0425184 (-0.511329% delta)
+	MSE = 0.00182847, RMS = 4.276%
+occluder_ld_64.exr ../occluder_ref.exr
+	Images differ: 23817 big (8.82%), 117634 small (43.57%)
+	avg 1 = 0.0424766, avg2 = 0.0425184 (-0.098423% delta)
+	MSE = 2.10761e-05, RMS = 0.459%
+occluder_ld_8.exr ../occluder_ref.exr
+	Images differ: 56210 big (20.82%), 162997 small (60.37%)
+	avg 1 = 0.0424769, avg2 = 0.0425184 (-0.097689% delta)
+	MSE = 0.000587319, RMS = 2.423%
+occluder_rd_16.exr ../occluder_ref.exr
+	Images differ: 50134 big (18.57%), 163913 small (60.71%)
+	avg 1 = 0.0424273, avg2 = 0.0425184 (-0.214833% delta)
+	MSE = 0.001577, RMS = 3.971%
+occluder_rd_1.exr ../occluder_ref.exr
+	Images differ: 138508 big (51.30%), 189117 small (70.04%)
+	avg 1 = 0.0430246, avg2 = 0.0425184 (1.190384% delta)
+	MSE = 0.0326903, RMS = 18.080%
+occluder_rd_2.exr ../occluder_ref.exr
+	Images differ: 113604 big (42.08%), 184426 small (68.31%)
+	avg 1 = 0.0421772, avg2 = 0.0425184 (-0.809021% delta)
+	MSE = 0.012796, RMS = 11.312%
+occluder_rd_32.exr ../occluder_ref.exr
+	Images differ: 36956 big (13.69%), 153224 small (56.75%)
+	avg 1 = 0.0425805, avg2 = 0.0425184 (0.145993% delta)
+	MSE = 0.000929007, RMS = 3.048%
+occluder_rd_4.exr ../occluder_ref.exr
+	Images differ: 89821 big (33.27%), 179355 small (66.43%)
+	avg 1 = 0.0423819, avg2 = 0.0425184 (-0.322111% delta)
+	MSE = 0.00658622, RMS = 8.116%
+occluder_rd_64.exr ../occluder_ref.exr
+	Images differ: 29399 big (10.89%), 139794 small (51.78%)
+	avg 1 = 0.0423187, avg2 = 0.0425184 (-0.472018% delta)
+	MSE = 0.000499921, RMS = 2.236%
+occluder_rd_8.exr ../occluder_ref.exr
+	Images differ: 68008 big (25.19%), 172669 small (63.95%)
+	avg 1 = 0.0427749, avg2 = 0.0425184 (0.603113% delta)
+	MSE = 0.00344551, RMS = 5.870%
