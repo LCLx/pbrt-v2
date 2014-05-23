@@ -1,0 +1,114 @@
+lines.exr/../manykilleroos_ref.exr:
+	resolutions don't match! (1024,1024) vs (400,400)
+manykilleroos_1_16.exr ../manykilleroos_ref.exr
+	Images differ: 209213 big (43.59%), 396200 small (82.54%)
+	avg 1 = 0.3533, avg2 = 0.353298 (0.000554% delta)
+	MSE = 0.00273876, RMS = 5.233%
+manykilleroos_1_1.exr ../manykilleroos_ref.exr
+	Images differ: 368871 big (76.85%), 453945 small (94.57%)
+	avg 1 = 0.353194, avg2 = 0.353298 (-0.029453% delta)
+	MSE = 0.0150626, RMS = 12.273%
+manykilleroos_1_2.exr ../manykilleroos_ref.exr
+	Images differ: 309830 big (64.55%), 447268 small (93.18%)
+	avg 1 = 0.353285, avg2 = 0.353298 (-0.003542% delta)
+	MSE = 0.00657654, RMS = 8.110%
+manykilleroos_1_32.exr ../manykilleroos_ref.exr
+	Images differ: 199311 big (41.52%), 368806 small (76.83%)
+	avg 1 = 0.35323, avg2 = 0.353298 (-0.019295% delta)
+	MSE = 0.00265802, RMS = 5.156%
+manykilleroos_1_4.exr ../manykilleroos_ref.exr
+	Images differ: 250709 big (52.23%), 435782 small (90.79%)
+	avg 1 = 0.353463, avg2 = 0.353298 (0.046685% delta)
+	MSE = 0.00393502, RMS = 6.273%
+manykilleroos_16_1.exr ../manykilleroos_ref.exr
+	Images differ: 118683 big (24.73%), 329737 small (68.70%)
+	avg 1 = 0.353277, avg2 = 0.353298 (-0.005902% delta)
+	MSE = 0.000213032, RMS = 1.460%
+manykilleroos_16_2.exr ../manykilleroos_ref.exr
+	Images differ: 95082 big (19.81%), 262342 small (54.65%)
+	avg 1 = 0.353299, avg2 = 0.353298 (0.000401% delta)
+	MSE = 8.76684e-05, RMS = 0.936%
+manykilleroos_1_64.exr ../manykilleroos_ref.exr
+	Images differ: 191296 big (39.85%), 350840 small (73.09%)
+	avg 1 = 0.353213, avg2 = 0.353298 (-0.024005% delta)
+	MSE = 0.00259475, RMS = 5.094%
+manykilleroos_16_4.exr ../manykilleroos_ref.exr
+	Images differ: 74218 big (15.46%), 218192 small (45.46%)
+	avg 1 = 0.35329, avg2 = 0.353298 (-0.002197% delta)
+	MSE = 4.31917e-05, RMS = 0.657%
+manykilleroos_1_8.exr ../manykilleroos_ref.exr
+	Images differ: 220311 big (45.90%), 419180 small (87.33%)
+	avg 1 = 0.353228, avg2 = 0.353298 (-0.019792% delta)
+	MSE = 0.00301901, RMS = 5.495%
+manykilleroos_2_16.exr ../manykilleroos_ref.exr
+	Images differ: 160949 big (33.53%), 344113 small (71.69%)
+	avg 1 = 0.353342, avg2 = 0.353298 (0.012407% delta)
+	MSE = 0.000803189, RMS = 2.834%
+manykilleroos_2_1.exr ../manykilleroos_ref.exr
+	Images differ: 293663 big (61.18%), 444372 small (92.58%)
+	avg 1 = 0.353224, avg2 = 0.353298 (-0.020878% delta)
+	MSE = 0.00485785, RMS = 6.970%
+manykilleroos2_2.exr ../manykilleroos_ref.exr
+	Images differ: 225239 big (46.92%), 430780 small (89.75%)
+	avg 1 = 0.353346, avg2 = 0.353298 (0.013626% delta)
+	MSE = 0.00208535, RMS = 4.567%
+manykilleroos_2_32.exr ../manykilleroos_ref.exr
+	Images differ: 150001 big (31.25%), 321528 small (66.99%)
+	avg 1 = 0.353174, avg2 = 0.353298 (-0.035150% delta)
+	MSE = 0.000781116, RMS = 2.795%
+manykilleroos_2_4.exr ../manykilleroos_ref.exr
+	Images differ: 188107 big (39.19%), 408156 small (85.03%)
+	avg 1 = 0.353255, avg2 = 0.353298 (-0.012060% delta)
+	MSE = 0.0011932, RMS = 3.454%
+manykilleroos_2_8.exr ../manykilleroos_ref.exr
+	Images differ: 174405 big (36.33%), 379189 small (79.00%)
+	avg 1 = 0.353231, avg2 = 0.353298 (-0.018831% delta)
+	MSE = 0.000911793, RMS = 3.020%
+manykilleroos_32_1.exr ../manykilleroos_ref.exr
+	Images differ: 88627 big (18.46%), 248141 small (51.70%)
+	avg 1 = 0.353311, avg2 = 0.353298 (0.003694% delta)
+	MSE = 8.00724e-05, RMS = 0.895%
+manykilleroos_32_2.exr ../manykilleroos_ref.exr
+	Images differ: 64503 big (13.44%), 196645 small (40.97%)
+	avg 1 = 0.35328, avg2 = 0.353298 (-0.005161% delta)
+	MSE = 3.00928e-05, RMS = 0.549%
+manykilleroos_4_16.exr ../manykilleroos_ref.exr
+	Images differ: 117314 big (24.44%), 284855 small (59.34%)
+	avg 1 = 0.353322, avg2 = 0.353298 (0.006896% delta)
+	MSE = 0.000249742, RMS = 1.580%
+manykilleroos_4_1.exr ../manykilleroos_ref.exr
+	Images differ: 206737 big (43.07%), 426769 small (88.91%)
+	avg 1 = 0.353355, avg2 = 0.353298 (0.016234% delta)
+	MSE = 0.00165055, RMS = 4.063%
+manykilleroos_4_2.exr ../manykilleroos_ref.exr
+	Images differ: 164630 big (34.30%), 398128 small (82.94%)
+	avg 1 = 0.35335, avg2 = 0.353298 (0.014853% delta)
+	MSE = 0.000680654, RMS = 2.609%
+manykilleroos_4_4.exr ../manykilleroos_ref.exr
+	Images differ: 147626 big (30.76%), 359175 small (74.83%)
+	avg 1 = 0.353287, avg2 = 0.353298 (-0.003170% delta)
+	MSE = 0.000403948, RMS = 2.010%
+manykilleroos_4_8.exr ../manykilleroos_ref.exr
+	Images differ: 131447 big (27.38%), 313413 small (65.29%)
+	avg 1 = 0.353264, avg2 = 0.353298 (-0.009619% delta)
+	MSE = 0.00028531, RMS = 1.689%
+manykilleroos_64_1.exr ../manykilleroos_ref.exr
+	Images differ: 62109 big (12.94%), 184923 small (38.53%)
+	avg 1 = 0.353295, avg2 = 0.353298 (-0.000669% delta)
+	MSE = 2.88715e-05, RMS = 0.537%
+manykilleroos_8_1.exr ../manykilleroos_ref.exr
+	Images differ: 149264 big (31.10%), 390623 small (81.38%)
+	avg 1 = 0.353244, avg2 = 0.353298 (-0.015190% delta)
+	MSE = 0.000540106, RMS = 2.324%
+manykilleroos_8_2.exr ../manykilleroos_ref.exr
+	Images differ: 128991 big (26.87%), 342268 small (71.31%)
+	avg 1 = 0.353302, avg2 = 0.353298 (0.001071% delta)
+	MSE = 0.000241452, RMS = 1.554%
+manykilleroos_8_4.exr ../manykilleroos_ref.exr
+	Images differ: 109285 big (22.77%), 284750 small (59.32%)
+	avg 1 = 0.3533, avg2 = 0.353298 (0.000524% delta)
+	MSE = 0.000128373, RMS = 1.133%
+manykilleroos_8_8.exr ../manykilleroos_ref.exr
+	Images differ: 91234 big (19.01%), 248275 small (51.72%)
+	avg 1 = 0.353275, avg2 = 0.353298 (-0.006329% delta)
+	MSE = 8.70492e-05, RMS = 0.933%
