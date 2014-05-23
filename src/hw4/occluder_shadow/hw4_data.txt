@@ -1,0 +1,112 @@
+occluder_shadow_1_16.exr ../occluder_shadow_ref.exr
+	Images differ: 120314 big (44.56%), 194114 small (71.89%)
+	avg 1 = 0.0276846, avg2 = 0.027702 (-0.062721% delta)
+	MSE = 1.82595e-05, RMS = 0.427%
+occluder_shadow_1_1.exr ../occluder_shadow_ref.exr
+	Images differ: 187621 big (69.49%), 204026 small (75.57%)
+	avg 1 = 0.0277067, avg2 = 0.027702 (0.017165% delta)
+	MSE = 0.000586823, RMS = 2.422%
+occluder_shadow_1_2.exr ../occluder_shadow_ref.exr
+	Images differ: 180500 big (66.85%), 203401 small (75.33%)
+	avg 1 = 0.0276774, avg2 = 0.027702 (-0.088777% delta)
+	MSE = 0.000209241, RMS = 1.447%
+occluder_shadow_1_32.exr ../occluder_shadow_ref.exr
+	Images differ: 102101 big (37.82%), 189245 small (70.09%)
+	avg 1 = 0.0276961, avg2 = 0.027702 (-0.021098% delta)
+	MSE = 8.54456e-06, RMS = 0.292%
+occluder_shadow_1_4.exr ../occluder_shadow_ref.exr
+	Images differ: 164379 big (60.88%), 201477 small (74.62%)
+	avg 1 = 0.0277217, avg2 = 0.027702 (0.071265% delta)
+	MSE = 8.90453e-05, RMS = 0.944%
+occluder_shadow_16_1.exr ../occluder_shadow_ref.exr
+	Images differ: 119788 big (44.37%), 194189 small (71.92%)
+	avg 1 = 0.0277065, avg2 = 0.027702 (0.016373% delta)
+	MSE = 1.81451e-05, RMS = 0.426%
+occluder_shadow_16_2.exr ../occluder_shadow_ref.exr
+	Images differ: 107412 big (39.78%), 191363 small (70.88%)
+	avg 1 = 0.0277127, avg2 = 0.027702 (0.038789% delta)
+	MSE = 1.06566e-05, RMS = 0.326%
+occluder_shadow_1_64.exr ../occluder_shadow_ref.exr
+	Images differ: 85336 big (31.61%), 182705 small (67.67%)
+	avg 1 = 0.0277029, avg2 = 0.027702 (0.003419% delta)
+	MSE = 4.07033e-06, RMS = 0.202%
+occluder_shadow_16_4.exr ../occluder_shadow_ref.exr
+	Images differ: 88480 big (32.77%), 182912 small (67.75%)
+	avg 1 = 0.0277064, avg2 = 0.027702 (0.015993% delta)
+	MSE = 4.63369e-06, RMS = 0.215%
+occluder_shadow_1_8.exr ../occluder_shadow_ref.exr
+	Images differ: 139817 big (51.78%), 198212 small (73.41%)
+	avg 1 = 0.02772, avg2 = 0.027702 (0.065008% delta)
+	MSE = 3.95219e-05, RMS = 0.629%
+occluder_shadow_2_16.exr ../occluder_shadow_ref.exr
+	Images differ: 101951 big (37.76%), 189172 small (70.06%)
+	avg 1 = 0.0277115, avg2 = 0.027702 (0.034599% delta)
+	MSE = 8.65909e-06, RMS = 0.294%
+occluder_shadow_2_1.exr ../occluder_shadow_ref.exr
+	Images differ: 179983 big (66.66%), 203391 small (75.33%)
+	avg 1 = 0.0277173, avg2 = 0.027702 (0.055461% delta)
+	MSE = 0.000208333, RMS = 1.443%
+occluder_shadow_2_2.exr ../occluder_shadow_ref.exr
+	Images differ: 169432 big (62.75%), 202059 small (74.84%)
+	avg 1 = 0.0277415, avg2 = 0.027702 (0.142880% delta)
+	MSE = 9.65424e-05, RMS = 0.983%
+occluder_shadow_2_32.exr ../occluder_shadow_ref.exr
+	Images differ: 85805 big (31.78%), 181842 small (67.35%)
+	avg 1 = 0.0277089, avg2 = 0.027702 (0.024886% delta)
+	MSE = 4.07999e-06, RMS = 0.202%
+occluder_shadow_2_4.exr ../occluder_shadow_ref.exr
+	Images differ: 142881 big (52.92%), 198331 small (73.46%)
+	avg 1 = 0.0277223, avg2 = 0.027702 (0.073389% delta)
+	MSE = 4.18111e-05, RMS = 0.647%
+occluder_shadow_2_8.exr ../occluder_shadow_ref.exr
+	Images differ: 120831 big (44.75%), 194645 small (72.09%)
+	avg 1 = 0.0277258, avg2 = 0.027702 (0.086235% delta)
+	MSE = 1.88941e-05, RMS = 0.435%
+occluder_shadow_32_1.exr ../occluder_shadow_ref.exr
+	Images differ: 102019 big (37.78%), 188795 small (69.92%)
+	avg 1 = 0.0277196, avg2 = 0.027702 (0.063572% delta)
+	MSE = 8.53719e-06, RMS = 0.292%
+occluder_shadow_32_2.exr ../occluder_shadow_ref.exr
+	Images differ: 90497 big (33.52%), 184558 small (68.35%)
+	avg 1 = 0.0276951, avg2 = 0.027702 (-0.024781% delta)
+	MSE = 5.16524e-06, RMS = 0.227%
+occluder_shadow_4_16.exr ../occluder_shadow_ref.exr
+	Images differ: 85950 big (31.83%), 181653 small (67.28%)
+	avg 1 = 0.0276952, avg2 = 0.027702 (-0.024383% delta)
+	MSE = 4.20691e-06, RMS = 0.205%
+occluder_shadow_4_1.exr ../occluder_shadow_ref.exr
+	Images differ: 164711 big (61.00%), 201583 small (74.66%)
+	avg 1 = 0.0277083, avg2 = 0.027702 (0.022798% delta)
+	MSE = 8.83647e-05, RMS = 0.940%
+occluder_shadow_4_2.exr ../occluder_shadow_ref.exr
+	Images differ: 145577 big (53.92%), 198688 small (73.59%)
+	avg 1 = 0.0277296, avg2 = 0.027702 (0.099881% delta)
+	MSE = 4.5748e-05, RMS = 0.676%
+occluder_shadow_4_4.exr ../occluder_shadow_ref.exr
+	Images differ: 123209 big (45.63%), 195034 small (72.23%)
+	avg 1 = 0.0276946, avg2 = 0.027702 (-0.026438% delta)
+	MSE = 2.00229e-05, RMS = 0.447%
+occluder_shadow_4_8.exr ../occluder_shadow_ref.exr
+	Images differ: 103103 big (38.19%), 188720 small (69.90%)
+	avg 1 = 0.0277149, avg2 = 0.027702 (0.046872% delta)
+	MSE = 9.09246e-06, RMS = 0.302%
+occluder_shadow_64_1.exr ../occluder_shadow_ref.exr
+	Images differ: 84955 big (31.46%), 181056 small (67.06%)
+	avg 1 = 0.0276967, avg2 = 0.027702 (-0.019046% delta)
+	MSE = 3.97234e-06, RMS = 0.199%
+occluder_shadow_8_1.exr ../occluder_shadow_ref.exr
+	Images differ: 139202 big (51.56%), 198196 small (73.41%)
+	avg 1 = 0.0276987, avg2 = 0.027702 (-0.011699% delta)
+	MSE = 3.94186e-05, RMS = 0.628%
+occluder_shadow_8_2.exr ../occluder_shadow_ref.exr
+	Images differ: 124829 big (46.23%), 194571 small (72.06%)
+	avg 1 = 0.0276756, avg2 = 0.027702 (-0.095383% delta)
+	MSE = 2.20606e-05, RMS = 0.470%
+occluder_shadow_8_4.exr ../occluder_shadow_ref.exr
+	Images differ: 104849 big (38.83%), 189793 small (70.29%)
+	avg 1 = 0.0276945, avg2 = 0.027702 (-0.026780% delta)
+	MSE = 9.57456e-06, RMS = 0.309%
+occluder_shadow_8_8.exr ../occluder_shadow_ref.exr
+	Images differ: 86882 big (32.18%), 182017 small (67.41%)
+	avg 1 = 0.0276979, avg2 = 0.027702 (-0.014724% delta)
+	MSE = 4.38636e-06, RMS = 0.209%
