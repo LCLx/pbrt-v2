@@ -10,3 +10,4 @@ xlabel('log2(samples)');
 ylabel('log2(mse)');
 legend('random', 'low discrepancy');
 title('mse-samples: log-log scale');
+
