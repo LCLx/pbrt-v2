@@ -29,7 +29,7 @@ bin/
 lib/
 
 # ignore folders
-scenes/
+#scenes/
 src/hw4/manykilleroos/brdfs/
 src/hw4/manykilleroos/geometry/
 src/hw4/manykilleroos/spds/
