@@ -122,6 +122,7 @@
 #include "textures/uv.h"
 #include "textures/windy.h"
 #include "textures/wrinkled.h"
+#include "volumes/aurora.h"			//	aurora density, Tao Du
 #include "volumes/exponential.h"
 #include "volumes/homogeneous.h"
 #include "volumes/volumegrid.h"
@@ -524,6 +525,8 @@ VolumeRegion *MakeVolumeRegion(const string &name,
         vr = CreateGridVolumeRegion(volume2world, paramSet);
     else if (name == "exponential")
         vr = CreateExponentialVolumeRegion(volume2world, paramSet);
+	else if (name == "aurora")	//	add support for AuroraDensity
+		vr = CreateAuroraVolumeRegion(volume2world, paramSet);
     else
         Warning("Volume region \"%s\" unknown.", name.c_str());
     paramSet.ReportUnused();
