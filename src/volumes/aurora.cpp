@@ -120,6 +120,9 @@ Spectrum AuroraDensity::Lve(const Point &p, const Vector &, float) const
 	const Point Pobj = WorldToVolume(p);
 	float rgb[3];
 	grid.SearchInGrid(Pobj, rgb[0], rgb[1], rgb[2]);
+	rgb[0] = 0.5f;
+	rgb[1] = 0.1f;
+	rgb[2] = 0.2f;
 	return Spectrum::FromRGB(rgb);
 }
 
