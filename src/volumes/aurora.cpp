@@ -207,7 +207,7 @@ void AuroraDensity::GeneratePhotons()
 		offset.z *= dz;
 		Point start = extent.pMin + offset;
 		float density = EleDensity(start);
-		if (density > 0.f)
+		if (density > 0.03f)
 		{
 			count++;
 			//	start to simulate a new beam
@@ -221,15 +221,17 @@ void AuroraDensity::GeneratePhotons()
 				float len = L * dt * t;
 				p += (len * u);
 				p += (tanf(alpha) * len * (cosf(beta) * v + sinf(beta) * w));
-				if (EleDensity(p) <= 0.f)
+				if (EleDensity(p) <= 0.03f)
 					break;
 				else
 				{
 					//	add a new photon
-					float intensity = auroraIntensity.Evaluate(p.y - extent.pMin.y);
-					float r = auroraColor[0].Evaluate(p.y) * intensity;
-					float g = auroraColor[1].Evaluate(p.y) * intensity;
-					float b = auroraColor[2].Evaluate(p.y) * intensity;
+					float h = Dot(Vector(p), upDir);
+					float h0 = Dot(Vector(extent.pMin), upDir);
+					float intensity = auroraIntensity.Evaluate(h - h0);
+					float r = auroraColor[0].Evaluate(h) * intensity;
+					float g = auroraColor[1].Evaluate(h) * intensity;
+					float b = auroraColor[2].Evaluate(h) * intensity;
 					AuroraPhoton photon(p, r, g, b);
 					grid.AddPhoton(photon);
 					photonNum++;
