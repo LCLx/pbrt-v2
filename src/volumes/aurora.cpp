@@ -12,11 +12,14 @@ Jun 4, 2014
 AuroraGrid::AuroraGrid(const BBox &e, int x, int y, int z, float r)
 {
 	Vector vox = e.pMax - e.pMin;
+	/*
 	float dx = vox.x / x;
 	float dy = vox.y / y;
 	float dz = vox.z / z;
 	step = max(dx, max(dy, dz));
 	step = max(step, 2 * radius);
+	*/
+	step = 2 * r;
 	nx = int(vox.x / step) + 1;
 	ny = int(vox.y / step) + 1;
 	nz = int(vox.z / step) + 1;
@@ -46,6 +49,7 @@ void AuroraGrid::AddPhoton(const AuroraPhoton &photon)
 
 void AuroraGrid::SearchInGrid(const Point &p, float &r, float &g, float &b) const
 {
+	r = g = b = 0.f;
 	if (!extent.Inside(p))
 		return;
 	Vector vox = p - extent.pMin;
@@ -65,9 +69,6 @@ void AuroraGrid::SearchInGrid(const Point &p, float &r, float &g, float &b) cons
 	zmax = Clamp(zmax, 0, nz - 1);
 
 	//	scan all the grids within the range above
-	r = 0.f;
-	g = 0.f;
-	b = 0.f;
 	float radiusSq = radius * radius;
 	//	sigam in gaussian kernel
 	float sigma = radius;
@@ -147,19 +148,21 @@ float AuroraDensity::EleDensity(const Point &Pobj) const
 float AuroraDensity::Density(const Point &Pobj) const
 {
     if (!extent.Inside(Pobj)) return 0;
-    float height = Dot(Pobj - extent.pMin, upDir);
+    float height = Dot(Vector(Pobj), upDir);
     return a * expf(-b * height);
 }
 
 Spectrum AuroraDensity::Lve(const Point &p, const Vector &, float) const
 {
 	const Point Pobj = WorldToVolume(p);
-	float den = Density(Pobj);
+	//float den = Density(Pobj);
 	float rgb[3];
 	grid.SearchInGrid(Pobj, rgb[0], rgb[1], rgb[2]);
+	/*
 	rgb[0] *= den;
 	rgb[1] *= den;
 	rgb[2] *= den;
+	*/
 	return Spectrum::FromRGB(rgb);
 }
 

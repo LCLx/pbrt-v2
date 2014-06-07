@@ -12,14 +12,14 @@ VolumeIntegrator "emission" "float stepsize" [0.5]
 WorldBegin
 
 Include "geometry/aurora_density.pbrt"
-  	"color sigma_a" [.005 .005 .005 ]
+  	"color sigma_a" [.001 .001 .001 ]
 	"color sigma_s" [.1 .1 .1]
 	"float g" [0.1]
 	"point p0" [-200 110 220 ] "point p1" [ 200 160 235]
 	"float a" [0.9]
-	"float b" [0.01]
+	"float b" [0.05]
 	"vector updir" [0 1 0]
-	"float radius" [2]
+	"float radius" [1.7]
 	"string aurora_r" "../aurora/aurora_r.txt.even"
 	"string aurora_g" "../aurora/aurora_g.txt.even"
 	"string aurora_b" "../aurora/aurora_b.txt.even"
