@@ -9,6 +9,27 @@ Jun 4, 2014
 #include "volumes/aurora.h"
 #include "paramset.h"
 
+AuroraGrid::AuroraGrid(const BBox &e, int x, int y, int z, float r)
+{
+	Vector vox = e.pMax - e.pMin;
+	float dx = vox.x / x;
+	float dy = vox.y / y;
+	float dz = vox.z / z;
+	step = max(dx, max(dy, dz));
+	step = max(step, 2 * radius);
+	nx = int(vox.x / step) + 1;
+	ny = int(vox.y / step) + 1;
+	nz = int(vox.z / step) + 1;
+	vox.x = step * nx;
+	vox.y = step * ny;
+	vox.z = step * nz;
+	extent.pMin = e.pMin;
+	extent.pMax = e.pMin + vox;
+	grids = new AuroraVoxel[nx * ny * nz];
+	radius = r;
+}
+
+
 void AuroraGrid::AddPhoton(const AuroraPhoton &photon)
 {
 	Point p = photon.p;
@@ -74,9 +95,24 @@ void AuroraGrid::SearchInGrid(const Point &p, float &r, float &g, float &b) cons
 					sum += weight;
 				}
 			}
-	r /= sum;
-	g /= sum;
-	b /= sum;
+	if (sum > 0.f)
+	{
+		r /= sum;
+		g /= sum;
+		b /= sum;
+	}
+	//	otherwise r = g = b = 0.f
+}
+
+float AuroraGrid::LoadFactor()
+{
+	int count = 0;
+	for (int i = 0; i < nx * ny * nz; i++)
+	{
+		if (grids[i].PhotonNum() > 0)
+			count++;
+	}
+	return count * 1.f / nx / ny / nz;
 }
 
 AuroraDensity::~AuroraDensity()
@@ -118,11 +154,12 @@ float AuroraDensity::Density(const Point &Pobj) const
 Spectrum AuroraDensity::Lve(const Point &p, const Vector &, float) const
 {
 	const Point Pobj = WorldToVolume(p);
+	float den = Density(Pobj);
 	float rgb[3];
 	grid.SearchInGrid(Pobj, rgb[0], rgb[1], rgb[2]);
-	rgb[0] = 0.5f;
-	rgb[1] = 0.1f;
-	rgb[2] = 0.2f;
+	rgb[0] *= den;
+	rgb[1] *= den;
+	rgb[2] *= den;
 	return Spectrum::FromRGB(rgb);
 }
 
@@ -140,6 +177,66 @@ Spectrum AuroraDensity::tau(const Ray &r, float stepSize, float u) const
         t0 += stepSize;
     }
     return tau * stepSize;
+}
+
+void AuroraDensity::GeneratePhotons()
+{
+	//	generate photons
+	int count = 0;
+	Vector vox = extent.pMax - extent.pMin;
+	//	build a local geomagnetic coordinate
+	Vector u = B / B.Length();
+	Vector v = Cross(B, Vector(1, 0, 0));
+	v /= v.Length();
+	Vector w = Cross(u, v);
+	w /= w.Length();
+	int maxEleNum = int(1.f / dt);
+	//	count the photon number
+	int photonNum = 0;
+	while (count < beamNum)
+	{
+		float dx = rand() * 1.f / RAND_MAX;
+		float dy = rand() * 1.f / RAND_MAX;
+		float dz = rand() * 1.f / RAND_MAX;
+		Vector offset = vox;
+		offset.x *= dx;
+		offset.y *= dy;
+		offset.z *= dz;
+		Point start = extent.pMin + offset;
+		float density = EleDensity(start);
+		if (density > 0.f)
+		{
+			count++;
+			//	start to simulate a new beam
+			Point p = start;
+			for (int i = 0; i < maxEleNum; i++)
+			{
+				//	generate a deflection point
+				float t = rand() * 1.f / RAND_MAX;
+				float alpha = Radians(alphaD - t * deltaAlpha);
+				float beta = 2 * M_PI * rand() * 1.f / RAND_MAX;
+				float len = L * dt * t;
+				p += (len * u);
+				p += (tanf(alpha) * len * (cosf(beta) * v + sinf(beta) * w));
+				if (EleDensity(p) <= 0.f)
+					continue;
+				else
+				{
+					//	add a new photon
+					float intensity = auroraIntensity.Evaluate(p.y - extent.pMin.y);
+					float r = auroraColor[0].Evaluate(p.y) * intensity;
+					float g = auroraColor[1].Evaluate(p.y) * intensity;
+					float b = auroraColor[2].Evaluate(p.y) * intensity;
+					AuroraPhoton photon(p, r, g, b);
+					grid.AddPhoton(photon);
+					photonNum++;
+				}
+			}
+		}
+	}
+	std::cout << "photon number: " << photonNum << std::endl;
+	//	analyse the grids
+	std::cout << "load factor: " << grid.LoadFactor() << std::endl;
 }
 
 // AuroraDensity Method Definitions
@@ -173,7 +270,14 @@ AuroraDensity *CreateAuroraVolumeRegion(const Transform &volume2world,
 	string gcolor = params.FindOneFilename("aurora_g", "aurora_g.txt.even");
 	string bcolor = params.FindOneFilename("aurora_b", "aurora_b.txt.even");
 	string intensity = params.FindOneFilename("aurora_intensity", "rays.txt.even");
+	Vector B = params.FindOneVector("B", Vector(1, -1, 0));
+	int bn = params.FindOneInt("beamNumber", 1500);
+	float alphaD = params.FindOneFloat("alphaD", 3);
+	float L = params.FindOneFloat("length", 175);
+	float dt = params.FindOneFloat("dt", 1.f / 300);
+	float dA = params.FindOneFloat("dA", 0.86f);
 	//	TODO: what is our parameter for AuroraDensity?
 	return new AuroraDensity(sigma_a, sigma_s, g, BBox(p0, p1),
-        volume2world, a, b, up, nx, ny, nz, radius, data, rcolor, gcolor, bcolor, intensity);
+        volume2world, a, b, up, nx, ny, nz, radius, data, rcolor, gcolor, bcolor, intensity,
+		B, bn, alphaD, L, dt, dA);
 }
