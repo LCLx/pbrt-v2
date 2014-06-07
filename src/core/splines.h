@@ -9,11 +9,14 @@
 #include "pbrt.h"
 #include <vector>
 #include <iostream>
+#include <algorithm>
 
 class Catmull_Rom {
 public:
     virtual ~Catmull_Rom(){}
-    Catmull_Rom(){}
+    Catmull_Rom(bool _even_sorted_sample=false)
+        :even_sorted_sample(_even_sorted_sample)
+    {}
     void Add_Sample(float x, float y){
         samples.push_back(std::pair<float,float>(x,y));
     }
@@ -21,7 +24,10 @@ public:
     static bool SortSample (const std::pair<float,float>& i,const std::pair<float,float>& j) { return (i.first<j.first); }
     void Build(){
         if(samples.size()<2) return;
-        std::sort(samples.begin(),samples.end(),SortSample);
+        if(!even_sorted_sample)
+            std::sort(samples.begin(),samples.end(),SortSample);
+        else
+            step_size=(samples[samples.size()-1].first-samples[0].first)/(float)(samples.size()-1);
         tangents.resize(samples.size());
         tangents[0]=(samples[1].second-samples[0].second)/(samples[1].first-samples[0].first);
         tangents[tangents.size()-1]=(samples[tangents.size()-1].second-samples[tangents.size()-2].second)/(samples[tangents.size()-1].first-samples[tangents.size()-2].first);
@@ -34,19 +40,24 @@ public:
         if(x<samples[0].first) return samples[0].second;
         if(x>samples[samples.size()-1].first) return samples[samples.size()-1].second;
         size_t first=0, last=samples.size()-1, midPoint;
-        while(first+1<last)
-        {
-            midPoint = (first+last)/2;
-            if (x < samples[midPoint].first)
-                last = midPoint;
-            else if (x > samples[midPoint].first)
-                first = midPoint;
-            else {
-                first = midPoint;
-                break;
+        if(!even_sorted_sample){
+            while(first+1<last)
+            {
+                midPoint = (first+last)/2;
+                if (x < samples[midPoint].first)
+                    last = midPoint;
+                else if (x > samples[midPoint].first)
+                    first = midPoint;
+                else {
+                    first = midPoint;
+                    break;
+                }
             }
+            assert(x>=samples[first].first&&x<samples[first+1].first);
         }
-        assert(x>=samples[first].first&&x<samples[first+1].first);
+        else{
+            first=(x-samples[first].first)/step_size;
+        }
         float t=(x-samples[first].first)/(samples[first+1].first-samples[first].first);
         float t2=t*t;
         float t3=t2*t;
@@ -62,6 +73,8 @@ public:
 
     std::vector<std::pair<float,float> > samples;
     std::vector<float> tangents;
+    bool even_sorted_sample;
+    float step_size;
 };
 
 #endif // PBRT_CORE_SPLINES_H
