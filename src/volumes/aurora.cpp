@@ -222,7 +222,7 @@ void AuroraDensity::GeneratePhotons()
 				p += (len * u);
 				p += (tanf(alpha) * len * (cosf(beta) * v + sinf(beta) * w));
 				if (EleDensity(p) <= 0.f)
-					continue;
+					break;
 				else
 				{
 					//	add a new photon
