@@ -210,7 +210,7 @@ void AuroraDensity::GeneratePhotons()
 		offset.y *= dy;
 		offset.z *= dz;
 		Point start = extent.pMin + offset;
-        start+=upDir*(25.0f*50.0f*noise.Evaluate(dz));
+        start+=upDir*(20.0f*start_point_noise.Evaluate(dz));
 		float density = EleDensity(start);
 		if (density > eleThreshold)
 		{
@@ -240,9 +240,9 @@ void AuroraDensity::GeneratePhotons()
                     //h+=80.0f*(noise.Evaluate(dz)-0.5f);
 					float h0 = Dot(Vector(extent.pMin), upDir);
 					float intensity = auroraIntensity.Evaluate(h - h0);
-					float r = auroraColor[0].Evaluate(h+25.0f*40.0f*(noise.Evaluate(dz)-0.0f)) * intensity;
-					float g = auroraColor[1].Evaluate(h+25.0f*40.0f*(noise.Evaluate(dz)-0.0f)) * intensity;
-					float b = auroraColor[2].Evaluate(h+25.0f*40.0f*(noise.Evaluate(dz)-0.0f)) * intensity;
+					float r = auroraColor[0].Evaluate(h+40.0f*(noise.Evaluate(dz)-0.0f)) * intensity;
+					float g = auroraColor[1].Evaluate(h+40.0f*(noise.Evaluate(dz)-0.0f)) * intensity;
+					float b = auroraColor[2].Evaluate(h+40.0f*(noise.Evaluate(dz)-0.0f)) * intensity;
 					AuroraPhoton photon(p, r, g, b);
 					grid.AddPhoton(photon);
 					photonNum++;

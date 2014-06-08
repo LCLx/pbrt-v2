@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <fstream>
-#include <core/splines.h>
-#include <core/perlin.h>
+#include "../core/splines.h"
+#include "../core/perlin.h"
 
 using namespace std;
 

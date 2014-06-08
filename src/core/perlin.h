@@ -21,8 +21,8 @@ public:
     {
         srand(seed);
         for(int i=0;i<level;i++){
-            float l_frequency=frequency/pow(2.0f,(float)level);
-            float altitude=pow(persistence,(float)level);
+            float l_frequency=frequency/pow(2.0f,(float)i);
+            float altitude=pow(persistence,(float)i);
             Catmull_Rom spline(true);
             for(int j=0;j<1.0/l_frequency+2;j++){
                 spline.Add_Sample((float)j*l_frequency,altitude*(float)rand()/(float)RAND_MAX);
