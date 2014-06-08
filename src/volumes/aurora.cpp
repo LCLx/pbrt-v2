@@ -8,6 +8,7 @@ Jun 4, 2014
 #include "stdafx.h"
 #include "volumes/aurora.h"
 #include "paramset.h"
+#include "core/perlin.h"
 
 AuroraGrid::AuroraGrid(const BBox &e, int x, int y, int z, float r)
 {
@@ -184,6 +185,8 @@ Spectrum AuroraDensity::tau(const Ray &r, float stepSize, float u) const
 
 void AuroraDensity::GeneratePhotons()
 {
+    Perlin start_point_noise(1.0f,1.0,7,1);
+    Perlin noise(0.25f,0.5,3,10);
 	//	generate photons
 	int count = 0;
 	Vector vox = extent.pMax - extent.pMin;
@@ -207,13 +210,14 @@ void AuroraDensity::GeneratePhotons()
 		offset.y *= dy;
 		offset.z *= dz;
 		Point start = extent.pMin + offset;
+        start+=upDir*(25.0f*50.0f*noise.Evaluate(dz));
 		float density = EleDensity(start);
 		if (density > eleThreshold)
 		{
 			count++;
 			if (count * 100.f / beamNum >= percent)
 			{
-				std::cout << percent << "%\t";
+				std::cout << percent << "%\t" << std::flush;
 				percent++;
 			}
 			//	start to simulate a new beam
@@ -233,11 +237,12 @@ void AuroraDensity::GeneratePhotons()
 				{
 					//	add a new photon
 					float h = Dot(Vector(p), upDir);
+                    //h+=80.0f*(noise.Evaluate(dz)-0.5f);
 					float h0 = Dot(Vector(extent.pMin), upDir);
 					float intensity = auroraIntensity.Evaluate(h - h0);
-					float r = auroraColor[0].Evaluate(h) * intensity;
-					float g = auroraColor[1].Evaluate(h) * intensity;
-					float b = auroraColor[2].Evaluate(h) * intensity;
+					float r = auroraColor[0].Evaluate(h+25.0f*40.0f*(noise.Evaluate(dz)-0.0f)) * intensity;
+					float g = auroraColor[1].Evaluate(h+25.0f*40.0f*(noise.Evaluate(dz)-0.0f)) * intensity;
+					float b = auroraColor[2].Evaluate(h+25.0f*40.0f*(noise.Evaluate(dz)-0.0f)) * intensity;
 					AuroraPhoton photon(p, r, g, b);
 					grid.AddPhoton(photon);
 					photonNum++;

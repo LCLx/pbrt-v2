@@ -1,33 +1,34 @@
 Film "image"
- "integer xresolution" [1000] "integer yresolution" [750]
+ "integer xresolution" [640] "integer yresolution" [438]
   "string filename" "aurora.exr" 
 
 Sampler "bestcandidate" "integer pixelsamples" [8]
 PixelFilter "gaussian"
 
-LookAt 120 30 -150 50 110 0 0 1 0
+LookAt -40 40 -40    20 150 120    0 1 0
 Camera "perspective" "float fov" [60]
 VolumeIntegrator "emission" "float stepsize" [0.5]
 
 WorldBegin
 
-Include "geometry/footprint_1.5.pbrt"
-  	"color sigma_a" [.1 .1 .1 ]
-	"color sigma_s" [.1 .1 .1]
+Include "geometry/footprint_1_1.5.pbrt"
+  	"color sigma_a" [.01 .01 .01 ]
+	"color sigma_s" [.0 .0 .0]
 	"float g" [0]
-	"point p0" [ -220 100 0 ] "point p1" [ 0 270 420 ]
-	"float a" [2]
+	"point p0" [ -88 100 0 ] "point p1" [ 0 300 160 ]
+	"float a" [0.1]
 	"float b" [0.006]
 	"vector updir" [0 1 0]
-	"float radius" [0.5]
+	"float radius" [0.2]
 	"string aurora_r" "../aurora/r.txt.even"
 	"string aurora_g" "../aurora/g.txt.even"
 	"string aurora_b" "../aurora/b.txt.even"
 	"string aurora_intensity" "../aurora/rays.txt.even"
 	"vector B" [0.06 -1 0]
-	"integer beamNumber" [50000]
+	"integer beamNumber" [500000]
 	"float alphaD" [25]
 	"float length" [70]
 	"float dt" [0.004]
 	"float dA" [12]
+    "float threshold" [0.2]
 WorldEnd
