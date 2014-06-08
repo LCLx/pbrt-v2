@@ -87,36 +87,36 @@ public:
 		float height, value;
 		//	r color
 		fin.open(rcolor);
-		while (!fin.eof())
+		while (fin >> height)
 		{
-			fin >> height >> value;
+			fin >> value;
 			auroraColor[0].Add_Sample(height, value);
 		}
 		auroraColor[0].Build();
 		fin.close();
 		//	g color
 		fin.open(gcolor);
-		while (!fin.eof())
+		while (fin >> height)
 		{
-			fin >> height >> value;
+			fin >> value;
 			auroraColor[1].Add_Sample(height, value);
 		}
 		auroraColor[1].Build();
 		fin.close();
 		//	b color
 		fin.open(bcolor);
-		while (!fin.eof())
+		while (fin >> height)
 		{
-			fin >> height >> value;
+			fin >> value;
 			auroraColor[2].Add_Sample(height, value);
 		}
 		auroraColor[2].Build();
 		fin.close();
 		//	intensity
 		fin.open(intensity);
-		while (!fin.eof())
+		while (fin >> height)
 		{
-			fin >> height >> value;
+			fin >> value;
 			auroraIntensity.Add_Sample(height, value);
 		}
 		auroraIntensity.Build();
