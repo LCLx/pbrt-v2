@@ -196,6 +196,7 @@ void AuroraDensity::GeneratePhotons()
 	int maxEleNum = int(1.f / dt);
 	//	count the photon number
 	int photonNum = 0;
+	int percent = 0;
 	while (count < beamNum)
 	{
 		float dx = rand() * 1.f / RAND_MAX;
@@ -210,6 +211,11 @@ void AuroraDensity::GeneratePhotons()
 		if (density > 0.03f)
 		{
 			count++;
+			if (count * 100.f / beamNum >= percent)
+			{
+				std::cout << percent << "%\t";
+				percent++;
+			}
 			//	start to simulate a new beam
 			Point p = start;
 			for (int i = 0; i < maxEleNum; i++)
@@ -239,7 +245,7 @@ void AuroraDensity::GeneratePhotons()
 			}
 		}
 	}
-	std::cout << "photon number: " << photonNum << std::endl;
+	std::cout << std::endl << "photon number: " << photonNum << std::endl;
 	//	analyse the grids
 	std::cout << "load factor: " << grid.LoadFactor() << std::endl;
 }
