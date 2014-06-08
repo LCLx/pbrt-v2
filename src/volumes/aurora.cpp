@@ -155,14 +155,14 @@ float AuroraDensity::Density(const Point &Pobj) const
 Spectrum AuroraDensity::Lve(const Point &p, const Vector &, float) const
 {
 	const Point Pobj = WorldToVolume(p);
-	//float den = Density(Pobj);
+	float den = Density(Pobj);
 	float rgb[3];
 	grid.SearchInGrid(Pobj, rgb[0], rgb[1], rgb[2]);
-	/*
+	
 	rgb[0] *= den;
 	rgb[1] *= den;
 	rgb[2] *= den;
-	*/
+	
 	return Spectrum::FromRGB(rgb);
 }
 
@@ -208,7 +208,7 @@ void AuroraDensity::GeneratePhotons()
 		offset.z *= dz;
 		Point start = extent.pMin + offset;
 		float density = EleDensity(start);
-		if (density > 0.03f)
+		if (density > eleThreshold)
 		{
 			count++;
 			if (count * 100.f / beamNum >= percent)
@@ -227,7 +227,7 @@ void AuroraDensity::GeneratePhotons()
 				float len = L * dt * t;
 				p += (len * u);
 				p += (tanf(alpha) * len * (cosf(beta) * v + sinf(beta) * w));
-				if (EleDensity(p) <= 0.03f)
+				if (EleDensity(p) <= eleThreshold)
 					break;
 				else
 				{
@@ -287,8 +287,9 @@ AuroraDensity *CreateAuroraVolumeRegion(const Transform &volume2world,
 	float L = params.FindOneFloat("length", 175);
 	float dt = params.FindOneFloat("dt", 1.f / 300);
 	float dA = params.FindOneFloat("dA", 0.86f);
+	float ee = params.FindOneFloat("threshold", 0.03f);
 	//	TODO: what is our parameter for AuroraDensity?
 	return new AuroraDensity(sigma_a, sigma_s, g, BBox(p0, p1),
         volume2world, a, b, up, nx, ny, nz, radius, data, rcolor, gcolor, bcolor, intensity,
-		B, bn, alphaD, L, dt, dA);
+		B, bn, alphaD, L, dt, dA, ee);
 }

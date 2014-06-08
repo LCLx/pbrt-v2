@@ -72,11 +72,11 @@ public:
                   const Transform &VolumeToWorld, float aa, float bb,
                        const Vector &up, int x, int y, int z, float radius, const float *d,
 					   const string rcolor, const string gcolor, const string bcolor, const string intensity,
-					   const Vector &b, int bn, float a, float l, float dd, float dA)
+					   const Vector &b, int bn, float a, float l, float dd, float dA, float ee)
         : sig_a(sa), sig_s(ss), g(gg), extent(e),
           WorldToVolume(Inverse(VolumeToWorld)), a(aa), b(bb), 
 		  nx(x), ny(y), nz(z), grid(e, nx, ny, nz, radius),
-		  B(b), beamNum(bn), alphaD(a), L(l), dt(dd), deltaAlpha(dA)
+		  B(b), beamNum(bn), alphaD(a), L(l), dt(dd), deltaAlpha(dA), eleThreshold(ee)
 	{
 		upDir = Normalize(up);
 		eleDensity = new float[nx*ny*nz];
@@ -174,6 +174,7 @@ private:
 	//	eleDensity represents whether aurora 'exists' or not
 	//	use eleDensity to generate the photon in aurora
 	float *eleDensity;
+	float eleThreshold;
 	//	the number of bins in x, y, z in eDensity
 	int nx, ny, nz;
 
