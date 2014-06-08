@@ -11,13 +11,13 @@ VolumeIntegrator "emission" "float stepsize" [0.5]
 
 WorldBegin
 
-Include "geometry/footprint_1_1.5.pbrt"
+Include "geometry/footprint_3_1.5.pbrt"
   	"color sigma_a" [.01 .01 .01 ]
 	"color sigma_s" [.0 .0 .0]
 	"float g" [0]
 	"point p0" [ -88 100 0 ] "point p1" [ 0 300 160 ]
-	"float a" [0.1]
-	"float b" [0.006]
+	"float a" [0.9]
+	"float b" [0.02]
 	"vector updir" [0 1 0]
 	"float radius" [0.2]
 	"string aurora_r" "../aurora/r.txt.even"

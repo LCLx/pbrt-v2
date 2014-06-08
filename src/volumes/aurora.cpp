@@ -185,7 +185,7 @@ Spectrum AuroraDensity::tau(const Ray &r, float stepSize, float u) const
 
 void AuroraDensity::GeneratePhotons()
 {
-    Perlin start_point_noise(1.0f,1.0,7,1);
+    Perlin start_point_noise(0.5f,0.25,3,1);
     Perlin noise(0.25f,0.5,3,10);
 	//	generate photons
 	int count = 0;
@@ -210,7 +210,7 @@ void AuroraDensity::GeneratePhotons()
 		offset.y *= dy;
 		offset.z *= dz;
 		Point start = extent.pMin + offset;
-        start+=upDir*(20.0f*start_point_noise.Evaluate(dz));
+        start+=upDir*(5.0f*start_point_noise.Evaluate(dz));
 		float density = EleDensity(start);
 		if (density > eleThreshold)
 		{
