@@ -31,4 +31,20 @@ Include "geometry/footprint_3_1.5.pbrt"
 	"float dt" [0.004]
 	"float dA" [12]
     "float threshold" [0.2]
+	
+AttributeBegin
+LightSource "distant"
+        "point from" [1 1 1] 
+		"point to" [0 0 0] 
+AttributeEnd
+
+AttributeBegin
+	Translate 60 58 200
+	Rotate -7 1 0 0
+	Scale 0.003 0.003 0.003
+	Include "geometry/landscape.pbrt"
+AttributeEnd
+
 WorldEnd
+
+
