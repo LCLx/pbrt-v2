@@ -32,7 +32,28 @@ Include "geometry/footprint_3_1.5.pbrt"
 	"float dA" [12]
     "float threshold" [0.2]
 
+AttributeBegin
+	Translate -26 40 -30
+	Rotate -90 1 0 0
+	Scale 0.04 0.04 0.04
+	Include "geometry/tree_1.pbrt"
+AttributeEnd
 
+ObjectBegin "Tree"
+	Rotate -90 1 0 0
+	Scale 0.04 0.04 0.04
+	Include "geometry/tree_2.pbrt"
+ObjectEnd
+
+AttributeBegin
+	Translate -39 40 -30
+	ObjectInstance "Tree"
+AttributeEnd
+
+AttributeBegin
+	Translate -42 40 -30
+	ObjectInstance "Tree"
+AttributeEnd
 
 	
 AttributeBegin
