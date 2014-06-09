@@ -31,11 +31,26 @@ Include "geometry/footprint_3_1.5.pbrt"
 	"float dt" [0.004]
 	"float dA" [12]
     "float threshold" [0.2]
+
+
+
 	
 AttributeBegin
-LightSource "distant"
-        "point from" [1 1 -0.1] 
-		"point to" [0 0 0] 
+   LightSource "distant" "rgb L" [1 1 1]
+        "point from" [0 0 0] 
+		"point to" [0 0 1] 
+AttributeEnd
+
+AttributeBegin
+	Texture "night" "spectrum" "imagemap" "string filename" "textures/night.exr"
+	Material "matte" "texture Kd" "night"
+	Translate 130 350 400
+	Rotate 40 -110 60 0
+	Scale 5 5 1 
+    Shape "trianglemesh"  
+		"integer indices" [0 2 1 0 3 2 ] 
+		"point P" [-100 -100 0 100 -100 0 100 100 0 -100 100 0 ]
+		"float uv" [0 0 0 1 1 1 1 0]
 AttributeEnd
 
 AttributeBegin
