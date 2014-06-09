@@ -1,5 +1,6 @@
 Film "image"
- "integer xresolution" [640] "integer yresolution" [438]
+"integer xresolution" [1578] "integer yresolution" [1080]
+#"integer xresolution" [640] "integer yresolution" [438]
   "string filename" "aurora.exr" 
 
 Sampler "bestcandidate" "integer pixelsamples" [8]
@@ -35,13 +36,13 @@ Include "geometry/footprint_3_1.5.pbrt"
 AttributeBegin
 	Translate -26 40 -30
 	Rotate -90 1 0 0
-	Scale 0.04 0.04 0.04
+	Scale 0.035 0.035 0.035
 	Include "geometry/tree_1.pbrt"
 AttributeEnd
 
 ObjectBegin "Tree"
 	Rotate -90 1 0 0
-	Scale 0.04 0.04 0.04
+	Scale 0.035 0.035 0.035
 	Include "geometry/tree_2.pbrt"
 ObjectEnd
 
@@ -57,21 +58,26 @@ AttributeEnd
 
 	
 AttributeBegin
-   LightSource "distant" "rgb L" [1 1 1]
+#LightSource "distant" "rgb L" [0.407 0.58 1.0]
+    LightSource "distant" "rgb L" [1 1 1]
         "point from" [0 0 0] 
 		"point to" [0 0 1] 
 AttributeEnd
 
 AttributeBegin
-	Texture "night" "spectrum" "imagemap" "string filename" "textures/night.exr"
-	Material "matte" "texture Kd" "night"
+#Texture "obj-kd-img" "color" "imagemap" "string filename" ["textures/night_2.exr"]
+#Texture "obj-kd" "color" "scale" "texture tex1" "obj-kd-img" "color tex2" [1.0000 1.0000 1.0000]
+#Texture "obj-ks" "color" "constant" "color value" [0.000000 0.000000 0.000000]
+#Material "uber" "texture Kd" "obj-kd" "texture Ks" "obj-ks" "float roughness" [0.400000] "rgb Kt" [0.000000 0.000000 0.000000] "float index" [1.500000] "rgb opacity" [1.000000 1.000000 1.000000] 
+Texture "night" "spectrum" "imagemap" "string filename" "textures/night_2.exr"
+Material "matte" "texture Kd" "night"
 	Translate 130 350 400
 	Rotate 40 -110 60 0
 	Scale 5 5 1 
     Shape "trianglemesh"  
 		"integer indices" [0 2 1 0 3 2 ] 
 		"point P" [-100 -100 0 100 -100 0 100 100 0 -100 100 0 ]
-		"float uv" [0 0 0 1 1 1 1 0]
+		"float uv" [0 1 1 1 1 0 0 0]
 AttributeEnd
 
 AttributeBegin

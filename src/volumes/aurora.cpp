@@ -185,8 +185,8 @@ Spectrum AuroraDensity::tau(const Ray &r, float stepSize, float u) const
 
 void AuroraDensity::GeneratePhotons()
 {
-    Perlin start_point_noise(0.5f,0.25,3,1);
-    Perlin noise(0.25f,0.5,3,10);
+    Perlin start_point_noise(0.5f,0.25,4,1);
+    Perlin noise(0.25f,0.2,2,10);
 	//	generate photons
 	int count = 0;
 	Vector vox = extent.pMax - extent.pMin;
@@ -210,7 +210,7 @@ void AuroraDensity::GeneratePhotons()
 		offset.y *= dy;
 		offset.z *= dz;
 		Point start = extent.pMin + offset;
-        start+=upDir*(5.0f*start_point_noise.Evaluate(dz));
+        start+=upDir*(30.0f*(start_point_noise.Evaluate(dz)-0.0f));
 		float density = EleDensity(start);
 		if (density > eleThreshold)
 		{
@@ -240,9 +240,9 @@ void AuroraDensity::GeneratePhotons()
                     //h+=80.0f*(noise.Evaluate(dz)-0.5f);
 					float h0 = Dot(Vector(extent.pMin), upDir);
 					float intensity = auroraIntensity.Evaluate(h - h0);
-					float r = auroraColor[0].Evaluate(h+40.0f*(noise.Evaluate(dz)-0.0f)) * intensity;
-					float g = auroraColor[1].Evaluate(h+40.0f*(noise.Evaluate(dz)-0.0f)) * intensity;
-					float b = auroraColor[2].Evaluate(h+40.0f*(noise.Evaluate(dz)-0.0f)) * intensity;
+					float r = auroraColor[0].Evaluate(h+60.0f*(noise.Evaluate(dz)-0.0f)) * intensity;
+					float g = auroraColor[1].Evaluate(h+60.0f*(noise.Evaluate(dz)-0.0f)) * intensity;
+					float b = auroraColor[2].Evaluate(h+60.0f*(noise.Evaluate(dz)-0.0f)) * intensity;
 					AuroraPhoton photon(p, r, g, b);
 					grid.AddPhoton(photon);
 					photonNum++;
