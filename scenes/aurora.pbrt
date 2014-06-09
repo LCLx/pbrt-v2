@@ -34,14 +34,14 @@ Include "geometry/footprint_3_1.5.pbrt"
 	
 AttributeBegin
 LightSource "distant"
-        "point from" [1 1 1] 
+        "point from" [1 1 -0.1] 
 		"point to" [0 0 0] 
 AttributeEnd
 
 AttributeBegin
-	Translate 60 58 200
-	Rotate -7 1 0 0
-	Scale 0.003 0.003 0.003
+	Translate 50 100 450
+	Rotate -8 1 0 0
+	Scale 0.006 0.006 0.006
 	Include "geometry/landscape.pbrt"
 AttributeEnd
 
