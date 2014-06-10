@@ -75,7 +75,7 @@ void AuroraGrid::SearchInGrid(const Point &p, float &r, float &g, float &b) cons
 	Vector offset = extent.Offset(p);
 
     //std::cout<<offset[0]<<" "<<offset[1]<<" "<<noise2d.Evaluate(offset[1],offset[2])<<std::endl;
-    float p_radius=2.5f*(noise2d.Evaluate(offset[2],offset[1])/1.6f)-0.4f;
+    float p_radius=0.5f*(noise2d.Evaluate(offset[2],offset[1])/1.6f)-0.4f;
     float t_radius=radius+p_radius;
     //std::cout<<"Using radius "<<t_radius<<std::endl;
 	//	scan all the grids within the range above
