@@ -7,6 +7,9 @@ Include "geometry/footprint_3_1.5.pbrt"
 	"float b" [0.02]
 	"vector updir" [0 1 0]
 	"float radius" [0.5]
+	"float rscale" [64]
+	"float gscale" [64]
+	"float bscale" [64]
 	"string aurora_r" "../aurora/r.txt.even"
 	"string aurora_g" "../aurora/g.txt.even"
 	"string aurora_b" "../aurora/b.txt.even"
