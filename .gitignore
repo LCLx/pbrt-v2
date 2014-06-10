@@ -11,9 +11,6 @@ src/build
 pbrt.exr
 *.exr
 
-# lens file
-*.dat
-
 # These files are generated during the build process:
 #src/core/pbrtlex.cpp
 #src/core/pbrtparse.cpp
