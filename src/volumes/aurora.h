@@ -74,6 +74,7 @@ public:
     AuroraDensity(const Spectrum &sa, const Spectrum &ss, float gg, const BBox &e,
                   const Transform &VolumeToWorld, float aa, float bb,
                        const Vector &up, int x, int y, int z, float radius, const float *d,
+					   float cr, float cg, float cb, float is,
 					   const string rcolor, const string gcolor, const string bcolor, const string intensity,
 					   const Vector &b, int bn, float a, float l, float dd, float dA, float ee,
                        float _persistence, float _frequency, int _level, int _seed, float _magnitude, float _perturb)
@@ -95,6 +96,7 @@ public:
 		while (fin >> height)
 		{
 			fin >> value;
+			value *= cr;
 			auroraColor[0].Add_Sample(height, value);
 		}
 		auroraColor[0].Build();
@@ -104,6 +106,7 @@ public:
 		while (fin >> height)
 		{
 			fin >> value;
+			value *= cg;
 			auroraColor[1].Add_Sample(height, value);
 		}
 		auroraColor[1].Build();
@@ -113,6 +116,7 @@ public:
 		while (fin >> height)
 		{
 			fin >> value;
+			value *= cb;
 			auroraColor[2].Add_Sample(height, value);
 		}
 		auroraColor[2].Build();
@@ -122,6 +126,7 @@ public:
 		while (fin >> height)
 		{
 			fin >> value;
+			value *= is;
 			auroraIntensity.Add_Sample(height, value);
 		}
 		auroraIntensity.Build();

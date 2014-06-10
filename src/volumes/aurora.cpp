@@ -291,6 +291,10 @@ AuroraDensity *CreateAuroraVolumeRegion(const Transform &volume2world,
             nitems, nx*ny*nz);
         return NULL;
     }
+	float cr = params.FindOneFloat("rscale", 1.f);
+	float cg = params.FindOneFloat("gscale", 1.f);
+	float cb = params.FindOneFloat("bscale", 1.f);
+	float is = params.FindOneFloat("iscale", 1.f);
 	string rcolor = params.FindOneFilename("aurora_r", "aurora_r.txt.even");
 	string gcolor = params.FindOneFilename("aurora_g", "aurora_g.txt.even");
 	string bcolor = params.FindOneFilename("aurora_b", "aurora_b.txt.even");
@@ -310,7 +314,7 @@ AuroraDensity *CreateAuroraVolumeRegion(const Transform &volume2world,
     float perturb = params.FindOneFloat("perturb", 0.0f);
 	//	TODO: what is our parameter for AuroraDensity?
 	return new AuroraDensity(sigma_a, sigma_s, g, BBox(p0, p1),
-        volume2world, a, b, up, nx, ny, nz, radius, data, rcolor, gcolor, bcolor, intensity,
+        volume2world, a, b, up, nx, ny, nz, radius, data, cr, cg, cb, is, rcolor, gcolor, bcolor, intensity,
 		B, bn, alphaD, L, dt, dA, ee,
         persistence, frequency, level, seed, magnitude, perturb);
 }

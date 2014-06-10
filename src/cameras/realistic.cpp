@@ -422,7 +422,7 @@ Point RealisticCamera::EstimateAutoFocusPos(AfZone &zone, Renderer * renderer, c
 	float ycenter = (zone.top + zone.bottom) / 2;
 	float xsize = zone.left - xcenter;
 	float ysize = zone.top - ycenter;
-	float scale = 0.125;
+	float scale = 1.f;
 	const float crop[] = {xcenter + scale * xsize, 
 		xcenter - scale * xsize, 
 		ycenter + scale * ysize,
