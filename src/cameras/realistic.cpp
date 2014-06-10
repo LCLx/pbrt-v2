@@ -205,7 +205,7 @@ void RealisticCamera::ParseLens(const string& filename)
 		}
 	}
 	filmPos -= filmDist;
-	printf("Read in %zu lens from %s\n", lenses.size(), filename.c_str());
+	//printf("Read in %zu lens from %s\n", lenses.size(), filename.c_str());
 
 }
 
