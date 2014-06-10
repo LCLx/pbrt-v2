@@ -15,6 +15,7 @@
 #include <algorithm>
 #include <vector>
 #include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -35,11 +36,13 @@ RealisticCamera *CreateRealisticCamera(const ParamSet &params,
 	   float shutterclose = params.FindOneFloat("shutterclose", -1);
 
 	   // Realistic camera-specific parameters
-	   string specfile = params.FindOneString("specfile", "");
+	   //string specfile = params.FindOneString("specfile", "");
+	   string specfile = params.FindOneFilename("specfile", "");
 	   float filmdistance = params.FindOneFloat("filmdistance", 70.0); // about 70 mm default to film
 	   float fstop = params.FindOneFloat("aperture_diameter", 1.0);
 	   float filmdiag = params.FindOneFloat("filmdiag", 35.0);
-	   string autofocusfile = params.FindOneString("af_zones", "");
+	   string autofocusfile = params.FindOneFilename("af_zones", "");
+	   //string autofocusfile = params.FindOneString("af_zones", "");
 	   assert(hither != -1 && yon != -1 && shutteropen != -1 &&
 	      shutterclose != -1 && filmdistance!= -1);
 	   if (specfile == "") {
@@ -90,6 +93,7 @@ RealisticCamera::RealisticCamera(const AnimatedTransform &cam2world,
 	autofocus = false;
 
 	if (autofocusfile.compare("") != 0)  {
+		std::cout << "autoocusfile is not empty!" << std::endl;
 		ParseAfZones(autofocusfile);
 		autofocus = true;
 	}
@@ -206,7 +210,7 @@ void RealisticCamera::ParseLens(const string& filename)
 	}
 	filmPos -= filmDist;
 	//printf("Read in %zu lens from %s\n", lenses.size(), filename.c_str());
-
+	specfile.close();
 }
 
 // parses the AF zone file
@@ -230,8 +234,8 @@ void RealisticCamera::ParseAfZones(const string& filename)
 		sscanf(line, "%f %f %f %f\n", &zone.left, &zone.right, &zone.top, &zone.bottom);
       }
    }
-
-	printf("Read in %zu AF zones from %s\n", afZones.size(), filename.c_str());
+   specfile.close();
+	//printf("Read in %zu AF zones from %s\n", afZones.size(), filename.c_str());
 }
 
 RealisticCamera::~RealisticCamera()
@@ -525,6 +529,7 @@ void  RealisticCamera::AutoFocus(Renderer * renderer, const Scene * scene, Sampl
 	//	now we have a ray from Pcamera, and it points towards
 	if(!autofocus)
 		return;
+	std::cout << "autofocus is true !" << std::endl;
 	int nZones = (int)afZones.size();
 	Point *estPos = new Point[nZones];
 	for (int i = 0; i < nZones; i++)
