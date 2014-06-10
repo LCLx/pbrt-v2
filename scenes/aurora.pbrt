@@ -31,6 +31,13 @@ AttributeBegin
 		"integer nsamples" [32]
 AttributeEnd
 
+AttributeBegin
+	LightSource "distant"
+		"rgb L" [0.02 0.02 0.02]
+		"point from" [0 1 0]
+		"point to" [0 0 0]
+AttributeEnd
+
 Include "aurora_1.pbrt"
 
 #Include "aurora_2.pbrt"

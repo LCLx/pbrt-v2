@@ -255,3 +255,12 @@ Spectrum SamplerRenderer::Transmittance(const Scene *scene,
 }
 
 
+Spectrum SamplerRenderer::Emission(const Scene *scene, 
+		const RayDifferential &ray, const Sample *sample,
+		RNG &rng, Spectrum *T, MemoryArena &arena) const
+{
+	Spectrum localT;
+    if (!T) T = &localT;
+	return volumeIntegrator->Li(scene, this, ray, sample, rng,
+                                        T, arena);
+}
