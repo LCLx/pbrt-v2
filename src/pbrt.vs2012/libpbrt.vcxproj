@@ -166,6 +166,7 @@
     <ClInclude Include="..\cameras\environment.h" />
     <ClInclude Include="..\cameras\orthographic.h" />
     <ClInclude Include="..\cameras\perspective.h" />
+    <ClInclude Include="..\cameras\realistic.h" />
     <ClInclude Include="..\core\api.h" />
     <ClInclude Include="..\core\camera.h" />
     <ClInclude Include="..\core\diffgeom.h" />
@@ -176,6 +177,8 @@
     <ClInclude Include="..\core\floatfile.h" />
     <ClInclude Include="..\core\geometry.h" />
     <ClInclude Include="..\core\imageio.h" />
+    <ClInclude Include="..\core\perlin.h" />
+    <ClInclude Include="..\core\splines.h" />
     <ClInclude Include="..\core\targa.h" />
     <ClInclude Include="..\core\integrator.h" />
     <ClInclude Include="..\core\intersection.h" />
@@ -279,6 +282,7 @@
     <ClInclude Include="..\textures\uv.h" />
     <ClInclude Include="..\textures\windy.h" />
     <ClInclude Include="..\textures\wrinkled.h" />
+    <ClInclude Include="..\volumes\aurora.h" />
     <ClInclude Include="..\volumes\exponential.h" />
     <ClInclude Include="..\volumes\homogeneous.h" />
     <ClInclude Include="..\volumes\volumegrid.h" />
@@ -1100,6 +1104,7 @@
     <ClCompile Include="..\cameras\environment.cpp" />
     <ClCompile Include="..\cameras\orthographic.cpp" />
     <ClCompile Include="..\cameras\perspective.cpp" />
+    <ClCompile Include="..\cameras\realistic.cpp" />
     <ClCompile Include="..\core\api.cpp" />
     <ClCompile Include="..\core\camera.cpp" />
     <ClCompile Include="..\core\diffgeom.cpp" />
@@ -1240,6 +1245,7 @@
     <ClCompile Include="..\textures\uv.cpp" />
     <ClCompile Include="..\textures\windy.cpp" />
     <ClCompile Include="..\textures\wrinkled.cpp" />
+    <ClCompile Include="..\volumes\aurora.cpp" />
     <ClCompile Include="..\volumes\exponential.cpp" />
     <ClCompile Include="..\volumes\homogeneous.cpp" />
     <ClCompile Include="..\volumes\volumegrid.cpp" />

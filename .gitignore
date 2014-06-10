@@ -9,6 +9,10 @@ src/build
 
 # Common renderer output file:
 pbrt.exr
+*.exr
+
+# lens data
+*.dat
 
 # These files are generated during the build process:
 #src/core/pbrtlex.cpp

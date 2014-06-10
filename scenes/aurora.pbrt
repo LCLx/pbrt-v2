@@ -7,91 +7,25 @@ Sampler "bestcandidate" "integer pixelsamples" [8]
 PixelFilter "gaussian"
 
 LookAt -40 40 -40    20 150 120    0 1 0
+	
 Camera "perspective" "float fov" [60]
 VolumeIntegrator "emission" "float stepsize" [0.5]
 
 WorldBegin
 
-Include "geometry/footprint_3_1.5.pbrt"
-  	"color sigma_a" [.01 .01 .01 ]
-	"color sigma_s" [.0 .0 .0]
-	"float g" [0]
-	"point p0" [ -88 100 0 ] "point p1" [ 0 300 160 ]
-	"float a" [0.9]
-	"float b" [0.02]
-	"vector updir" [0 1 0]
-	"float radius" [0.5]
-	"string aurora_r" "../aurora/r.txt.even"
-	"string aurora_g" "../aurora/g.txt.even"
-	"string aurora_b" "../aurora/b.txt.even"
-	"string aurora_intensity" "../aurora/rays.txt.even"
-	"vector B" [0.06 -1 0]
-	"integer beamNumber" [300000]
-	"float alphaD" [25]
-	"float length" [70]
-	"float dt" [0.004]
-	"float dA" [12]
-    "float threshold" [0.2]
-    "float persistence" [0.25]
-    "float frequency" [0.2]
-    "integer seed" [10]
-    "integer level" [2]
-    "float magnitude" [60]
-    "float perturb" [0]
+#light
+AttributeBegin
+	LightSource "infinite" 
+		"rgb L" [0.4 0.4 0.4]
+		"string mapname" ["textures/night_2.exr"]
+		"integer nsamples" [32]
+AttributeEnd
 
-Include "geometry/footprint_3_1.5.pbrt"
-  	"color sigma_a" [.01 .01 .01 ]
-	"color sigma_s" [.0 .0 .0]
-	"float g" [0]
-	"point p0" [ -11 100 0 ] "point p1" [ 77 300 160 ]
-	"float a" [0.9]
-	"float b" [0.02]
-	"vector updir" [0 1 0]
-	"float radius" [0.5]
-	"string aurora_r" "../aurora/r.txt.even"
-	"string aurora_g" "../aurora/g.txt.even"
-	"string aurora_b" "../aurora/b.txt.even"
-	"string aurora_intensity" "../aurora/rays.txt.even"
-	"vector B" [0.06 -1 0]
-	"integer beamNumber" [300000]
-	"float alphaD" [25]
-	"float length" [70]
-	"float dt" [0.004]
-	"float dA" [12]
-    "float threshold" [0.2]
-    "float persistence" [0.25]
-    "float frequency" [0.2]
-    "integer seed" [150]
-    "integer level" [2]
-    "float magnitude" [60]
-    "float perturb" [0]
+Include "aurora_1.pbrt"
 
-Include "geometry/footprint_3_1.5.pbrt"
-  	"color sigma_a" [.01 .01 .01 ]
-	"color sigma_s" [.0 .0 .0]
-	"float g" [0]
-	"point p0" [ 77 100 -60 ] "point p1" [ 120 300 160 ]
-	"float a" [0.9]
-	"float b" [0.025]
-	"vector updir" [0 1 0]
-	"float radius" [0.5]
-	"string aurora_r" "../aurora/r.txt.even"
-	"string aurora_g" "../aurora/g.txt.even"
-	"string aurora_b" "../aurora/b.txt.even"
-	"string aurora_intensity" "../aurora/rays.txt.even"
-	"vector B" [0.06 -1 0]
-	"integer beamNumber" [300000]
-	"float alphaD" [25]
-	"float length" [70]
-	"float dt" [0.004]
-	"float dA" [12]
-    "float threshold" [0.2]
-    "float persistence" [0.5]
-    "float frequency" [0.1]
-    "integer seed" [150]
-    "integer level" [3]
-    "float magnitude" [30]
-    "float perturb" [-20]
+Include "aurora_2.pbrt"
+
+Include "aurora_3.pbrt"
 
 AttributeBegin
 	Translate -28 40 -30
@@ -117,28 +51,28 @@ AttributeBegin
 AttributeEnd
 
 	
-AttributeBegin
+#AttributeBegin
 #LightSource "distant" "rgb L" [0.407 0.58 1.0]
-    LightSource "distant" "rgb L" [1.5 2.5 3.5]
-        "point from" [0.3 0.7 -0.8] 
-		"point to" [0 0 0] 
-AttributeEnd
+#    LightSource "distant" "rgb L" [1.5 2.5 3.5]
+#        "point from" [0.3 0.7 -0.8] 
+#		"point to" [0 0 0] 
+#AttributeEnd
 
-AttributeBegin
+#AttributeBegin
 #Texture "obj-kd-img" "color" "imagemap" "string filename" ["textures/night_2.exr"]
 #Texture "obj-kd" "color" "scale" "texture tex1" "obj-kd-img" "color tex2" [1.0000 1.0000 1.0000]
 #Texture "obj-ks" "color" "constant" "color value" [0.000000 0.000000 0.000000]
 #Material "uber" "texture Kd" "obj-kd" "texture Ks" "obj-ks" "float roughness" [0.400000] "rgb Kt" [0.000000 0.000000 0.000000] "float index" [1.500000] "rgb opacity" [1.000000 1.000000 1.000000] 
-Texture "night" "spectrum" "imagemap" "string filename" "textures/night_2.exr"
-Material "matte" "texture Kd" "night"
-	Translate 130 350 400
-	Rotate 40 -110 60 0
-	Scale 5 5 1 
-    Shape "trianglemesh"  
-		"integer indices" [0 2 1 0 3 2 ] 
-		"point P" [-100 -100 0 100 -100 0 100 100 0 -100 100 0 ]
-		"float uv" [0 1 1 1 1 0 0 0]
-AttributeEnd
+#Texture "night" "spectrum" "imagemap" "string filename" "textures/night_2.exr"
+#Material "matte" "texture Kd" "night"
+#	Translate 130 350 400
+#	Rotate 40 -110 60 0
+#	Scale 5 5 1 
+#    Shape "trianglemesh"  
+#		"integer indices" [0 2 1 0 3 2 ] 
+#		"point P" [-100 -100 0 100 -100 0 100 100 0 -100 100 0 ]
+#		"float uv" [0 1 1 1 1 0 0 0]
+#AttributeEnd
 
 AttributeBegin
 	Translate 50 100 450
