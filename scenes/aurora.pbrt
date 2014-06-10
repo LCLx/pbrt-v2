@@ -7,8 +7,16 @@ Sampler "bestcandidate" "integer pixelsamples" [8]
 PixelFilter "gaussian"
 
 LookAt -40 40 -40    20 150 120    0 1 0
-	
-Camera "perspective" "float fov" [60]
+Camera "realistic" 
+	"string specfile" "fisheye.10mm.dat" 
+	"float filmdistance" 23.192
+	"float aperture_diameter" 6.08
+	"float filmdiag" 70 
+	"float hither" [0.001 ] 
+	"float yon" [1e+30 ] 
+	"float shutteropen" [0 ] 
+	"float shutterclose" [0 ]
+#Camera "perspective" "float fov" [60]
 VolumeIntegrator "emission" "float stepsize" [0.5]
 
 WorldBegin
@@ -21,11 +29,11 @@ AttributeBegin
 		"integer nsamples" [32]
 AttributeEnd
 
-Include "aurora_1.pbrt"
+#Include "aurora_1.pbrt"
 
-Include "aurora_2.pbrt"
+#Include "aurora_2.pbrt"
 
-Include "aurora_3.pbrt"
+#Include "aurora_3.pbrt"
 
 AttributeBegin
 	Translate -28 40 -30
