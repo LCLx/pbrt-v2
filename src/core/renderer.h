@@ -54,7 +54,7 @@ public:
 	//	add emissive volume term
 	virtual Spectrum Emission(const Scene *scene, 
 		const RayDifferential &ray, const Sample *sample,
-		RNG &rng, Spectrum *T, MemoryArena &arena) const { return Spectrum();}
+		RNG &rng, Spectrum *T, MemoryArena &arena) const;
 };
 
 
