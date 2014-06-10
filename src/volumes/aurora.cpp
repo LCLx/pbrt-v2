@@ -9,8 +9,11 @@ Jun 4, 2014
 #include "volumes/aurora.h"
 #include "paramset.h"
 #include "core/perlin.h"
+#include "core/perlin2d.h"
+#include <iostream>
 
 AuroraGrid::AuroraGrid(const BBox &e, int x, int y, int z, float r)
+    :noise2d(0.5,0.2,3,5)
 {
 	Vector vox = e.pMax - e.pMin;
 	/*
@@ -69,10 +72,16 @@ void AuroraGrid::SearchInGrid(const Point &p, float &r, float &g, float &b) cons
 	ymax = Clamp(ymax, 0, ny - 1);
 	zmax = Clamp(zmax, 0, nz - 1);
 
+	Vector offset = extent.Offset(p);
+
+    //std::cout<<offset[0]<<" "<<offset[1]<<" "<<noise2d.Evaluate(offset[1],offset[2])<<std::endl;
+    float p_radius=0.5f*(noise2d.Evaluate(offset[2],offset[1])/1.6f)-0.4f;
+    float t_radius=radius+p_radius;
+    //std::cout<<"Using radius "<<t_radius<<std::endl;
 	//	scan all the grids within the range above
-	float radiusSq = radius * radius;
+	float radiusSq = t_radius * t_radius;
 	//	sigam in gaussian kernel
-	float sigma = radius;
+	float sigma = t_radius;
 	float halfInvSigmaSq = .5f / sigma / sigma;
 	float sum = 0.f;
 	for (int i = xmin; i <= xmax; i++)

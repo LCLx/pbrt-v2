@@ -14,6 +14,7 @@ Jun 4, 2014
 // volumes/aurora.h*
 #include "volume.h"
 #include "../core/splines.h"
+#include "../core/perlin2d.h"
 
 #include <fstream>
 
@@ -61,6 +62,8 @@ private:
 	float radius;
 	int nx, ny, nz;
 	AuroraVoxel *grids;
+
+    Perlin2D noise2d;
 };
 
 
