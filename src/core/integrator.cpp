@@ -133,7 +133,7 @@ Spectrum EstimateDirect(const Scene *scene, const Renderer *renderer,
 			if (sample != NULL)
 			{
 				Spectrum T;
-				Spectrum Lvi = renderer->Emission(scene, RayDifferential(visibility.r), sample, rng, &T, arena);
+				Spectrum Lvi = renderer->Emission(scene, RayDifferential(visibility.r), sample, rng, &T, arena)*20.0f;
 				Li = T * Li + Lvi;
 			}
 			else
@@ -176,7 +176,7 @@ Spectrum EstimateDirect(const Scene *scene, const Renderer *renderer,
 				if (sample != NULL)
 				{
 					Spectrum T;
-					Spectrum Lvi = renderer->Emission(scene, ray, sample, rng, &T, arena);
+					Spectrum Lvi = renderer->Emission(scene, ray, sample, rng, &T, arena)*20.0f;
 					Li = T * Li + Lvi;
 				}
 				else

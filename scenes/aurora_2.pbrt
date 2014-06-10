@@ -3,8 +3,8 @@ Include "geometry/footprint_3_1.5.pbrt"
 	"color sigma_s" [.0 .0 .0]
 	"float g" [0]
 	"point p0" [ -11 100 0 ] "point p1" [ 77 300 160 ]
-	"float a" [300]
-	"float b" [0.05]
+	"float a" [0.9]
+	"float b" [0.02]
 	"vector updir" [0 1 0]
 	"float radius" [0.5]
 	"string aurora_r" "../aurora/r.txt.even"

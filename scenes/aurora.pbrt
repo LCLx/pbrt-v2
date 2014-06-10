@@ -1,6 +1,7 @@
 Film "image"
 "integer xresolution" [1578] "integer yresolution" [1080]
 #"integer xresolution" [640] "integer yresolution" [438]
+#"integer xresolution" [640] "integer yresolution" [640]
   "string filename" "aurora.exr" 
 
 Sampler "bestcandidate" "integer pixelsamples" [8]
@@ -12,9 +13,9 @@ LookAt -40 40 -40    20 150 120    0 1 0
 Camera "perspective" "float fov" [60]
 #Camera "realistic" 
 #	"string specfile" ["geometry/fisheye.10mm.dat"]
-#	"float filmdistance" 24.092
+#	"float filmdistance" 23.192
 #	"float aperture_diameter" 100
-#	"float filmdiag" 40 
+#	"float filmdiag" 26 
 #	"float hither" [0.001 ] 
 #	"float yon" [1e+30 ] 
 #	"float shutteropen" [0 ] 
