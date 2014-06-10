@@ -72,11 +72,13 @@ public:
                   const Transform &VolumeToWorld, float aa, float bb,
                        const Vector &up, int x, int y, int z, float radius, const float *d,
 					   const string rcolor, const string gcolor, const string bcolor, const string intensity,
-					   const Vector &b, int bn, float a, float l, float dd, float dA, float ee)
+					   const Vector &b, int bn, float a, float l, float dd, float dA, float ee,
+                       float _persistence, float _frequency, int _level, int _seed, float _magnitude, float _perturb)
         : sig_a(sa), sig_s(ss), g(gg), extent(e),
           WorldToVolume(Inverse(VolumeToWorld)), a(aa), b(bb), 
 		  nx(x), ny(y), nz(z), grid(e, nx, ny, nz, radius),
-		  B(b), beamNum(bn), alphaD(a), L(l), dt(dd), deltaAlpha(dA), eleThreshold(ee)
+		  B(b), beamNum(bn), alphaD(a), L(l), dt(dd), deltaAlpha(dA), eleThreshold(ee),
+          persistence(_persistence), frequency(_frequency), level(_level), seed(_seed), magnitude(_magnitude), perturb(_perturb)
 	{
 		upDir = Normalize(up);
 		eleDensity = new float[nx*ny*nz];
@@ -191,6 +193,13 @@ private:
 
 	Catmull_Rom auroraColor[3];
 	Catmull_Rom auroraIntensity;
+                       
+    float persistence;
+    float frequency;
+    int level;
+    int seed;
+    float magnitude;
+    float perturb;
 };
 
 

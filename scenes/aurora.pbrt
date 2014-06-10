@@ -1,6 +1,6 @@
 Film "image"
-"integer xresolution" [1578] "integer yresolution" [1080]
-#"integer xresolution" [640] "integer yresolution" [438]
+#"integer xresolution" [1578] "integer yresolution" [1080]
+"integer xresolution" [640] "integer yresolution" [438]
   "string filename" "aurora.exr" 
 
 Sampler "bestcandidate" "integer pixelsamples" [8]
@@ -20,23 +20,83 @@ Include "geometry/footprint_3_1.5.pbrt"
 	"float a" [0.9]
 	"float b" [0.02]
 	"vector updir" [0 1 0]
-	"float radius" [0.2]
+	"float radius" [0.5]
 	"string aurora_r" "../aurora/r.txt.even"
 	"string aurora_g" "../aurora/g.txt.even"
 	"string aurora_b" "../aurora/b.txt.even"
 	"string aurora_intensity" "../aurora/rays.txt.even"
 	"vector B" [0.06 -1 0]
-	"integer beamNumber" [500000]
+	"integer beamNumber" [200000]
 	"float alphaD" [25]
 	"float length" [70]
 	"float dt" [0.004]
 	"float dA" [12]
     "float threshold" [0.2]
+    "float persistence" [0.25]
+    "float frequency" [0.2]
+    "integer seed" [10]
+    "integer level" [2]
+    "float magnitude" [60]
+    "float perturb" [0]
+
+Include "geometry/footprint_3_1.5.pbrt"
+  	"color sigma_a" [.01 .01 .01 ]
+	"color sigma_s" [.0 .0 .0]
+	"float g" [0]
+	"point p0" [ -11 100 0 ] "point p1" [ 77 300 160 ]
+	"float a" [0.9]
+	"float b" [0.02]
+	"vector updir" [0 1 0]
+	"float radius" [0.5]
+	"string aurora_r" "../aurora/r.txt.even"
+	"string aurora_g" "../aurora/g.txt.even"
+	"string aurora_b" "../aurora/b.txt.even"
+	"string aurora_intensity" "../aurora/rays.txt.even"
+	"vector B" [0.06 -1 0]
+	"integer beamNumber" [200000]
+	"float alphaD" [25]
+	"float length" [70]
+	"float dt" [0.004]
+	"float dA" [12]
+    "float threshold" [0.2]
+    "float persistence" [0.25]
+    "float frequency" [0.2]
+    "integer seed" [150]
+    "integer level" [2]
+    "float magnitude" [60]
+    "float perturb" [0]
+
+Include "geometry/footprint_3_1.5.pbrt"
+  	"color sigma_a" [.01 .01 .01 ]
+	"color sigma_s" [.0 .0 .0]
+	"float g" [0]
+	"point p0" [ 77 100 -60 ] "point p1" [ 120 300 160 ]
+	"float a" [0.9]
+	"float b" [0.025]
+	"vector updir" [0 1 0]
+	"float radius" [0.5]
+	"string aurora_r" "../aurora/r.txt.even"
+	"string aurora_g" "../aurora/g.txt.even"
+	"string aurora_b" "../aurora/b.txt.even"
+	"string aurora_intensity" "../aurora/rays.txt.even"
+	"vector B" [0.06 -1 0]
+	"integer beamNumber" [300000]
+	"float alphaD" [25]
+	"float length" [70]
+	"float dt" [0.004]
+	"float dA" [12]
+    "float threshold" [0.2]
+    "float persistence" [0.5]
+    "float frequency" [0.1]
+    "integer seed" [150]
+    "integer level" [3]
+    "float magnitude" [30]
+    "float perturb" [-20]
 
 AttributeBegin
-	Translate -26 40 -30
+	Translate -28 40 -30
 	Rotate -90 1 0 0
-	Scale 0.035 0.035 0.035
+	Scale 0.045 0.045 0.045
 	Include "geometry/tree_1.pbrt"
 AttributeEnd
 
@@ -59,9 +119,9 @@ AttributeEnd
 	
 AttributeBegin
 #LightSource "distant" "rgb L" [0.407 0.58 1.0]
-    LightSource "distant" "rgb L" [1 1 1]
-        "point from" [0 0 0] 
-		"point to" [0 0 1] 
+    LightSource "distant" "rgb L" [1.5 2.5 3.5]
+        "point from" [0.3 0.7 -0.8] 
+		"point to" [0 0 0] 
 AttributeEnd
 
 AttributeBegin

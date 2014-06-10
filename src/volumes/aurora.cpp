@@ -186,7 +186,7 @@ Spectrum AuroraDensity::tau(const Ray &r, float stepSize, float u) const
 void AuroraDensity::GeneratePhotons()
 {
     Perlin start_point_noise(0.5f,0.25,4,1);
-    Perlin noise(0.25f,0.2,2,10);
+    Perlin noise(persistence,frequency,level,seed);
 	//	generate photons
 	int count = 0;
 	Vector vox = extent.pMax - extent.pMin;
@@ -240,9 +240,9 @@ void AuroraDensity::GeneratePhotons()
                     //h+=80.0f*(noise.Evaluate(dz)-0.5f);
 					float h0 = Dot(Vector(extent.pMin), upDir);
 					float intensity = auroraIntensity.Evaluate(h - h0);
-					float r = auroraColor[0].Evaluate(h+60.0f*(noise.Evaluate(dz)-0.0f)) * intensity;
-					float g = auroraColor[1].Evaluate(h+60.0f*(noise.Evaluate(dz)-0.0f)) * intensity;
-					float b = auroraColor[2].Evaluate(h+60.0f*(noise.Evaluate(dz)-0.0f)) * intensity;
+					float r = auroraColor[0].Evaluate(h+magnitude*(noise.Evaluate(dz)+perturb)) * intensity;
+					float g = auroraColor[1].Evaluate(h+magnitude*(noise.Evaluate(dz)+perturb)) * intensity;
+					float b = auroraColor[2].Evaluate(h+magnitude*(noise.Evaluate(dz)+perturb)) * intensity;
 					AuroraPhoton photon(p, r, g, b);
 					grid.AddPhoton(photon);
 					photonNum++;
@@ -293,8 +293,15 @@ AuroraDensity *CreateAuroraVolumeRegion(const Transform &volume2world,
 	float dt = params.FindOneFloat("dt", 1.f / 300);
 	float dA = params.FindOneFloat("dA", 0.86f);
 	float ee = params.FindOneFloat("threshold", 0.03f);
+    float persistence = params.FindOneFloat("persistence", 0.25);
+    float frequency = params.FindOneFloat("frequency", 0.2);
+    int level = params.FindOneInt("level", 2);
+    int seed = params.FindOneInt("seed", 0);
+    float magnitude = params.FindOneFloat("magnitude", 60.0f);
+    float perturb = params.FindOneFloat("perturb", 0.0f);
 	//	TODO: what is our parameter for AuroraDensity?
 	return new AuroraDensity(sigma_a, sigma_s, g, BBox(p0, p1),
         volume2world, a, b, up, nx, ny, nz, radius, data, rcolor, gcolor, bcolor, intensity,
-		B, bn, alphaD, L, dt, dA, ee);
+		B, bn, alphaD, L, dt, dA, ee,
+        persistence, frequency, level, seed, magnitude, perturb);
 }
