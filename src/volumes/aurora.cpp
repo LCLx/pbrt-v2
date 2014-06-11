@@ -194,7 +194,7 @@ Spectrum AuroraDensity::tau(const Ray &r, float stepSize, float u) const
 
 void AuroraDensity::GeneratePhotons()
 {
-    Perlin start_point_noise(0.5f,0.25,4,1);
+    Perlin start_point_noise(0.5f,0.25,3,1);
     Perlin noise(persistence,frequency,level,seed);
 	//	generate photons
 	int count = 0;

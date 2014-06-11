@@ -92,7 +92,7 @@ public:
 		std::ifstream fin;
 		float height, value;
 		//	r color
-		fin.open(rcolor);
+		fin.open(rcolor.c_str());
 		while (fin >> height)
 		{
 			fin >> value;
@@ -102,7 +102,7 @@ public:
 		auroraColor[0].Build();
 		fin.close();
 		//	g color
-		fin.open(gcolor);
+		fin.open(gcolor.c_str());
 		while (fin >> height)
 		{
 			fin >> value;
@@ -112,7 +112,7 @@ public:
 		auroraColor[1].Build();
 		fin.close();
 		//	b color
-		fin.open(bcolor);
+		fin.open(bcolor.c_str());
 		while (fin >> height)
 		{
 			fin >> value;
@@ -122,7 +122,7 @@ public:
 		auroraColor[2].Build();
 		fin.close();
 		//	intensity
-		fin.open(intensity);
+		fin.open(intensity.c_str());
 		while (fin >> height)
 		{
 			fin >> value;
