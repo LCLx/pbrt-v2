@@ -53,11 +53,6 @@ Include "geometry/copter/rod.pbrt"
 AttributeEnd
 
 AttributeBegin
-Material "matte" "rgb Kd" [.9 .9 .9]
-Include "geometry/copter/rod-to-motor-connector.pbrt"
-AttributeEnd
-
-AttributeBegin
 Material "matte" "rgb Kd" [.8 .2 .7]
 TransformBegin
   Translate 0 0 400
