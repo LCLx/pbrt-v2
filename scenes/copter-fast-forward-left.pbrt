@@ -1,0 +1,77 @@
+# Script to render the composition figure in our paper.
+Film "image" "integer xresolution" [1280] "integer yresolution" [800]
+LookAt 380.0 100.0 15.0  0.0 100.0 15.0  0.0 1.0 0.0
+Camera "perspective" "float fov" [60]
+Sampler "lowdiscrepancy" "integer pixelsamples" [128]
+
+WorldBegin
+
+AttributeBegin
+  LightSource "infinite" "rgb L" [.1 .1 .1]
+AttributeEnd
+
+AttributeBegin
+  AreaLightSource "diffuse" "rgb L" [1 1 1]
+  Translate 100 800 0 
+  Rotate 90 1 0 0
+  Shape "disk" "float radius" [400.0]
+AttributeEnd
+
+# Ground.
+AttributeBegin
+Material "matte" "rgb Kd" [1.0 1.0 1.0]
+TransformBegin
+  Scale 600 1200 1200
+  Shape "trianglemesh" "integer indices" [0 1 2 0 2 3]
+  "point P" [1 0 -1 -1 0 -1 -1 0 1 1 0 1]
+TransformEnd
+AttributeEnd
+
+# Wall.
+AttributeBegin
+Material "matte" "rgb Kd" [1.0 1.0 1.0]
+TransformBegin
+  Scale 600 1200 1200
+  Shape "trianglemesh" "integer indices" [0 1 2 0 2 3]
+  "point P" [-1 0 -1 -1 2 -1 -1 2 1 -1 0 1]
+TransformEnd
+AttributeEnd
+
+AttributeBegin
+Material "matte" "rgb Kd" [.7 .3 .2]
+Include "geometry/copter/body.pbrt"
+AttributeEnd
+
+AttributeBegin
+Material "matte" "rgb Kd" [.9 .9 .9]
+TransformBegin
+  Translate 0 0 30
+  Include "geometry/copter/body-to-rod-connector.pbrt"
+TransformEnd
+AttributeEnd
+
+AttributeBegin
+Material "matte" "rgb Kd" [.2 .2 .2]
+TransformBegin
+  Translate 0 20 80
+  Include "geometry/copter/rod.pbrt"
+TransformEnd
+AttributeEnd
+
+AttributeBegin
+Material "matte" "rgb Kd" [.8 .2 .7]
+TransformBegin
+  Translate 0 0 400
+  Include "geometry/copter/motor-even.pbrt"
+TransformEnd
+AttributeEnd
+
+AttributeBegin
+Material "matte" "rgb Kd" [.1 .8 .2]
+TransformBegin
+  Translate 0 20 400
+  Include "geometry/copter/prop-even.pbrt"
+TransformEnd
+AttributeEnd
+
+WorldEnd
