@@ -1,0 +1,127 @@
+# Script to render the composition figure in our paper.
+Film "image" "integer xresolution" [1280] "integer yresolution" [800]
+LookAt 400.0 100.0 0.0  0.0 100.0 0.0  0.0 1.0 0.0
+Camera "perspective" "float fov" [60]
+Sampler "lowdiscrepancy" "integer pixelsamples" [128]
+
+WorldBegin
+
+AttributeBegin
+  LightSource "infinite" "rgb L" [.1 .1 .1]
+AttributeEnd
+
+AttributeBegin
+  AreaLightSource "diffuse" "rgb L" [1 1 1]
+  Translate 100 800 0 
+  Rotate 90 1 0 0
+  Shape "disk" "float radius" [400.0]
+AttributeEnd
+
+# Ground.
+AttributeBegin
+Material "matte" "rgb Kd" [1.0 1.0 1.0]
+TransformBegin
+  Scale 600 1 1200
+  Shape "trianglemesh" "integer indices" [0 1 2 0 2 3]
+  "point P" [1 0 -1 -1 0 -1 -1 0 1 1 0 1]
+TransformEnd
+AttributeEnd
+
+# Wall.
+AttributeBegin
+Material "matte" "rgb Kd" [1.0 1.0 1.0]
+TransformBegin
+  Scale 600 1200 1200
+  Shape "trianglemesh" "integer indices" [0 1 2 0 2 3]
+  "point P" [-1 0 -1 -1 2 -1 -1 2 1 -1 0 1]
+TransformEnd
+AttributeEnd
+
+# Cube.
+AttributeBegin
+TransformBegin
+  Rotate 15 0 1 0
+  Rotate 40 1 1 -1
+  Translate 0 100 0
+  Scale 60 60 60
+
+  Material "matte" "rgb Kd" [0.1 0.75 0.2]
+  TransformBegin
+    Shape "cylinder" "float radius" [0.05] "float zmin" [0] "float zmax" [1]
+  TransformEnd
+  TransformBegin
+    Translate -1 0 0
+    Shape "cylinder" "float radius" [0.05] "float zmin" [0] "float zmax" [1]
+  TransformEnd
+  TransformBegin
+    Translate 0 1 0
+    Shape "cylinder" "float radius" [0.05] "float zmin" [0] "float zmax" [1]
+  TransformEnd
+  TransformBegin
+    Translate -1 1 0
+    Shape "cylinder" "float radius" [0.05] "float zmin" [0] "float zmax" [1]
+  TransformEnd
+  TransformBegin
+    Rotate -90 0 1 0
+    Shape "cylinder" "float radius" [0.05] "float zmin" [0] "float zmax" [1]
+  TransformEnd
+  TransformBegin
+    Translate 0 0 1
+    Rotate -90 0 1 0
+    Shape "cylinder" "float radius" [0.05] "float zmin" [0] "float zmax" [1]
+  TransformEnd
+  TransformBegin
+    Translate 0 1 0
+    Rotate -90 0 1 0
+    Shape "cylinder" "float radius" [0.05] "float zmin" [0] "float zmax" [1]
+  TransformEnd
+  TransformBegin
+    Translate 0 1 1
+    Rotate -90 0 1 0
+    Shape "cylinder" "float radius" [0.05] "float zmin" [0] "float zmax" [1]
+  TransformEnd
+  TransformBegin
+    Rotate -90 1 0 0
+    Shape "cylinder" "float radius" [0.05] "float zmin" [0] "float zmax" [1]
+  TransformEnd
+  TransformBegin
+    Translate 0 0 1
+    Rotate -90 1 0 0
+    Shape "cylinder" "float radius" [0.05] "float zmin" [0] "float zmax" [1]
+  TransformEnd
+  TransformBegin
+    Translate -1 0 0
+    Rotate -90 1 0 0
+    Shape "cylinder" "float radius" [0.05] "float zmin" [0] "float zmax" [1]
+  TransformEnd
+  TransformBegin
+    Translate -1 0 1
+    Rotate -90 1 0 0
+    Shape "cylinder" "float radius" [0.05] "float zmin" [0] "float zmax" [1]
+  TransformEnd
+
+  Material "glass" "rgb Kr" [1.0 1.0 1.0] "rgb Kt" [0.9 0.3 0.2]
+  Shape "trianglemesh" "integer indices" [0 1 2
+    0 2 3
+    4 6 5
+    4 7 6
+    4 5 1
+    4 1 0
+    3 2 6
+    3 6 7
+    0 3 7
+    0 7 4
+    1 5 6
+    1 6 2]
+  "point P" [0 0 0
+    0 1 0
+    0 1 1
+    0 0 1
+    -1 0 0
+    -1 1 0
+    -1 1 1
+    -1 0 1]
+TransformEnd
+AttributeEnd
+
+WorldEnd
