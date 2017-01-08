@@ -47,60 +47,60 @@ TransformBegin
 
   Material "matte" "rgb Kd" [0.1 0.75 0.2]
   TransformBegin
-    Shape "cylinder" "float radius" [0.05] "float zmin" [0] "float zmax" [1]
+    Shape "cylinder" "float radius" [0.01] "float zmin" [0] "float zmax" [1]
   TransformEnd
   TransformBegin
     Translate -1 0 0
-    Shape "cylinder" "float radius" [0.05] "float zmin" [0] "float zmax" [1]
+    Shape "cylinder" "float radius" [0.01] "float zmin" [0] "float zmax" [1]
   TransformEnd
   TransformBegin
     Translate 0 1 0
-    Shape "cylinder" "float radius" [0.05] "float zmin" [0] "float zmax" [1]
+    Shape "cylinder" "float radius" [0.01] "float zmin" [0] "float zmax" [1]
   TransformEnd
   TransformBegin
     Translate -1 1 0
-    Shape "cylinder" "float radius" [0.05] "float zmin" [0] "float zmax" [1]
+    Shape "cylinder" "float radius" [0.01] "float zmin" [0] "float zmax" [1]
   TransformEnd
   TransformBegin
     Rotate -90 0 1 0
-    Shape "cylinder" "float radius" [0.05] "float zmin" [0] "float zmax" [1]
+    Shape "cylinder" "float radius" [0.01] "float zmin" [0] "float zmax" [1]
   TransformEnd
   TransformBegin
     Translate 0 0 1
     Rotate -90 0 1 0
-    Shape "cylinder" "float radius" [0.05] "float zmin" [0] "float zmax" [1]
+    Shape "cylinder" "float radius" [0.01] "float zmin" [0] "float zmax" [1]
   TransformEnd
   TransformBegin
     Translate 0 1 0
     Rotate -90 0 1 0
-    Shape "cylinder" "float radius" [0.05] "float zmin" [0] "float zmax" [1]
+    Shape "cylinder" "float radius" [0.01] "float zmin" [0] "float zmax" [1]
   TransformEnd
   TransformBegin
     Translate 0 1 1
     Rotate -90 0 1 0
-    Shape "cylinder" "float radius" [0.05] "float zmin" [0] "float zmax" [1]
+    Shape "cylinder" "float radius" [0.01] "float zmin" [0] "float zmax" [1]
   TransformEnd
   TransformBegin
     Rotate -90 1 0 0
-    Shape "cylinder" "float radius" [0.05] "float zmin" [0] "float zmax" [1]
+    Shape "cylinder" "float radius" [0.01] "float zmin" [0] "float zmax" [1]
   TransformEnd
   TransformBegin
     Translate 0 0 1
     Rotate -90 1 0 0
-    Shape "cylinder" "float radius" [0.05] "float zmin" [0] "float zmax" [1]
+    Shape "cylinder" "float radius" [0.01] "float zmin" [0] "float zmax" [1]
   TransformEnd
   TransformBegin
     Translate -1 0 0
     Rotate -90 1 0 0
-    Shape "cylinder" "float radius" [0.05] "float zmin" [0] "float zmax" [1]
+    Shape "cylinder" "float radius" [0.01] "float zmin" [0] "float zmax" [1]
   TransformEnd
   TransformBegin
     Translate -1 0 1
     Rotate -90 1 0 0
-    Shape "cylinder" "float radius" [0.05] "float zmin" [0] "float zmax" [1]
+    Shape "cylinder" "float radius" [0.01] "float zmin" [0] "float zmax" [1]
   TransformEnd
 
-  Material "glass" "rgb Kr" [1.0 1.0 1.0] "rgb Kt" [0.9 0.3 0.2]
+  Material "glass" "rgb Kr" [0.0 0.0 0.0] "rgb Kt" [0.9 0.3 0.2] "float index" [1.0]
   Shape "trianglemesh" "integer indices" [0 1 2
     0 2 3
     4 6 5
