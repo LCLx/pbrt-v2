@@ -40,7 +40,7 @@ void ConvertHexToPbrt(const std::string& hex_file, const std::string& rho_file, 
     // Write data to pbrt.
     pbrt_output << "AttributeBegin" << std::endl;
     const double color = 1 - rho * rho;
-    pbrt_output << "Material \"glass\" \"rgb Kr\" [0.0 0.0 0.0] \"rgb Kt\" [" << color << " " << color << " " << color << "]"
+    pbrt_output << "Material \"glass\" \"rgb Kr\" [0.5 0.5 0.5] \"rgb Kt\" [" << color << " " << color << " " << color << "]"
       << " \"float index\" [1.0]" << std::endl;
     pbrt_output << "Shape \"trianglemesh\" \"point P\" [" << std::endl;
     for (int j = 0; j < element.NumOfPoints(); ++j) {
@@ -48,14 +48,6 @@ void ConvertHexToPbrt(const std::string& hex_file, const std::string& rho_file, 
     }
     pbrt_output << "]" << std::endl;
     pbrt_output << "\"integer indices\" [" << std::endl
-      << "0 3 1" << std::endl
-      << "3 0 2" << std::endl
-      << "4 5 7" << std::endl
-      << "4 7 6" << std::endl
-      << "0 1 5" << std::endl
-      << "0 5 4" << std::endl
-      << "3 2 7" << std::endl
-      << "7 2 6" << std::endl
       << "1 3 7" << std::endl
       << "1 7 5" << std::endl
       << "2 0 6" << std::endl
