@@ -6,7 +6,7 @@
 #include "hex_mesh_element.h"
 
 void ConvertHexToPbrt(const std::string& hex_file, const std::string& rho_file, const std::string& pbrt_file) {
-  const double radius = 5e-4;
+  const double radius = 1e-3;
   const double pi = 3.14159265358979323846264335;
   int hex_element_num;
   std::ifstream hex_input, rho_input;
@@ -65,7 +65,7 @@ void ConvertHexToPbrt(const std::string& hex_file, const std::string& rho_file, 
 
     // Write edges.
     pbrt_output << "AttributeBegin" << std::endl;
-    pbrt_output << "Material \"plastic\" \"rgb Kd\" [8 8 8] \"rgb Ks\" [10 10 10]" << std::endl;
+    pbrt_output << "Material \"metal\"" << std::endl;
     for (int j = 0; j < 12; ++j) {
       const int index0 = default_edges[j][0], index1 = default_edges[j][1];
       const double x0 = element.PointX(index0), x1 = element.PointX(index1);
