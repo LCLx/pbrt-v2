@@ -27,10 +27,17 @@ for i in range(n_frame):
 
 
   f.write('AttributeBegin\n')
-  f.write('  AreaLightSource "diffuse" "rgb L" [2 2 2]\n')
-  f.write('  Translate 0 5 0\n')
+  f.write('TransformBegin\n')
+  f.write('  AreaLightSource "diffuse" "rgb L" [5 5 5]\n')
+  f.write('  Translate -3 3 -5\n')
+  f.write('  Shape "disk" "float radius" [1.0]\n')
+  f.write('TransformEnd\n')
+  f.write('TransformBegin\n')
+  f.write('  AreaLightSource "diffuse" "rgb L" [2.5 2.5 2.5]\n')
+  f.write('  Translate -3 4.5 -3\n')
   f.write('  Rotate 90 1 0 0\n')
-  f.write('  Shape "disk" "float radius" [6.0]\n')
+  f.write('  Shape "disk" "float radius" [4.0]\n')
+  f.write('TransformEnd\n')
   f.write('AttributeEnd\n')
 
   f.write('AttributeBegin\n')
@@ -52,4 +59,4 @@ for i in range(n_frame):
 
   # Rendering.
   os.system('../../../src/bin/pbrt --ncores 36 --outfile rendering/hex_%03d.exr hex.pbrt' % i)
-  os.system('../../../src/bin/exrtotiff rendering/hex_%03d.exr rendering/hex_%03d.tiff' % (i, i))
+  os.system('../../../src/bin/exrtotiff -scale 1 rendering/hex_%03d.exr rendering/hex_%03d.tiff' % (i, i))
