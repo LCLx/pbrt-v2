@@ -1,6 +1,7 @@
 // Tao Du
 // taodu@csail.mit.edu
 // Jan 9, 2017
+#include <assert.h>
 #include <fstream>
 #include <vector>
 #include "quad_mesh_element.h"
@@ -8,14 +9,21 @@
 void ConvertQuadToPbrt(const std::string& quad_file, const std::string& rho_file, const std::string& pbrt_file) {
   const double radius = 1e-3;
   const double pi = 3.14159265358979323846264335;
-  int quad_element_num;
+  int quad_element_num, quad_double_num;
   std::ifstream quad_input, rho_input;
-  quad_input.open(quad_file);
-  rho_input.open(rho_file);
+  quad_input.open(quad_file, std::ios::binary);
+  rho_input.open(rho_file, std::ios::binary);
   std::ofstream pbrt_output;
   pbrt_output.open(pbrt_file);
-  quad_input >> quad_element_num;
-  rho_input >> quad_element_num;
+  // Read binary files.
+  quad_input.read(reinterpret_cast<char*>(&quad_double_num), sizeof(int));
+  rho_input.read(reinterpret_cast<char*>(&quad_element_num), sizeof(int));
+  assert(quad_element_num * 8 == quad_double_num);
+  // Read data.
+  double* point_data = new double[quad_double_num];
+  double* rho_data = new double[quad_element_num];
+  quad_input.read(reinterpret_cast<char*>(point_data), sizeof(double) * quad_double_num);
+  rho_input.read(reinterpret_cast<char*>(rho_data), sizeof(double) * quad_element_num);
   const std::vector<std::array<int, 2>> default_edges = {
     { 0, 1 },
     { 0, 2 },
@@ -25,10 +33,9 @@ void ConvertQuadToPbrt(const std::string& quad_file, const std::string& rho_file
   for (int i = 0; i < quad_element_num; ++i) {
     std::array<double, 8> point;
     for (int j = 0; j < 8; ++j)
-      quad_input >> point[j];
+      point[j] = point_data[i * 8 + j];
     const QuadMeshElement element(point);
-    double rho;
-    rho_input >> rho;
+    const double rho = rho_data[i];
     // Write data to pbrt.
     pbrt_output << "AttributeBegin" << std::endl;
     pbrt_output << "Material \"glass\" \"rgb Kr\" [0.0 0.0 0.0] \"rgb Kt\" [" << 1 - rho * rho * rho << " 0.0 0.0]"
@@ -61,6 +68,9 @@ void ConvertQuadToPbrt(const std::string& quad_file, const std::string& rho_file
     }
     pbrt_output << "AttributeEnd" << std::endl;
   }
+  delete[] point_data;
+  delete[] rho_data;
+
   quad_input.close();
   rho_input.close();
   pbrt_output.close();

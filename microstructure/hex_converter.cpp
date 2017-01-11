@@ -1,6 +1,7 @@
 // Tao Du
 // taodu@csail.mit.edu
 // Jan 9, 2017
+#include <assert.h>
 #include <fstream>
 #include <vector>
 #include "hex_mesh_element.h"
@@ -8,14 +9,19 @@
 void ConvertHexToPbrt(const std::string& hex_file, const std::string& rho_file, const std::string& pbrt_file) {
   const double radius = 1e-3;
   const double pi = 3.14159265358979323846264335;
-  int hex_element_num;
+  int hex_element_num, hex_double_num;
   std::ifstream hex_input, rho_input;
-  hex_input.open(hex_file);
-  rho_input.open(rho_file);
+  hex_input.open(hex_file, std::ios::binary);
+  rho_input.open(rho_file, std::ios::binary);
   std::ofstream pbrt_output;
   pbrt_output.open(pbrt_file);
-  hex_input >> hex_element_num;
-  rho_input >> hex_element_num;
+  hex_input.read(reinterpret_cast<char*>(&hex_double_num), sizeof(int));
+  rho_input.read(reinterpret_cast<char*>(&hex_element_num), sizeof(int));
+  assert(hex_element_num * 24 == hex_double_num);
+  double* point_data = new double[hex_double_num];
+  double* rho_data = new double[hex_element_num];
+  hex_input.read(reinterpret_cast<char*>(point_data), sizeof(double) * hex_double_num);
+  rho_input.read(reinterpret_cast<char*>(rho_data), sizeof(double) * hex_element_num);
   const std::vector<std::array<int, 2>> default_edges = {
     { 0, 1 },
     { 1, 3 },
@@ -33,10 +39,9 @@ void ConvertHexToPbrt(const std::string& hex_file, const std::string& rho_file, 
   for (int i = 0; i < hex_element_num; ++i) {
     std::array<double, 24> point;
     for (int j = 0; j < 24; ++j)
-      hex_input >> point[j];
+      point[j] = point_data[24 * i + j];
     const HexMeshElement element(point);
-    double rho;
-    rho_input >> rho;
+    const double rho = rho_data[i];
     // Write data to pbrt.
     pbrt_output << "AttributeBegin" << std::endl;
     const double color = 1 - rho * rho;
@@ -81,6 +86,10 @@ void ConvertHexToPbrt(const std::string& hex_file, const std::string& rho_file, 
     }
     pbrt_output << "AttributeEnd" << std::endl;
   }
+
+  delete[] point_data;
+  delete[] rho_data;
+
   hex_input.close();
   rho_input.close();
   pbrt_output.close();
