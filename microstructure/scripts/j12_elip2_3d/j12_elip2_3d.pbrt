@@ -1,7 +1,7 @@
 Film "image" "integer xresolution" [1600] "integer yresolution" [1200]
-LookAt 0 0 -8 0.0 0.0 0.0 0.0 1.0 0.0
+LookAt 3.5 4 -10 0.0 0.0 0.0 0.0 1.0 0.0
 Camera "perspective" "float fov" [15]
-Sampler "lowdiscrepancy" "integer pixelsamples" [128]
+Sampler "lowdiscrepancy" "integer pixelsamples" [256]
 WorldBegin
 AttributeBegin
   LightSource "infinite" "rgb L" [.01 .01 .01]
@@ -9,7 +9,7 @@ AttributeEnd
 AttributeBegin
 TransformBegin
   AreaLightSource "diffuse" "rgb L" [5 5 5]
-  Translate -3 3 -5
+  Translate -3 1 -3
   Shape "disk" "float radius" [1.0]
 TransformEnd
 TransformBegin
@@ -22,16 +22,15 @@ AttributeEnd
 AttributeBegin
 Material "matte" "rgb Kd" [1.4 1.5 1.7]
 TransformBegin
-  Translate 0 -0.5 0
-TransformEnd
-TransformBegin
-  Scale 100 100 1
+  Translate 0 -0.4 0
+  Scale 100 1 100
   Shape "trianglemesh" "integer indices" [0 1 2 2 1 3]
-  "point P" [-1 -1 1 -1 1 1 1 -1 1 1 1 1]
+  "point P" [-1 -1 -1 -1 -1 1 1 -1 -1 1 -1 1]
 TransformEnd
 AttributeEnd
 TransformBegin
-  Scale 2 2 2
+  Scale 2.5 2.5 2.5
+  Rotate -15 0 1 0
   Translate -0.5 -0.5 0
   Include "j12_elip2_3d_mesh.pbrt"
 TransformEnd

@@ -95,7 +95,7 @@ void HexMesh::ToPBRT(const std::string& pbrt_file) const {
   std::ofstream pbrt_output;
   pbrt_output.open(pbrt_file);
 
-  const double radius = 8e-4;
+  const double radius = 9e-4;
   const double point_radius = 5e-3;
   const Eigen::Matrix<int, 2, 12> default_edges = (Eigen::Matrix<int, 2, 12>()
     << 0, 1, 3, 2, 4, 5, 7, 6, 1, 3, 2, 0,
@@ -128,7 +128,7 @@ void HexMesh::ToPBRT(const std::string& pbrt_file) const {
 
         // Write edges.
         pbrt_output << "AttributeBegin" << std::endl;
-        pbrt_output << "Material \"matte\"" << std::endl;
+        pbrt_output << "Material \"metal\"" << std::endl;
         for (int j = 0; j < 12; ++j) {
           const int index0 = default_edges(0, j), index1 = default_edges(1, j);
           const Eigen::Vector3d p0 = element.col(index0), p1 = element.col(index1);
