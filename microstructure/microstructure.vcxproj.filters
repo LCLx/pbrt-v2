@@ -21,7 +21,7 @@
     <ClCompile Include="quad_converter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="hex_converter.cpp">
+    <ClCompile Include="hex_mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,10 +32,7 @@
     <ClInclude Include="quad_converter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="hex_mesh_element.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="hex_converter.h">
+    <ClInclude Include="hex_mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
