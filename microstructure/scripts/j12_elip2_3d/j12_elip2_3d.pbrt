@@ -1,7 +1,8 @@
 Film "image" "integer xresolution" [1600] "integer yresolution" [1200]
 LookAt 3.5 4 -10 0.0 0.0 0.0 0.0 1.0 0.0
 Camera "perspective" "float fov" [15]
-Sampler "lowdiscrepancy" "integer pixelsamples" [256]
+Sampler "lowdiscrepancy" "integer pixelsamples" [128]
+SurfaceIntegrator "directlighting" "integer maxdepth" [10]
 WorldBegin
 AttributeBegin
   LightSource "infinite" "rgb L" [.01 .01 .01]

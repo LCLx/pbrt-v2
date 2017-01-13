@@ -9,7 +9,8 @@
 class HexMesh {
 public:
   HexMesh(const std::string& lattice_file, const std::string& displacement_file,
-    const std::string& material_file, const std::string& sing_point_file);
+    const std::string& material_file, const std::string& sing_point_file,
+    const std::string& fine_intf_flag_file);
   ~HexMesh() {}
 
   void Translate(const Eigen::Vector3d& translate_vector);
@@ -34,12 +35,15 @@ private:
   const Eigen::Matrix<double, 3, 8> HexElement(const int i, const int j, const int k) const;
   const int MaterialType(const int i, const int j, const int k) const;
 
+  static Eigen::Matrix<double, 3, 10> fine_intf_flag_colors_;
+
   Eigen::Vector3d domain_min_;
   Eigen::Vector3i node_count_;
   double dx_;
   Eigen::Matrix3Xd displacement_;
   Eigen::VectorXi material_;
   Eigen::Matrix3Xd sing_point_;
+  Eigen::VectorXi fine_intf_flags_;
 };
 
 #endif

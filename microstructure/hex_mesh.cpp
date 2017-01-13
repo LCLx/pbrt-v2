@@ -4,8 +4,14 @@
 #include <fstream>
 #include "hex_mesh.h"
 
+Eigen::Matrix<double, 3, 10> HexMesh::fine_intf_flag_colors_ = (Eigen::Matrix<double, 3, 10>() <<
+  0.8147, 0.2, 0.2785, 0.3, 0.9572, 0.1419, 0.85, 0.0357, 0.3922, 0.6787,
+  0.9058, 0.5, 0.5469, 0.9, 0.4854, 0.4218, 0.20, 0.8491, 0.6555, 0.7577,
+  0.1270, 0.9, 0.9575, 0.2, 0.8003, 0.9157, 0.30, 0.9340, 0.1712, 0.7431).finished();
+
 HexMesh::HexMesh(const std::string& lattice_file, const std::string& displacement_file,
-  const std::string& material_file, const std::string& sing_point_file) {
+  const std::string& material_file, const std::string& sing_point_file,
+  const std::string& fine_intf_flag_file) {
   // Read cell_counts, dx and domain_min from lattice file.
   std::ifstream lattice;
   lattice.open(lattice_file, std::ios::binary);
@@ -52,17 +58,37 @@ HexMesh::HexMesh(const std::string& lattice_file, const std::string& displacemen
 
   // Read sing point.
   std::ifstream sing_point;
-  sing_point.open(sing_point_file, std::ios::binary);
-  int sing_point_count;
-  sing_point.read(reinterpret_cast<char*>(&sing_point_count), sizeof(int));
-  Eigen::Vector3d* sing_point_data = new Eigen::Vector3d[sing_point_count];
-  sing_point.read(reinterpret_cast<char*>(sing_point_data), sizeof(Eigen::Vector3d) * sing_point_count);
-  sing_point_ = Eigen::Matrix3Xd::Zero(3, sing_point_count);
-  for (int i = 0; i < sing_point_count; ++i) {
-    sing_point_.col(i) = sing_point_data[i];
+  sing_point_ = Eigen::Matrix3Xd::Zero(3, 0);
+  if (sing_point_file != "NULL") {
+    sing_point.open(sing_point_file, std::ios::binary);
+    int sing_point_count;
+    sing_point.read(reinterpret_cast<char*>(&sing_point_count), sizeof(int));
+    Eigen::Vector3d* sing_point_data = new Eigen::Vector3d[sing_point_count];
+    sing_point.read(reinterpret_cast<char*>(sing_point_data), sizeof(Eigen::Vector3d) * sing_point_count);
+    sing_point_ = Eigen::Matrix3Xd::Zero(3, sing_point_count);
+    for (int i = 0; i < sing_point_count; ++i) {
+      sing_point_.col(i) = sing_point_data[i];
+    }
+    delete[] sing_point_data;
+    sing_point.close();
   }
-  delete[] sing_point_data;
-  sing_point.close();
+
+  // Read fine_intf_flags.
+  fine_intf_flags_ = Eigen::VectorXi::Ones(total_cell_num) * (-1);
+  if (fine_intf_flag_file == "NULL") return;
+  std::ifstream fine_intf_flag;
+  fine_intf_flag.open(fine_intf_flag_file, std::ios::binary);
+  Eigen::Vector3i fine_intf_flag_count;
+  fine_intf_flag.read(reinterpret_cast<char*>(&fine_intf_flag_count), sizeof(Eigen::Vector3i));
+  for (int i = 0; i < 3; ++i)
+    assert(fine_intf_flag_count(i) + 1 == node_count_(i));
+  double* fine_intf_flag_data = new double[total_cell_num];
+  fine_intf_flag.read(reinterpret_cast<char*>(fine_intf_flag_data), sizeof(double) * total_cell_num);
+  for (int i = 0; i < total_cell_num; ++i) {
+    fine_intf_flags_(i) = static_cast<int>(fine_intf_flag_data[i]);
+  }
+  delete[] fine_intf_flag_data;
+  fine_intf_flag.close();
 }
 
 void HexMesh::Translate(const Eigen::Vector3d& translate_vector) {
@@ -103,6 +129,7 @@ void HexMesh::ToPBRT(const std::string& pbrt_file) const {
   const int cell_x_num = NumOfCellX();
   const int cell_y_num = NumOfCellY();
   const int cell_z_num = NumOfCellZ();
+  const bool has_fine_intf_flags = fine_intf_flags_(0) != -1;
   for (int i = 0; i < cell_x_num; ++i) {
     for (int j = 0; j < cell_y_num; ++j) {
       for (int k = 0; k < cell_z_num; ++k) {
@@ -110,20 +137,43 @@ void HexMesh::ToPBRT(const std::string& pbrt_file) const {
         const Eigen::Matrix<double, 3, 8> element = HexElement(i, j, k);
         // Write data to pbrt.
         pbrt_output << "AttributeBegin" << std::endl;
-        const double color = 0.75;  // TODO: modify this when rho is available.
-        pbrt_output << "Material \"glass\" \"rgb Kr\" [0.5 0.5 0.5] \"rgb Kt\" [" << color << " " << color << " " << color << "]"
-          << " \"float index\" [1.0]" << std::endl;
-        pbrt_output << "Shape \"trianglemesh\" \"point P\" [" << std::endl;
+        if (!has_fine_intf_flags) {
+          const double color = 0.75;  // TODO: modify this when rho is available.
+          pbrt_output << "Material \"glass\" \"rgb Kr\" [0.5 0.5 0.5] \"rgb Kt\" [" << color << " " << color << " " << color << "]"
+            << " \"float index\" [1.0]" << std::endl;
+          pbrt_output << "Shape \"trianglemesh\"" << std::endl;
+          pbrt_output << "\"integer indices\" [" << std::endl
+            << "1 3 7" << std::endl
+            << "1 7 5" << std::endl
+            << "2 0 6" << std::endl
+            << "6 0 4" << std::endl
+            << "]" << std::endl;
+        } else {
+          const Eigen::Vector3d color = fine_intf_flag_colors_.col(fine_intf_flags_(CellSubToIdx(i, j, k)));
+          pbrt_output << "Material \"glass\" \"rgb Kr\" [0.5 0.5 0.5] \"rgb Kt\" [" << color.x() << " " << color.y() << " " << color.z() << "]"
+            << " \"float index\" [1.0]" << std::endl;
+          pbrt_output << "Shape \"trianglemesh\"" << std::endl;
+          pbrt_output << "\"integer indices\" [" << std::endl
+            << "4 6 7" << std::endl
+            << "4 7 5" << std::endl
+            << "0 3 2" << std::endl
+            << "0 1 3" << std::endl
+            << "1 3 7" << std::endl
+            << "1 7 5" << std::endl
+            << "2 0 6" << std::endl
+            << "6 0 4" << std::endl
+            << "2 3 7" << std::endl
+            << "2 7 6" << std::endl
+            << "0 5 1" << std::endl
+            << "0 4 5" << std::endl
+            << "]" << std::endl;
+        }
+        pbrt_output << "\"point P\" [" << std::endl;
         for (int j = 0; j < 8; ++j) {
           pbrt_output << element(0, j) << " " << element(1, j) << " " << element(2, j) << std::endl;
         }
         pbrt_output << "]" << std::endl;
-        pbrt_output << "\"integer indices\" [" << std::endl
-          << "1 3 7" << std::endl
-          << "1 7 5" << std::endl
-          << "2 0 6" << std::endl
-          << "6 0 4" << std::endl
-          << "]" << std::endl;
+
         pbrt_output << "AttributeEnd" << std::endl;
 
         // Write edges.
