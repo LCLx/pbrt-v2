@@ -9,7 +9,8 @@
 class HexMesh {
 public:
   HexMesh(const std::string& lattice_file, const std::string& displacement_file,
-    const std::string& material_file, const std::string& sing_point_file,
+    const std::string& material_file, const std::string& lag_inf_point_file,
+    const std::string& sing_point_file,
     const std::string& fine_intf_flag_file);
   ~HexMesh() {}
 
@@ -42,6 +43,7 @@ private:
   double dx_;
   Eigen::Matrix3Xd displacement_;
   Eigen::VectorXi material_;
+  Eigen::Matrix3Xd lag_inf_point_;
   Eigen::Matrix3Xd sing_point_;
   Eigen::VectorXi fine_intf_flags_;
 };

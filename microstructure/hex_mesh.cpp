@@ -10,8 +10,8 @@ Eigen::Matrix<double, 3, 10> HexMesh::fine_intf_flag_colors_ = (Eigen::Matrix<do
   0.1270, 0.9, 0.9575, 0.2, 0.8003, 0.9157, 0.30, 0.9340, 0.1712, 0.7431).finished();
 
 HexMesh::HexMesh(const std::string& lattice_file, const std::string& displacement_file,
-  const std::string& material_file, const std::string& sing_point_file,
-  const std::string& fine_intf_flag_file) {
+  const std::string& material_file, const std::string& lag_inf_point_file,
+  const std::string& sing_point_file, const std::string& fine_intf_flag_file) {
   // Read cell_counts, dx and domain_min from lattice file.
   std::ifstream lattice;
   lattice.open(lattice_file, std::ios::binary);
@@ -56,6 +56,23 @@ HexMesh::HexMesh(const std::string& lattice_file, const std::string& displacemen
   delete[] material_data;
   material.close();
 
+  // Read lag inf point.
+  std::ifstream lag_inf_point;
+  lag_inf_point_ = Eigen::Matrix3Xd::Zero(3, 0);
+  if (lag_inf_point_file != "NULL") {
+    lag_inf_point.open(lag_inf_point_file, std::ios::binary);
+    int lag_inf_point_count;
+    lag_inf_point.read(reinterpret_cast<char*>(&lag_inf_point_count), sizeof(int));
+    Eigen::Vector3d* lag_inf_point_data = new Eigen::Vector3d[lag_inf_point_count];
+    lag_inf_point.read(reinterpret_cast<char*>(lag_inf_point_data), sizeof(Eigen::Vector3d) * lag_inf_point_count);
+    lag_inf_point_ = Eigen::Matrix3Xd::Zero(3, lag_inf_point_count);
+    for (int i = 0; i < lag_inf_point_count; ++i) {
+      lag_inf_point_.col(i) = lag_inf_point_data[i];
+    }
+    delete[] lag_inf_point_data;
+    lag_inf_point.close();
+  }
+
   // Read sing point.
   std::ifstream sing_point;
   sing_point_ = Eigen::Matrix3Xd::Zero(3, 0);
@@ -93,6 +110,7 @@ HexMesh::HexMesh(const std::string& lattice_file, const std::string& displacemen
 
 void HexMesh::Translate(const Eigen::Vector3d& translate_vector) {
   domain_min_ += translate_vector;
+  lag_inf_point_.colwise() += translate_vector;
   sing_point_.colwise() += translate_vector;
 }
 
@@ -100,6 +118,7 @@ void HexMesh::Scale(const double scale_factor) {
   domain_min_ *= scale_factor;
   dx_ *= scale_factor;
   displacement_ *= scale_factor;
+  lag_inf_point_ *= scale_factor;
   sing_point_ *= scale_factor;
 }
 
@@ -198,10 +217,23 @@ void HexMesh::ToPBRT(const std::string& pbrt_file) const {
     }
   }
 
+  // Draw lag inf point.
+  const int lag_inf_point_num = static_cast<int>(lag_inf_point_.cols());
+  pbrt_output << "AttributeBegin" << std::endl;
+  pbrt_output << "Material \"shinymetal\" \"rgb Ks\" [.1 .1 .1] \"rgb Kr\" [1 0.2 0.2]" << std::endl;
+  for (int i = 0; i < lag_inf_point_num; ++i) {
+    const Eigen::Vector3d center = lag_inf_point_.col(i);
+    pbrt_output << "TransformBegin" << std::endl;
+    pbrt_output << "Translate " << center.x() << " " << center.y() << " " << center.z() << std::endl;
+    pbrt_output << "Shape \"sphere\" \"float radius\" [" << point_radius << "]" << std::endl;
+    pbrt_output << "TransformEnd" << std::endl;
+  }
+  pbrt_output << "AttributeEnd" << std::endl;
+
   // Draw sing point.
   const int sing_point_num = static_cast<int>(sing_point_.cols());
   pbrt_output << "AttributeBegin" << std::endl;
-  pbrt_output << "Material \"shinymetal\" \"rgb Ks\" [.1 .1 .1] \"rgb Kr\" [1 0.2 0.2]" << std::endl;
+  pbrt_output << "Material \"shinymetal\" \"rgb Ks\" [.1 .1 .1] \"rgb Kr\" [0.2 1 0.2]" << std::endl;
   for (int i = 0; i < sing_point_num; ++i) {
     const Eigen::Vector3d center = sing_point_.col(i);
     pbrt_output << "TransformBegin" << std::endl;
