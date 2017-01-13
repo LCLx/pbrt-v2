@@ -108,6 +108,48 @@ HexMesh::HexMesh(const std::string& lattice_file, const std::string& displacemen
   fine_intf_flag.close();
 }
 
+Eigen::Vector3d domain_min_;
+Eigen::Vector3i node_count_;
+double dx_;
+Eigen::Matrix3Xd displacement_;
+Eigen::VectorXi material_;
+Eigen::Matrix3Xd lag_inf_point_;
+Eigen::Matrix3Xd sing_point_;
+Eigen::VectorXi fine_intf_flags_;
+
+HexMesh::HexMesh(const HexMesh& other)
+  : domain_min_(other.domain_min_), node_count_(other.node_count_), dx_(other.dx_),
+  displacement_(other.displacement_), material_(other.material_), lag_inf_point_(other.lag_inf_point_),
+  sing_point_(other.sing_point_), fine_intf_flags_(other.fine_intf_flags_) {}
+
+HexMesh& HexMesh::operator*(const double t) {
+  Scale(t);
+  return *this;
+}
+
+HexMesh& HexMesh::operator+(const HexMesh& other) {
+  // We assume the two HexMesh have the same size, materials, etc.
+  domain_min_ += other.domain_min_;
+  dx_ += other.dx_;
+  displacement_ += other.displacement_;
+  lag_inf_point_ += other.lag_inf_point_;
+  sing_point_ += other.sing_point_;
+  return *this;
+}
+
+HexMesh& HexMesh::operator=(const HexMesh& other) {
+  domain_min_ = other.domain_min_;
+  node_count_ = other.node_count_;
+  dx_ = other.dx_;
+  displacement_ = other.displacement_;
+  material_ = other.material_;
+  lag_inf_point_ = other.lag_inf_point_;
+  sing_point_ = other.sing_point_;
+  fine_intf_flags_ = other.fine_intf_flags_;
+  return *this;
+}
+
+
 void HexMesh::Translate(const Eigen::Vector3d& translate_vector) {
   domain_min_ += translate_vector;
   lag_inf_point_.colwise() += translate_vector;

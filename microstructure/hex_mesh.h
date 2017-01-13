@@ -12,7 +12,12 @@ public:
     const std::string& material_file, const std::string& lag_inf_point_file,
     const std::string& sing_point_file,
     const std::string& fine_intf_flag_file);
+  HexMesh(const HexMesh& other);
   ~HexMesh() {}
+
+  HexMesh& operator*(const double t);
+  HexMesh& operator+(const HexMesh& other);
+  HexMesh& operator=(const HexMesh& other);
 
   void Translate(const Eigen::Vector3d& translate_vector);
   void Scale(const double scale_factor);
