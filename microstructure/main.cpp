@@ -16,11 +16,13 @@ int main(int argc, char* argv[]) {
     const double t = atof(argv[argument_index++]);
     HexMesh mesh0(root_folder + "\\0\\lattice",
       root_folder + "\\0\\ale_dis",
-      root_folder + "\\0\\material", "NULL", "NULL", "NULL");
+      root_folder + "\\0\\material", "NULL", "NULL",
+      root_folder + "\\0\\fine_intf_flags");
     mesh0.Normalize();
     HexMesh mesh1(root_folder + "\\1\\lattice",
       root_folder + "\\1\\ale_dis",
-      root_folder + "\\1\\material", "NULL", "NULL", "NULL");
+      root_folder + "\\1\\material", "NULL", "NULL",
+      root_folder + "\\0\\fine_intf_flags");
     mesh1.Normalize();
     (mesh0 * (1 - t) + mesh1 * t).ToPBRT(pbrt_file);
     return 0;
