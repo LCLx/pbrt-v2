@@ -182,7 +182,7 @@ void HexMesh::ToPBRT(const std::string& pbrt_file) const {
   std::ofstream pbrt_output;
   pbrt_output.open(pbrt_file);
 
-  const double radius = 9e-4;
+  const double radius = 1.2e-3;
   const double point_radius = 5e-3;
   const Eigen::Matrix<int, 2, 12> default_edges = (Eigen::Matrix<int, 2, 12>()
     << 0, 1, 3, 2, 4, 5, 7, 6, 1, 3, 2, 0,
