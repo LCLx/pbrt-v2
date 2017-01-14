@@ -183,7 +183,7 @@ void HexMesh::ToPBRT(const std::string& pbrt_file) const {
   pbrt_output.open(pbrt_file);
 
   const double radius = 2e-3;
-  const double point_radius = 5e-3;
+  const double point_radius = 7e-3;
   const Eigen::Matrix<int, 2, 12> default_edges = (Eigen::Matrix<int, 2, 12>()
     << 0, 1, 3, 2, 4, 5, 7, 6, 1, 3, 2, 0,
        1, 3, 2, 0, 5, 7, 6, 4, 5, 7, 6, 4).finished();
@@ -275,7 +275,7 @@ void HexMesh::ToPBRT(const std::string& pbrt_file) const {
   // Draw sing point.
   const int sing_point_num = static_cast<int>(sing_point_.cols());
   pbrt_output << "AttributeBegin" << std::endl;
-  pbrt_output << "Material \"shinymetal\" \"rgb Ks\" [.1 .1 .1] \"rgb Kr\" [0.2 1 0.2]" << std::endl;
+  pbrt_output << "Material \"shinymetal\" \"rgb Ks\" [.1 .1 .1] \"rgb Kr\" [1.0 0.36 0.95]" << std::endl;
   for (int i = 0; i < sing_point_num; ++i) {
     const Eigen::Vector3d center = sing_point_.col(i);
     pbrt_output << "TransformBegin" << std::endl;
