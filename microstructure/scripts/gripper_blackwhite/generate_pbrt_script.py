@@ -8,10 +8,13 @@ import sys
 n_frame = int(sys.argv[1])
 delta = 360.0 / n_frame
 n_sample = int(sys.argv[2])
+scale_factor = float(sys.argv[3])
 
 # Now generate pbrt scripts.
-if not os.path.exists('rendering'):
-  os.makedirs('rendering')
+root_folder = '/home/ubuntu/external/gripper/rendering'
+
+if not os.path.exists(root_folder):
+  os.system('mkdir -p %s' % root_folder)
 
 for i in range(n_frame):
   f = open('gripper.pbrt', 'w')
@@ -60,5 +63,5 @@ for i in range(n_frame):
   f.close()
 
   # Rendering.
-  os.system('../../../src/bin/pbrt --ncores 36 --outfile rendering/hex_%03d.exr gripper.pbrt' % i)
-  os.system('../../../src/bin/exrtotiff -scale 1 rendering/hex_%03d.exr rendering/gripper/%03d.tiff' % (i, i))
+  os.system('../../../src/bin/pbrt --ncores 36 --outfile %s/gripper_%03d.exr gripper.pbrt' % (root_folder, i))
+  os.system('../../../src/bin/exrtotiff -scale %f %s/gripper_%03d.exr %s/gripper_%03d.tiff' % (scale_factor, root_folder, i, root_folder, i))
