@@ -3,12 +3,25 @@
 // Jan 9, 2017
 #include <string>
 #include "hex_mesh.h"
-#include "quad_converter.h"
+#include "quad_mesh.h"
 
+// pbrt_file root_folder hex_mesh_name rho_mesh_name depth
 // pbrt_file root_folder t
 // pbrt_file root_folder lattice_file displacement_file material_file lag_inf_point_file sing_point_file fine_intf_flag_file
 int main(int argc, char* argv[]) {
-  if (argc == 4) {
+  if (argc == 6) {
+    int argument_index = 1;
+    const std::string pbrt_file(argv[argument_index++]);
+    const std::string root_folder(argv[argument_index++]);
+    const std::string hex_mesh_name(argv[argument_index++]);
+    const std::string rho_mesh_name(argv[argument_index++]);
+    const double depth = atof(argv[argument_index++]);
+    QuadMesh quad_mesh(root_folder + "\\" + hex_mesh_name,
+      root_folder + "\\" + rho_mesh_name);
+    quad_mesh.Normalize();
+    quad_mesh.ToPBRT(pbrt_file, depth);
+    return 0;
+  } else if (argc == 4) {
     // Hard-code almost everything...
     int argument_index = 1;
     const std::string pbrt_file(argv[argument_index++]);

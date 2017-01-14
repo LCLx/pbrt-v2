@@ -152,12 +152,11 @@
   <ItemGroup>
     <ClCompile Include="hex_mesh.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="quad_converter.cpp" />
+    <ClCompile Include="quad_mesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="hex_mesh.h" />
-    <ClInclude Include="quad_converter.h" />
-    <ClInclude Include="quad_mesh_element.h" />
+    <ClInclude Include="quad_mesh.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
