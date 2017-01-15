@@ -44,8 +44,11 @@ HexMesh::HexMesh(const std::string& lattice_file, const std::string& displacemen
   material.open(material_file, std::ios::binary);
   Eigen::Vector3i material_count;
   material.read(reinterpret_cast<char*>(&material_count), sizeof(Eigen::Vector3i));
-  for (int i = 0; i < 3; ++i)
+  for (int i = 0; i < 2; ++i)
     assert(material_count(i) + 1 == node_count_(i));
+  // The z axis is a little tricky.
+  if (node_count_(2) == 1) assert(material_count(2) == 1);
+  else assert(material_count(2) + 1 == node_count_(2));
   const int total_cell_num = material_count.prod();
   int* material_data = new int[total_cell_num];
   material.read(reinterpret_cast<char*>(material_data), sizeof(int) * total_cell_num);
@@ -97,8 +100,10 @@ HexMesh::HexMesh(const std::string& lattice_file, const std::string& displacemen
   fine_intf_flag.open(fine_intf_flag_file, std::ios::binary);
   Eigen::Vector3i fine_intf_flag_count;
   fine_intf_flag.read(reinterpret_cast<char*>(&fine_intf_flag_count), sizeof(Eigen::Vector3i));
-  for (int i = 0; i < 3; ++i)
+  for (int i = 0; i < 2; ++i)
     assert(fine_intf_flag_count(i) + 1 == node_count_(i));
+  if (node_count_(2) == 1) assert(fine_intf_flag_count(2) == 1);
+  else assert(fine_intf_flag_count(2) + 1 == node_count_(2));
   double* fine_intf_flag_data = new double[total_cell_num];
   fine_intf_flag.read(reinterpret_cast<char*>(fine_intf_flag_data), sizeof(double) * total_cell_num);
   for (int i = 0; i < total_cell_num; ++i) {
@@ -107,15 +112,6 @@ HexMesh::HexMesh(const std::string& lattice_file, const std::string& displacemen
   delete[] fine_intf_flag_data;
   fine_intf_flag.close();
 }
-
-Eigen::Vector3d domain_min_;
-Eigen::Vector3i node_count_;
-double dx_;
-Eigen::Matrix3Xd displacement_;
-Eigen::VectorXi material_;
-Eigen::Matrix3Xd lag_inf_point_;
-Eigen::Matrix3Xd sing_point_;
-Eigen::VectorXi fine_intf_flags_;
 
 HexMesh::HexMesh(const HexMesh& other)
   : domain_min_(other.domain_min_), node_count_(other.node_count_), dx_(other.dx_),
@@ -186,51 +182,74 @@ void HexMesh::ToPBRT(const std::string& pbrt_file) const {
   const double point_radius = 7e-3;
   const Eigen::Matrix<int, 2, 12> default_edges = (Eigen::Matrix<int, 2, 12>()
     << 0, 1, 3, 2, 4, 5, 7, 6, 1, 3, 2, 0,
-       1, 3, 2, 0, 5, 7, 6, 4, 5, 7, 6, 4).finished();
+    1, 3, 2, 0, 5, 7, 6, 4, 5, 7, 6, 4).finished();
   const int cell_x_num = NumOfCellX();
   const int cell_y_num = NumOfCellY();
   const int cell_z_num = NumOfCellZ();
+  const int node_z_num = NumOfNodeZ();
+  const int max_edge_num = (node_z_num == 1 ? 4 : 12);
+  const int point_in_hex_element = (node_z_num == 1 ? 4 : 8);
   const bool has_fine_intf_flags = fine_intf_flags_(0) != -1;
+  Eigen::MatrixX3i front_back_triangles;
+  Eigen::MatrixX3i all_triangles;
+  if (node_z_num == 1) {
+    front_back_triangles = Eigen::MatrixX3i::Zero(2, 3);
+    front_back_triangles << 0, 1, 3,
+      0, 3, 2;
+    all_triangles = front_back_triangles;
+  } else {
+    front_back_triangles = Eigen::MatrixX3i::Zero(4, 3);
+    front_back_triangles << 1, 3, 7,
+      1, 7, 5,
+      2, 0, 6,
+      6, 0, 4;
+    all_triangles = Eigen::MatrixX3i::Zero(12, 3);
+    all_triangles << 4, 6, 7,
+      4, 7, 5,
+      0, 3, 2,
+      0, 1, 3,
+      1, 3, 7,
+      1, 7, 5,
+      2, 0, 6,
+      6, 0, 4,
+      2, 3, 7,
+      2, 7, 6,
+      0, 5, 1,
+      0, 4, 5;
+  }
+
   for (int i = 0; i < cell_x_num; ++i) {
     for (int j = 0; j < cell_y_num; ++j) {
       for (int k = 0; k < cell_z_num; ++k) {
         if (MaterialType(i, j, k) < 0) continue;
-        const Eigen::Matrix<double, 3, 8> element = HexElement(i, j, k);
+        const Eigen::Matrix3Xd element = HexElement(i, j, k);
         // Write data to pbrt.
         pbrt_output << "AttributeBegin" << std::endl;
         if (!has_fine_intf_flags) {
-          const double color = 0.75;  // TODO: modify this when rho is available.
+          const double color = 0.75;
           pbrt_output << "Material \"glass\" \"rgb Kr\" [0.5 0.5 0.5] \"rgb Kt\" [" << color << " " << color << " " << color << "]"
             << " \"float index\" [1.0]" << std::endl;
           pbrt_output << "Shape \"trianglemesh\"" << std::endl;
-          pbrt_output << "\"integer indices\" [" << std::endl
-            << "1 3 7" << std::endl
-            << "1 7 5" << std::endl
-            << "2 0 6" << std::endl
-            << "6 0 4" << std::endl
-            << "]" << std::endl;
+          pbrt_output << "\"integer indices\" [" << std::endl;
+          for (int l = 0; l < static_cast<int>(front_back_triangles.rows()); ++l)
+            pbrt_output << front_back_triangles(l, 0) << " "
+              << front_back_triangles(l, 1) << " "
+              << front_back_triangles(l, 2) << std::endl;
+          pbrt_output << "]" << std::endl;
         } else {
           const Eigen::Vector3d color = fine_intf_flag_colors_.col(fine_intf_flags_(CellSubToIdx(i, j, k)));
           pbrt_output << "Material \"glass\" \"rgb Kr\" [0.5 0.5 0.5] \"rgb Kt\" [" << color.x() << " " << color.y() << " " << color.z() << "]"
             << " \"float index\" [1.0]" << std::endl;
           pbrt_output << "Shape \"trianglemesh\"" << std::endl;
-          pbrt_output << "\"integer indices\" [" << std::endl
-            << "4 6 7" << std::endl
-            << "4 7 5" << std::endl
-            << "0 3 2" << std::endl
-            << "0 1 3" << std::endl
-            << "1 3 7" << std::endl
-            << "1 7 5" << std::endl
-            << "2 0 6" << std::endl
-            << "6 0 4" << std::endl
-            << "2 3 7" << std::endl
-            << "2 7 6" << std::endl
-            << "0 5 1" << std::endl
-            << "0 4 5" << std::endl
-            << "]" << std::endl;
+          pbrt_output << "\"integer indices\" [" << std::endl;
+          for (int l = 0; l < static_cast<int>(all_triangles.rows()); ++l)
+            pbrt_output << all_triangles(l, 0) << " "
+              << all_triangles(l, 1) << " "
+              << all_triangles(l, 2) << std::endl;
+            pbrt_output << "]" << std::endl;
         }
         pbrt_output << "\"point P\" [" << std::endl;
-        for (int j = 0; j < 8; ++j) {
+        for (int j = 0; j < point_in_hex_element; ++j) {
           pbrt_output << element(0, j) << " " << element(1, j) << " " << element(2, j) << std::endl;
         }
         pbrt_output << "]" << std::endl;
@@ -240,7 +259,7 @@ void HexMesh::ToPBRT(const std::string& pbrt_file) const {
         // Write edges.
         pbrt_output << "AttributeBegin" << std::endl;
         pbrt_output << "Material \"metal\"" << std::endl;
-        for (int j = 0; j < 12; ++j) {
+        for (int j = 0; j < max_edge_num; ++j) {
           const int index0 = default_edges(0, j), index1 = default_edges(1, j);
           const Eigen::Vector3d p0 = element.col(index0), p1 = element.col(index1);
           const Eigen::Vector3d p01 = p1 - p0;
@@ -301,17 +320,27 @@ const int HexMesh::NodeSubToIdx(const int i, const int j, const int k) const {
   return i * NumOfNodeY() * NumOfNodeZ() + j * NumOfNodeZ() + k;
 }
 
-const Eigen::Matrix<double, 3, 8> HexMesh::HexElement(const int i, const int j, const int k) const {
+const Eigen::Matrix3Xd HexMesh::HexElement(const int i, const int j, const int k) const {
   const Eigen::Vector3d corner_min = domain_min_ + Eigen::Vector3d(i, j, k) * dx_;
-  Eigen::Matrix<double, 3, 8> hex_element;
-  hex_element.col(0) = displacement_.col(NodeSubToIdx(i, j, k));
-  hex_element.col(1) = Eigen::Vector3d(0, 0, 1) * dx_ + displacement_.col(NodeSubToIdx(i, j, k + 1));
-  hex_element.col(2) = Eigen::Vector3d(0, 1, 0) * dx_ + displacement_.col(NodeSubToIdx(i, j + 1, k));
-  hex_element.col(3) = Eigen::Vector3d(0, 1, 1) * dx_ + displacement_.col(NodeSubToIdx(i, j + 1, k + 1));
-  hex_element.col(4) = Eigen::Vector3d(1, 0, 0) * dx_ + displacement_.col(NodeSubToIdx(i + 1, j, k));
-  hex_element.col(5) = Eigen::Vector3d(1, 0, 1) * dx_ + displacement_.col(NodeSubToIdx(i + 1, j, k + 1));
-  hex_element.col(6) = Eigen::Vector3d(1, 1, 0) * dx_ + displacement_.col(NodeSubToIdx(i + 1, j + 1, k));
-  hex_element.col(7) = Eigen::Vector3d(1, 1, 1) * dx_ + displacement_.col(NodeSubToIdx(i + 1, j + 1, k + 1));
+  Eigen::Matrix3Xd hex_element;
+  if (NumOfNodeZ() == 1) {
+    assert(k == 0);
+    hex_element = Eigen::Matrix<double, 3, 4>::Zero();
+    hex_element.col(0) = displacement_.col(NodeSubToIdx(i, j, k));
+    hex_element.col(1) = Eigen::Vector3d(0, 1, 0) * dx_ + displacement_.col(NodeSubToIdx(i, j + 1, k));
+    hex_element.col(2) = Eigen::Vector3d(1, 0, 0) * dx_ + displacement_.col(NodeSubToIdx(i + 1, j, k));
+    hex_element.col(3) = Eigen::Vector3d(1, 1, 0) * dx_ + displacement_.col(NodeSubToIdx(i + 1, j + 1, k));
+  } else {
+    hex_element = Eigen::Matrix<double, 3, 8>::Zero();
+    hex_element.col(0) = displacement_.col(NodeSubToIdx(i, j, k));
+    hex_element.col(1) = Eigen::Vector3d(0, 0, 1) * dx_ + displacement_.col(NodeSubToIdx(i, j, k + 1));
+    hex_element.col(2) = Eigen::Vector3d(0, 1, 0) * dx_ + displacement_.col(NodeSubToIdx(i, j + 1, k));
+    hex_element.col(3) = Eigen::Vector3d(0, 1, 1) * dx_ + displacement_.col(NodeSubToIdx(i, j + 1, k + 1));
+    hex_element.col(4) = Eigen::Vector3d(1, 0, 0) * dx_ + displacement_.col(NodeSubToIdx(i + 1, j, k));
+    hex_element.col(5) = Eigen::Vector3d(1, 0, 1) * dx_ + displacement_.col(NodeSubToIdx(i + 1, j, k + 1));
+    hex_element.col(6) = Eigen::Vector3d(1, 1, 0) * dx_ + displacement_.col(NodeSubToIdx(i + 1, j + 1, k));
+    hex_element.col(7) = Eigen::Vector3d(1, 1, 1) * dx_ + displacement_.col(NodeSubToIdx(i + 1, j + 1, k + 1));
+  }
   hex_element.colwise() += corner_min;
   return hex_element;
 }

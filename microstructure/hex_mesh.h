@@ -33,12 +33,12 @@ private:
 
   const int NumOfCellX() const { return node_count_.x() - 1; }
   const int NumOfCellY() const { return node_count_.y() - 1; }
-  const int NumOfCellZ() const { return node_count_.z() - 1; }
+  const int NumOfCellZ() const { return (node_count_.z() == 1 ? 1 : node_count_.z() - 1); }
 
   const int CellSubToIdx(const int i, const int j, const int k) const;
   const int NodeSubToIdx(const int i, const int j, const int k) const;
 
-  const Eigen::Matrix<double, 3, 8> HexElement(const int i, const int j, const int k) const;
+  const Eigen::Matrix3Xd HexElement(const int i, const int j, const int k) const;
   const int MaterialType(const int i, const int j, const int k) const;
 
   static Eigen::Matrix<double, 3, 10> fine_intf_flag_colors_;
