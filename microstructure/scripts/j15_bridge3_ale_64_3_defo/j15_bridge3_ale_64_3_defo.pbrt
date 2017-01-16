@@ -1,0 +1,38 @@
+Film "image" "integer xresolution" [1600] "integer yresolution" [1200]
+LookAt 3.5 4 -10 0.0 0.0 0.0 0.0 1.0 0.0
+Camera "perspective" "float fov" [15]
+Sampler "lowdiscrepancy" "integer pixelsamples" [128]
+SurfaceIntegrator "directlighting" "integer maxdepth" [5]
+WorldBegin
+AttributeBegin
+  LightSource "infinite" "rgb L" [.01 .01 .01]
+AttributeEnd
+AttributeBegin
+TransformBegin
+  AreaLightSource "diffuse" "rgb L" [5 5 5]
+  Translate -3 1 -3
+  Shape "disk" "float radius" [1.0]
+TransformEnd
+TransformBegin
+  AreaLightSource "diffuse" "rgb L" [2.5 2.5 2.5]
+  Translate -3 4.5 -3
+  Rotate 90 1 0 0
+  Shape "disk" "float radius" [4.0]
+TransformEnd
+AttributeEnd
+AttributeBegin
+Material "matte" "rgb Kd" [1.4 1.5 1.7]
+TransformBegin
+  Translate 0 -0.2 0
+  Scale 100 1 100
+  Shape "trianglemesh" "integer indices" [0 1 2 2 1 3]
+  "point P" [-1 -1 -1 -1 -1 1 1 -1 -1 1 -1 1]
+TransformEnd
+AttributeEnd
+TransformBegin
+  Scale 3.4 3.4 3.4
+  Rotate -15 0 1 0
+  Translate -0.5 -0.25 0
+  Include "mesh.pbrt"
+TransformEnd
+WorldEnd
