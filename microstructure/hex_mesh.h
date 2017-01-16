@@ -16,9 +16,8 @@ public:
     const std::string& fine_intf_flag_file = "NULL",
     const std::string& f_point_file = "NULL",
     const std::string& psi_D_file = "NULL",
-    const std::string& density_file = "NULL",
-    const bool plot_surrounding_cells = false
-    );
+    const std::string& density_file = "NULL"
+  );
   HexMesh(const HexMesh& other);
   ~HexMesh() {}
 
@@ -31,7 +30,7 @@ public:
   const Eigen::Vector3d BoundingBoxMin() const;
   const Eigen::Vector3d BoundingBoxMax() const;
   void Normalize();
-  void ToPBRT(const std::string& pbrt_file) const;
+  void ToPBRT(const std::string& pbrt_file, const bool plot_surrounding_cells = true, const double threshold = 0.5) const;
 
 private:
   const int NumOfNodeX() const { return node_count_.x(); }
@@ -61,8 +60,6 @@ private:
   Eigen::Matrix3Xd f_point_;
   Eigen::Matrix3Xd psi_D_;
   Eigen::VectorXd density_;
-
-  const bool plot_surrounding_cells_;
 };
 
 #endif
