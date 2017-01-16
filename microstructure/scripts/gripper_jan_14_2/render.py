@@ -16,7 +16,7 @@ root_folder = '/home/ubuntu/external/gripper_jan_14_2/rendering'
 if not os.path.exists(root_folder):
   os.system('mkdir -p %s' % root_folder)
 
-for i in range(n_frame):
+for i in range(14, n_frame):
   f = open('gripper.pbrt', 'w')
   f.write('Film "image" "integer xresolution" [1600] "integer yresolution" [1200]\n')
   f.write('LookAt 3.5 4 -10 0.0 0.0 0.0 0.0 1.0 0.0\n')
