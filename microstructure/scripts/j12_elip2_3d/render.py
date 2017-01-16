@@ -8,7 +8,7 @@ n_end = int(sys.argv[2])
 scale_factor = float(sys.argv[3])
 
 # Now generate pbrt scripts.
-root_folder = '/home/ubuntu/external/j12_elip12_3d/rendering'
+root_folder = '/home/ubuntu/external/j12_elip2_3d/rendering'
 
 if not os.path.exists(root_folder):
   os.system('mkdir -p %s' % root_folder)

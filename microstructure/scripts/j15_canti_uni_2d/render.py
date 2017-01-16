@@ -8,9 +8,9 @@ n_end = int(sys.argv[2])
 scale_factor = float(sys.argv[3])
 
 # Now generate pbrt scripts.
-root_folder = '/home/ubuntu/external/j15_bridge3_uni_64/rendering'
-
 example_name = 'j15_canti_uni_2d'
+root_folder = '/home/ubuntu/external/' + example_name + '/rendering'
+
 
 if not os.path.exists(root_folder):
   os.system('mkdir -p %s' % root_folder)
