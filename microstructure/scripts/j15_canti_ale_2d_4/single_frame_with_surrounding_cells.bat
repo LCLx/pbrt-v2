@@ -1,0 +1,5 @@
+set frame_index=%1
+set root_folder=\\SCALAR\share_topo\rendering2\j15_canti_ale_2d_4\%frame_index%
+..\..\x64\Release\microstructure.exe mesh.pbrt %root_folder% lattice ale_dis material NULL NULL fine_intf_flags NULL NULL density 1
+..\..\..\bin\pbrt.exe --ncores 12 --outfile %1_with_surrounding_cells.exr j15_canti_ale_2d_4.pbrt
+..\..\..\bin\exrtotiff %1_with_surrounding_cells.exr %1_with_surrounding_cells.tiff

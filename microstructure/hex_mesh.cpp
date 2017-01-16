@@ -13,7 +13,9 @@ HexMesh::HexMesh(const std::string& lattice_file, const std::string& displacemen
   const std::string& material_file, const std::string& lag_inf_point_file,
   const std::string& sing_point_file, const std::string& fine_intf_flag_file,
   const std::string& f_point_file, const std::string& psi_D_file,
-  const std::string& density_file) {
+  const std::string& density_file,
+  const bool plot_surrounding_cells)
+  : plot_surrounding_cells_(plot_surrounding_cells) {
   // Read cell_counts, dx and domain_min from lattice file.
   std::ifstream lattice;
   lattice.open(lattice_file, std::ios::binary);
@@ -185,7 +187,8 @@ HexMesh::HexMesh(const std::string& lattice_file, const std::string& displacemen
 HexMesh::HexMesh(const HexMesh& other)
   : domain_min_(other.domain_min_), node_count_(other.node_count_), dx_(other.dx_),
   displacement_(other.displacement_), material_(other.material_), lag_inf_point_(other.lag_inf_point_),
-  sing_point_(other.sing_point_), fine_intf_flags_(other.fine_intf_flags_) {}
+  sing_point_(other.sing_point_), fine_intf_flags_(other.fine_intf_flags_), f_point_(other.f_point_),
+  psi_D_(other.psi_D_), density_(other.psi_D_), plot_surrounding_cells_(other.plot_surrounding_cells_) {}
 
 HexMesh& HexMesh::operator*(const double t) {
   Scale(t);
@@ -199,6 +202,8 @@ HexMesh& HexMesh::operator+(const HexMesh& other) {
   displacement_ += other.displacement_;
   lag_inf_point_ += other.lag_inf_point_;
   sing_point_ += other.sing_point_;
+  f_point_ += other.f_point_;
+  psi_D_ += other.psi_D_;
   return *this;
 }
 
@@ -211,6 +216,9 @@ HexMesh& HexMesh::operator=(const HexMesh& other) {
   lag_inf_point_ = other.lag_inf_point_;
   sing_point_ = other.sing_point_;
   fine_intf_flags_ = other.fine_intf_flags_;
+  f_point_ = other.f_point_;
+  psi_D_ = other.psi_D_;
+  density_ = other.density_;
   return *this;
 }
 
@@ -219,6 +227,8 @@ void HexMesh::Translate(const Eigen::Vector3d& translate_vector) {
   domain_min_ += translate_vector;
   lag_inf_point_.colwise() += translate_vector;
   sing_point_.colwise() += translate_vector;
+  f_point_.colwise() += translate_vector;
+  psi_D_.colwise() += translate_vector;
 }
 
 void HexMesh::Scale(const double scale_factor) {
@@ -227,6 +237,8 @@ void HexMesh::Scale(const double scale_factor) {
   displacement_ *= scale_factor;
   lag_inf_point_ *= scale_factor;
   sing_point_ *= scale_factor;
+  f_point_ *= scale_factor;
+  psi_D_ *= scale_factor;
 }
 
 const Eigen::Vector3d HexMesh::BoundingBoxMin() const {
@@ -320,9 +332,11 @@ void HexMesh::ToPBRT(const std::string& pbrt_file) const {
           pbrt_output << "]" << std::endl;
         } else if (has_fine_intf_flags && has_density) {
           const int cell_idx = CellSubToIdx(i, j, k);
-          if (fine_intf_flags_(cell_idx) == 0) continue;
+          if (!fine_intf_flags_(cell_idx) && !plot_surrounding_cells_) continue;
           pbrt_output << "AttributeBegin" << std::endl;
-          const double color = 1.0 - density_(cell_idx);
+          double color = 0.0;
+          if (!fine_intf_flags_(cell_idx) && plot_surrounding_cells_) color = 0.75;
+          else color = 1.0 - density_(cell_idx);
           pbrt_output << "Material \"glass\" \"rgb Kr\" [0.5 0.5 0.5] \"rgb Kt\" [" << color << " " << color << " " << color << "]"
             << " \"float index\" [1.0]" << std::endl;
           pbrt_output << "Shape \"trianglemesh\"" << std::endl;

@@ -7,7 +7,8 @@
 
 // pbrt_file root_folder hex_mesh_name rho_mesh_name depth
 // pbrt_file root_folder t
-// pbrt_file root_folder lattice_file displacement_file material_file lag_inf_point_file sing_point_file fine_intf_flag_file f_point_file psi_D_file density_file
+// pbrt_file root_folder lattice_file displacement_file material_file lag_inf_point_file
+// sing_point_file fine_intf_flag_file f_point_file psi_D_file density_file plot_surrounding_cells
 int main(int argc, char* argv[]) {
   if (argc == 6) {
     int argument_index = 1;
@@ -75,9 +76,14 @@ int main(int argc, char* argv[]) {
       density_file = std::string(argv[argument_index++]);
       if (density_file != "NULL") density_file = root_folder + "\\" + density_file;
     }
+    bool plot_surrounding_cells = false;
+    if (argument_index < argc) {
+      plot_surrounding_cells = atoi(argv[argument_index++]) != 0;
+    }
 
     HexMesh hex_mesh(lattice_file, displacement_file, material_file, lag_inf_point_file,
-      sing_point_file, fine_intf_flag_file, f_point_file, psi_D_file, density_file);
+      sing_point_file, fine_intf_flag_file, f_point_file, psi_D_file, density_file,
+      plot_surrounding_cells);
     hex_mesh.Normalize();
     hex_mesh.ToPBRT(pbrt_file);
     return 0;

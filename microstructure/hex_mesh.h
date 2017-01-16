@@ -16,7 +16,9 @@ public:
     const std::string& fine_intf_flag_file = "NULL",
     const std::string& f_point_file = "NULL",
     const std::string& psi_D_file = "NULL",
-    const std::string& density_file = "NULL");
+    const std::string& density_file = "NULL",
+    const bool plot_surrounding_cells = false
+    );
   HexMesh(const HexMesh& other);
   ~HexMesh() {}
 
@@ -59,6 +61,8 @@ private:
   Eigen::Matrix3Xd f_point_;
   Eigen::Matrix3Xd psi_D_;
   Eigen::VectorXd density_;
+
+  const bool plot_surrounding_cells_;
 };
 
 #endif
