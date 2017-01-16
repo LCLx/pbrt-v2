@@ -8,10 +8,15 @@
 
 class HexMesh {
 public:
-  HexMesh(const std::string& lattice_file, const std::string& displacement_file,
-    const std::string& material_file, const std::string& lag_inf_point_file,
-    const std::string& sing_point_file,
-    const std::string& fine_intf_flag_file);
+  explicit HexMesh(const std::string& lattice_file = "NULL",
+    const std::string& displacement_file = "NULL",
+    const std::string& material_file = "NULL",
+    const std::string& lag_inf_point_file = "NULL",
+    const std::string& sing_point_file = "NULL",
+    const std::string& fine_intf_flag_file = "NULL",
+    const std::string& f_point_file = "NULL",
+    const std::string& psi_D_file = "NULL",
+    const std::string& density_file = "NULL");
   HexMesh(const HexMesh& other);
   ~HexMesh() {}
 
@@ -51,6 +56,9 @@ private:
   Eigen::Matrix3Xd lag_inf_point_;
   Eigen::Matrix3Xd sing_point_;
   Eigen::VectorXi fine_intf_flags_;
+  Eigen::Matrix3Xd f_point_;
+  Eigen::Matrix3Xd psi_D_;
+  Eigen::VectorXd density_;
 };
 
 #endif

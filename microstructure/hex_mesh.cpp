@@ -11,7 +11,9 @@ Eigen::Matrix<double, 3, 10> HexMesh::fine_intf_flag_colors_ = (Eigen::Matrix<do
 
 HexMesh::HexMesh(const std::string& lattice_file, const std::string& displacement_file,
   const std::string& material_file, const std::string& lag_inf_point_file,
-  const std::string& sing_point_file, const std::string& fine_intf_flag_file) {
+  const std::string& sing_point_file, const std::string& fine_intf_flag_file,
+  const std::string& f_point_file, const std::string& psi_D_file,
+  const std::string& density_file) {
   // Read cell_counts, dx and domain_min from lattice file.
   std::ifstream lattice;
   lattice.open(lattice_file, std::ios::binary);
@@ -95,22 +97,79 @@ HexMesh::HexMesh(const std::string& lattice_file, const std::string& displacemen
 
   // Read fine_intf_flags.
   fine_intf_flags_ = Eigen::VectorXi::Ones(total_cell_num) * (-1);
-  if (fine_intf_flag_file == "NULL") return;
-  std::ifstream fine_intf_flag;
-  fine_intf_flag.open(fine_intf_flag_file, std::ios::binary);
-  Eigen::Vector3i fine_intf_flag_count;
-  fine_intf_flag.read(reinterpret_cast<char*>(&fine_intf_flag_count), sizeof(Eigen::Vector3i));
-  for (int i = 0; i < 2; ++i)
-    assert(fine_intf_flag_count(i) + 1 == node_count_(i));
-  if (node_count_(2) == 1) assert(fine_intf_flag_count(2) == 1);
-  else assert(fine_intf_flag_count(2) + 1 == node_count_(2));
-  double* fine_intf_flag_data = new double[total_cell_num];
-  fine_intf_flag.read(reinterpret_cast<char*>(fine_intf_flag_data), sizeof(double) * total_cell_num);
-  for (int i = 0; i < total_cell_num; ++i) {
-    fine_intf_flags_(i) = static_cast<int>(fine_intf_flag_data[i]);
+  if (fine_intf_flag_file != "NULL") {
+    std::ifstream fine_intf_flag;
+    fine_intf_flag.open(fine_intf_flag_file, std::ios::binary);
+    Eigen::Vector3i fine_intf_flag_count;
+    fine_intf_flag.read(reinterpret_cast<char*>(&fine_intf_flag_count), sizeof(Eigen::Vector3i));
+    for (int i = 0; i < 2; ++i)
+      assert(fine_intf_flag_count(i) + 1 == node_count_(i));
+    if (node_count_(2) == 1) assert(fine_intf_flag_count(2) == 1);
+    else assert(fine_intf_flag_count(2) + 1 == node_count_(2));
+    double* fine_intf_flag_data = new double[total_cell_num];
+    fine_intf_flag.read(reinterpret_cast<char*>(fine_intf_flag_data), sizeof(double) * total_cell_num);
+    for (int i = 0; i < total_cell_num; ++i) {
+      fine_intf_flags_(i) = static_cast<int>(fine_intf_flag_data[i]);
+    }
+    delete[] fine_intf_flag_data;
+    fine_intf_flag.close();
   }
-  delete[] fine_intf_flag_data;
-  fine_intf_flag.close();
+
+  // Read f_points.
+  std::ifstream f_point;
+  f_point_ = Eigen::Matrix3Xd::Zero(3, 0);
+  if (f_point_file != "NULL") {
+    f_point.open(f_point_file, std::ios::binary);
+    int f_point_count;
+    f_point.read(reinterpret_cast<char*>(&f_point_count), sizeof(int));
+    Eigen::Vector3d* f_point_data = new Eigen::Vector3d[f_point_count];
+    f_point.read(reinterpret_cast<char*>(f_point_data), sizeof(Eigen::Vector3d) * f_point_count);
+    f_point_ = Eigen::Matrix3Xd::Zero(3, f_point_count);
+    for (int i = 0; i < f_point_count; ++i) {
+      f_point_.col(i) = f_point_data[i];
+    }
+    delete[] f_point_data;
+    f_point.close();
+  }
+
+  // Read psi_D;
+  std::ifstream psi_D;
+  psi_D_ = Eigen::Matrix3Xd::Zero(3, 0);
+  if (psi_D_file != "NULL") {
+    psi_D.open(psi_D_file, std::ios::binary);
+    int psi_D_count;
+    psi_D.read(reinterpret_cast<char*>(&psi_D_count), sizeof(int));
+    Eigen::Vector3d* psi_D_data = new Eigen::Vector3d[psi_D_count];
+    psi_D.read(reinterpret_cast<char*>(psi_D_data), sizeof(Eigen::Vector3d) * psi_D_count);
+    psi_D_ = Eigen::Matrix3Xd::Zero(3, psi_D_count);
+    for (int i = 0; i < psi_D_count; ++i) {
+      psi_D_.col(i) = psi_D_data[i];
+    }
+    delete[] psi_D_data;
+    psi_D.close();
+  }
+
+  // Read density.
+  std::ifstream density;
+  density_ = Eigen::VectorXd::Ones(total_cell_num) * (-1.0);
+  if (density_file != "NULL") {
+    density.open(density_file, std::ios::binary);
+    Eigen::Vector3i density_count;
+    density.read(reinterpret_cast<char*>(&density_count), sizeof(Eigen::Vector3i));
+    for (int i = 0; i < 2; ++i)
+      assert(density_count(i) + 1 == node_count_(i));
+    // The z axis is a little tricky.
+    if (node_count_(2) == 1) assert(density_count(2) == 1);
+    else assert(density_count(2) + 1 == node_count_(2));
+    double* density_data = new double[total_cell_num];
+    density.read(reinterpret_cast<char*>(density_data), sizeof(double) * total_cell_num);
+
+    for (int i = 0; i < total_cell_num; ++i) {
+      density_(i) = density_data[i];
+    }
+    delete[] density_data;
+    density.close();
+  }
 }
 
 HexMesh::HexMesh(const HexMesh& other)
@@ -190,6 +249,7 @@ void HexMesh::ToPBRT(const std::string& pbrt_file) const {
   const int max_edge_num = (node_z_num == 1 ? 4 : 12);
   const int point_in_hex_element = (node_z_num == 1 ? 4 : 8);
   const bool has_fine_intf_flags = fine_intf_flags_(0) != -1;
+  const bool has_density = density_(0) != -1.0;
   Eigen::MatrixX3i front_back_triangles;
   Eigen::MatrixX3i all_triangles;
   if (node_z_num == 1) {
@@ -225,18 +285,7 @@ void HexMesh::ToPBRT(const std::string& pbrt_file) const {
         const Eigen::Matrix3Xd element = HexElement(i, j, k);
         // Write data to pbrt.
         pbrt_output << "AttributeBegin" << std::endl;
-        if (!has_fine_intf_flags) {
-          const double color = 0.75;
-          pbrt_output << "Material \"glass\" \"rgb Kr\" [0.5 0.5 0.5] \"rgb Kt\" [" << color << " " << color << " " << color << "]"
-            << " \"float index\" [1.0]" << std::endl;
-          pbrt_output << "Shape \"trianglemesh\"" << std::endl;
-          pbrt_output << "\"integer indices\" [" << std::endl;
-          for (int l = 0; l < static_cast<int>(front_back_triangles.rows()); ++l)
-            pbrt_output << front_back_triangles(l, 0) << " "
-              << front_back_triangles(l, 1) << " "
-              << front_back_triangles(l, 2) << std::endl;
-          pbrt_output << "]" << std::endl;
-        } else {
+        if (has_fine_intf_flags) {
           const Eigen::Vector3d color = fine_intf_flag_colors_.col(fine_intf_flags_(CellSubToIdx(i, j, k)));
           pbrt_output << "Material \"glass\" \"rgb Kr\" [0.5 0.5 0.5] \"rgb Kt\" [" << color.x() << " " << color.y() << " " << color.z() << "]"
             << " \"float index\" [1.0]" << std::endl;
@@ -247,7 +296,30 @@ void HexMesh::ToPBRT(const std::string& pbrt_file) const {
               << all_triangles(l, 1) << " "
               << all_triangles(l, 2) << std::endl;
             pbrt_output << "]" << std::endl;
+        } else if (has_density) {
+          const double color = 1.0 - density_(CellSubToIdx(i, j, k));
+          pbrt_output << "Material \"glass\" \"rgb Kr\" [0.5 0.5 0.5] \"rgb Kt\" [" << color << " " << color << " " << color << "]"
+            << " \"float index\" [1.0]" << std::endl;
+          pbrt_output << "Shape \"trianglemesh\"" << std::endl;
+          pbrt_output << "\"integer indices\" [" << std::endl;
+          for (int l = 0; l < static_cast<int>(front_back_triangles.rows()); ++l)
+            pbrt_output << front_back_triangles(l, 0) << " "
+            << front_back_triangles(l, 1) << " "
+            << front_back_triangles(l, 2) << std::endl;
+          pbrt_output << "]" << std::endl;
+        } else {
+          const double color = 0.75;
+          pbrt_output << "Material \"glass\" \"rgb Kr\" [0.5 0.5 0.5] \"rgb Kt\" [" << color << " " << color << " " << color << "]"
+            << " \"float index\" [1.0]" << std::endl;
+          pbrt_output << "Shape \"trianglemesh\"" << std::endl;
+          pbrt_output << "\"integer indices\" [" << std::endl;
+          for (int l = 0; l < static_cast<int>(front_back_triangles.rows()); ++l)
+            pbrt_output << front_back_triangles(l, 0) << " "
+            << front_back_triangles(l, 1) << " "
+            << front_back_triangles(l, 2) << std::endl;
+          pbrt_output << "]" << std::endl;
         }
+
         pbrt_output << "\"point P\" [" << std::endl;
         for (int j = 0; j < point_in_hex_element; ++j) {
           pbrt_output << element(0, j) << " " << element(1, j) << " " << element(2, j) << std::endl;
@@ -297,6 +369,32 @@ void HexMesh::ToPBRT(const std::string& pbrt_file) const {
   pbrt_output << "Material \"shinymetal\" \"rgb Ks\" [.1 .1 .1] \"rgb Kr\" [1.0 0.36 0.95]" << std::endl;
   for (int i = 0; i < sing_point_num; ++i) {
     const Eigen::Vector3d center = sing_point_.col(i);
+    pbrt_output << "TransformBegin" << std::endl;
+    pbrt_output << "Translate " << center.x() << " " << center.y() << " " << center.z() << std::endl;
+    pbrt_output << "Shape \"sphere\" \"float radius\" [" << point_radius << "]" << std::endl;
+    pbrt_output << "TransformEnd" << std::endl;
+  }
+  pbrt_output << "AttributeEnd" << std::endl;
+
+  // Draw f_point.
+  const int f_point_num = static_cast<int>(f_point_.cols());
+  pbrt_output << "AttributeBegin" << std::endl;
+  pbrt_output << "Material \"shinymetal\" \"rgb Ks\" [.1 .1 .1] \"rgb Kr\" [1.0 0.3 0.2]" << std::endl;
+  for (int i = 0; i < f_point_num; ++i) {
+    const Eigen::Vector3d center = f_point_.col(i);
+    pbrt_output << "TransformBegin" << std::endl;
+    pbrt_output << "Translate " << center.x() << " " << center.y() << " " << center.z() << std::endl;
+    pbrt_output << "Shape \"sphere\" \"float radius\" [" << point_radius << "]" << std::endl;
+    pbrt_output << "TransformEnd" << std::endl;
+  }
+  pbrt_output << "AttributeEnd" << std::endl;
+
+  // Draw psi_D.
+  const int  psi_D_num = static_cast<int>(psi_D_.cols());
+  pbrt_output << "AttributeBegin" << std::endl;
+  pbrt_output << "Material \"shinymetal\" \"rgb Ks\" [.1 .1 .1] \"rgb Kr\" [0.2 0.3 1.0]" << std::endl;
+  for (int i = 0; i < psi_D_num; ++i) {
+    const Eigen::Vector3d center = psi_D_.col(i);
     pbrt_output << "TransformBegin" << std::endl;
     pbrt_output << "Translate " << center.x() << " " << center.y() << " " << center.z() << std::endl;
     pbrt_output << "Shape \"sphere\" \"float radius\" [" << point_radius << "]" << std::endl;

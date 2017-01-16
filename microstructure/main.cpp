@@ -7,7 +7,7 @@
 
 // pbrt_file root_folder hex_mesh_name rho_mesh_name depth
 // pbrt_file root_folder t
-// pbrt_file root_folder lattice_file displacement_file material_file lag_inf_point_file sing_point_file fine_intf_flag_file
+// pbrt_file root_folder lattice_file displacement_file material_file lag_inf_point_file sing_point_file fine_intf_flag_file f_point_file psi_D_file density_file
 int main(int argc, char* argv[]) {
   if (argc == 6) {
     int argument_index = 1;
@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) {
     mesh1.Normalize();
     (mesh0 * (1 - t) + mesh1 * t).ToPBRT(pbrt_file);
     return 0;
-  } else if (argc == 9) {
+  } else {
     int argument_index = 1;
     const std::string pbrt_file(argv[argument_index++]);
     const std::string root_folder(argv[argument_index++]);
@@ -62,8 +62,22 @@ int main(int argc, char* argv[]) {
     std::string fine_intf_flag_file(argv[argument_index++]);
     if (fine_intf_flag_file != "NULL") fine_intf_flag_file = root_folder + "\\" + fine_intf_flag_file;
 
+    std::string f_point_file = "NULL", psi_D_file = "NULL", density_file = "NULL";
+    if (argument_index < argc) {
+      f_point_file = std::string(argv[argument_index++]);
+      if (f_point_file != "NULL") f_point_file = root_folder + "\\" + f_point_file;
+    }
+    if (argument_index < argc) {
+      psi_D_file = std::string(argv[argument_index++]);
+      if (psi_D_file != "NULL") psi_D_file = root_folder + "\\" + psi_D_file;
+    }
+    if (argument_index < argc) {
+      density_file = std::string(argv[argument_index++]);
+      if (density_file != "NULL") density_file = root_folder + "\\" + density_file;
+    }
+
     HexMesh hex_mesh(lattice_file, displacement_file, material_file, lag_inf_point_file,
-      sing_point_file, fine_intf_flag_file);
+      sing_point_file, fine_intf_flag_file, f_point_file, psi_D_file, density_file);
     hex_mesh.Normalize();
     hex_mesh.ToPBRT(pbrt_file);
     return 0;
