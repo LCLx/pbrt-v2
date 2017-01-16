@@ -1,4 +1,4 @@
-writerObj = VideoWriter('j12_elip2_3d.avi');
+writerObj = VideoWriter('j14_sin_ani_2.avi');
 writerObj.FrameRate = 30;
 % open the video writer
 open(writerObj);
@@ -6,7 +6,7 @@ open(writerObj);
 img_num = (length(dir('rendering')) - 2) / 2;
 for u = 0 : (img_num - 1)
  % convert the image to a frame
- img = imread(['rendering/j12_elip2_3d_', num2str(u, '%03d'), '.tiff']);
+ img = imread(['rendering/j14_sin_ani_2_', num2str(u, '%03d'), '.tiff']);
  frame = im2frame(img(:, :, 1 : 3));
  writeVideo(writerObj, frame);
 end
