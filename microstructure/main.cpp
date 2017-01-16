@@ -5,21 +5,26 @@
 #include "hex_mesh.h"
 #include "quad_mesh.h"
 
-// pbrt_file root_folder hex_mesh_name rho_mesh_name depth
+// pbrt_file root_folder hex_mesh_name rho_mesh_name depth normalize
 // pbrt_file root_folder t
 // pbrt_file root_folder lattice_file displacement_file material_file lag_inf_point_file
-// sing_point_file fine_intf_flag_file f_point_file psi_D_file density_file plot_surrounding_cells threshold.
+// sing_point_file fine_intf_flag_file f_point_file psi_D_file density_file plot_surrounding_cells
+// threshold normalize.
 int main(int argc, char* argv[]) {
-  if (argc == 6) {
+  if (argc == 6 || argc == 7) {
     int argument_index = 1;
     const std::string pbrt_file(argv[argument_index++]);
     const std::string root_folder(argv[argument_index++]);
     const std::string hex_mesh_name(argv[argument_index++]);
     const std::string rho_mesh_name(argv[argument_index++]);
     const double depth = atof(argv[argument_index++]);
+    bool normalize = true;
+    if (argument_index < argc) {
+      normalize = atoi(argv[argument_index++]) != 0;
+    }
     QuadMesh quad_mesh(root_folder + "\\" + hex_mesh_name,
       root_folder + "\\" + rho_mesh_name);
-    quad_mesh.Normalize();
+    if (normalize) quad_mesh.Normalize();
     quad_mesh.ToPBRT(pbrt_file, depth);
     return 0;
   } else if (argc == 4) {
@@ -84,10 +89,14 @@ int main(int argc, char* argv[]) {
     if (argument_index < argc) {
       threshold = atof(argv[argument_index++]);
     }
+    bool normalize = true;
+    if (argument_index < argc) {
+      normalize = atoi(argv[argument_index++]) != 0;
+    }
 
     HexMesh hex_mesh(lattice_file, displacement_file, material_file, lag_inf_point_file,
       sing_point_file, fine_intf_flag_file, f_point_file, psi_D_file, density_file);
-    hex_mesh.Normalize();
+    if (normalize) hex_mesh.Normalize();
     hex_mesh.ToPBRT(pbrt_file, plot_surrounding_cells, threshold);
     return 0;
   }

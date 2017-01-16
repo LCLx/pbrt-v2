@@ -1,5 +1,5 @@
 Film "image" "integer xresolution" [1600] "integer yresolution" [1200]
-LookAt 3.5 4 -10 0.0 0.0 0.0 0.0 1.0 0.0
+LookAt 0 4 -10 0.0 0.0 0.0 0.0 1.0 0.0
 Camera "perspective" "float fov" [15]
 Sampler "lowdiscrepancy" "integer pixelsamples" [64]
 SurfaceIntegrator "directlighting" "integer maxdepth" [3]
@@ -23,15 +23,15 @@ AttributeEnd
 AttributeBegin
 Material "matte" "rgb Kd" [0.28 0.3 0.34]
 TransformBegin
-  Translate 0 -0.2 0
+  Translate 0 -0.1 0
   Scale 100 1 100
   Shape "trianglemesh" "integer indices" [0 1 2 2 1 3]
   "point P" [-1 -1 -1 -1 -1 1 1 -1 -1 1 -1 1]
 TransformEnd
 AttributeEnd
 TransformBegin
-  Scale 2.7 2.7 2.7
-  Translate -0.5 -0.3 0
-  Include "mesh.pbrt"
+  Scale 3 3 3
+  Translate -0.5 -0.2 0
+  Include "grid.pbrt"
 TransformEnd
 WorldEnd

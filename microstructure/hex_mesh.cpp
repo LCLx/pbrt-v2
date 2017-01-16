@@ -43,23 +43,28 @@ HexMesh::HexMesh(const std::string& lattice_file, const std::string& displacemen
 
   // Read material.
   std::ifstream material;
-  material.open(material_file, std::ios::binary);
-  Eigen::Vector3i material_count;
-  material.read(reinterpret_cast<char*>(&material_count), sizeof(Eigen::Vector3i));
-  for (int i = 0; i < 2; ++i)
-    assert(material_count(i) + 1 == node_count_(i));
-  // The z axis is a little tricky.
-  if (node_count_(2) == 1) assert(material_count(2) == 1);
-  else assert(material_count(2) + 1 == node_count_(2));
-  const int total_cell_num = material_count.prod();
-  int* material_data = new int[total_cell_num];
-  material.read(reinterpret_cast<char*>(material_data), sizeof(int) * total_cell_num);
+  const int cell_x = node_count_.x() - 1;
+  const int cell_y = node_count_.y() - 1;
+  const int cell_z = node_count_.z() == 1 ? 1 : (node_count_.z() - 1);
+  const int total_cell_num = cell_x * cell_y * cell_z;
   material_ = Eigen::VectorXi::Zero(total_cell_num);
-  for (int i = 0; i < total_cell_num; ++i) {
-    material_(i) = material_data[i];
+  if (material_file != "NULL") {
+    material.open(material_file, std::ios::binary);
+    Eigen::Vector3i material_count;
+    material.read(reinterpret_cast<char*>(&material_count), sizeof(Eigen::Vector3i));
+    for (int i = 0; i < 2; ++i)
+      assert(material_count(i) + 1 == node_count_(i));
+    // The z axis is a little tricky.
+    if (node_count_(2) == 1) assert(material_count(2) == 1);
+    else assert(material_count(2) + 1 == node_count_(2));
+    int* material_data = new int[total_cell_num];
+    material.read(reinterpret_cast<char*>(material_data), sizeof(int) * total_cell_num);
+    for (int i = 0; i < total_cell_num; ++i) {
+      material_(i) = material_data[i];
+    }
+    delete[] material_data;
+    material.close();
   }
-  delete[] material_data;
-  material.close();
 
   // Read lag inf point.
   std::ifstream lag_inf_point;
