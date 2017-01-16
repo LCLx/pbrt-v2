@@ -5,9 +5,9 @@
 #include "hex_mesh.h"
 
 Eigen::Matrix<double, 3, 10> HexMesh::fine_intf_flag_colors_ = (Eigen::Matrix<double, 3, 10>() <<
-  0.8147, 0.2, 0.2785, 0.3, 0.9572, 0.1419, 0.85, 0.0357, 0.3922, 0.6787,
-  0.9058, 0.5, 0.5469, 0.9, 0.4854, 0.4218, 0.20, 0.8491, 0.6555, 0.7577,
-  0.1270, 0.9, 0.9575, 0.2, 0.8003, 0.9157, 0.30, 0.9340, 0.1712, 0.7431).finished();
+  0.75, 0.2, 0.2785, 0.3, 0.9572, 0.1419, 0.85, 0.0357, 0.3922, 0.6787,
+  0.75, 0.5, 0.5469, 0.9, 0.4854, 0.4218, 0.20, 0.8491, 0.6555, 0.7577,
+  0.75, 0.9, 0.9575, 0.2, 0.8003, 0.9157, 0.30, 0.9340, 0.1712, 0.7431).finished();
 
 HexMesh::HexMesh(const std::string& lattice_file, const std::string& displacement_file,
   const std::string& material_file, const std::string& lag_inf_point_file,
@@ -366,12 +366,12 @@ void HexMesh::ToPBRT(const std::string& pbrt_file) const {
   // Draw sing point.
   const int sing_point_num = static_cast<int>(sing_point_.cols());
   pbrt_output << "AttributeBegin" << std::endl;
-  pbrt_output << "Material \"shinymetal\" \"rgb Ks\" [.1 .1 .1] \"rgb Kr\" [1.0 0.36 0.95]" << std::endl;
+  pbrt_output << "Material \"shinymetal\" \"rgb Ks\" [.1 .1 .1] \"rgb Kr\" [0.2 0.95 0.3]" << std::endl;
   for (int i = 0; i < sing_point_num; ++i) {
     const Eigen::Vector3d center = sing_point_.col(i);
     pbrt_output << "TransformBegin" << std::endl;
     pbrt_output << "Translate " << center.x() << " " << center.y() << " " << center.z() << std::endl;
-    pbrt_output << "Shape \"sphere\" \"float radius\" [" << point_radius << "]" << std::endl;
+    pbrt_output << "Shape \"sphere\" \"float radius\" [" << point_radius * 0.65 << "]" << std::endl;
     pbrt_output << "TransformEnd" << std::endl;
   }
   pbrt_output << "AttributeEnd" << std::endl;
