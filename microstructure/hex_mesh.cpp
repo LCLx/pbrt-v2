@@ -102,15 +102,25 @@ HexMesh::HexMesh(const std::string& lattice_file, const std::string& displacemen
     fine_intf_flag.open(fine_intf_flag_file, std::ios::binary);
     Eigen::Vector3i fine_intf_flag_count;
     fine_intf_flag.read(reinterpret_cast<char*>(&fine_intf_flag_count), sizeof(Eigen::Vector3i));
-    for (int i = 0; i < 2; ++i)
-      assert(fine_intf_flag_count(i) + 1 == node_count_(i));
+    // Compute the padding size.
+    const int x_double_padding = fine_intf_flag_count.x() - node_count_.x() + 1;
+    const int y_double_padding = fine_intf_flag_count.y() - node_count_.y() + 1;
+    assert(x_double_padding % 2 == 0);
+    assert(y_double_padding % 2 == 0);
+    assert(x_double_padding == y_double_padding);
+    const int padding = x_double_padding / 2;
     if (node_count_(2) == 1) assert(fine_intf_flag_count(2) == 1);
     else assert(fine_intf_flag_count(2) + 1 == node_count_(2));
-    double* fine_intf_flag_data = new double[total_cell_num];
-    fine_intf_flag.read(reinterpret_cast<char*>(fine_intf_flag_data), sizeof(double) * total_cell_num);
-    for (int i = 0; i < total_cell_num; ++i) {
-      fine_intf_flags_(i) = static_cast<int>(fine_intf_flag_data[i]);
-    }
+    const int padded_cell_num = fine_intf_flag_count.prod();
+    double* fine_intf_flag_data = new double[padded_cell_num];
+    fine_intf_flag.read(reinterpret_cast<char*>(fine_intf_flag_data), sizeof(double) * padded_cell_num);
+    for (int i = 0; i < NumOfCellX(); ++i)
+      for (int j = 0; j < NumOfCellY(); ++j)
+        for (int k = 0; k < NumOfCellZ(); ++k) {
+          fine_intf_flags_(CellSubToIdx(i, j, k)) = static_cast<int>(
+            fine_intf_flag_data[(i + padding) * fine_intf_flag_count.y() * fine_intf_flag_count.z() +
+            (j + padding) * fine_intf_flag_count.z() + k]);
+        }
     delete[] fine_intf_flag_data;
     fine_intf_flag.close();
   }
@@ -284,8 +294,8 @@ void HexMesh::ToPBRT(const std::string& pbrt_file) const {
         if (MaterialType(i, j, k) < 0) continue;
         const Eigen::Matrix3Xd element = HexElement(i, j, k);
         // Write data to pbrt.
-        pbrt_output << "AttributeBegin" << std::endl;
-        if (has_fine_intf_flags) {
+        if (has_fine_intf_flags && !has_density) {
+          pbrt_output << "AttributeBegin" << std::endl;
           const Eigen::Vector3d color = fine_intf_flag_colors_.col(fine_intf_flags_(CellSubToIdx(i, j, k)));
           pbrt_output << "Material \"glass\" \"rgb Kr\" [0.5 0.5 0.5] \"rgb Kt\" [" << color.x() << " " << color.y() << " " << color.z() << "]"
             << " \"float index\" [1.0]" << std::endl;
@@ -296,7 +306,8 @@ void HexMesh::ToPBRT(const std::string& pbrt_file) const {
               << all_triangles(l, 1) << " "
               << all_triangles(l, 2) << std::endl;
             pbrt_output << "]" << std::endl;
-        } else if (has_density) {
+        } else if (has_density && !has_fine_intf_flags) {
+          pbrt_output << "AttributeBegin" << std::endl;
           const double color = 1.0 - density_(CellSubToIdx(i, j, k));
           pbrt_output << "Material \"glass\" \"rgb Kr\" [0.5 0.5 0.5] \"rgb Kt\" [" << color << " " << color << " " << color << "]"
             << " \"float index\" [1.0]" << std::endl;
@@ -307,7 +318,22 @@ void HexMesh::ToPBRT(const std::string& pbrt_file) const {
             << front_back_triangles(l, 1) << " "
             << front_back_triangles(l, 2) << std::endl;
           pbrt_output << "]" << std::endl;
+        } else if (has_fine_intf_flags && has_density) {
+          const int cell_idx = CellSubToIdx(i, j, k);
+          if (fine_intf_flags_(cell_idx) == 0) continue;
+          pbrt_output << "AttributeBegin" << std::endl;
+          const double color = 1.0 - density_(cell_idx);
+          pbrt_output << "Material \"glass\" \"rgb Kr\" [0.5 0.5 0.5] \"rgb Kt\" [" << color << " " << color << " " << color << "]"
+            << " \"float index\" [1.0]" << std::endl;
+          pbrt_output << "Shape \"trianglemesh\"" << std::endl;
+          pbrt_output << "\"integer indices\" [" << std::endl;
+          for (int l = 0; l < static_cast<int>(front_back_triangles.rows()); ++l)
+            pbrt_output << front_back_triangles(l, 0) << " "
+            << front_back_triangles(l, 1) << " "
+            << front_back_triangles(l, 2) << std::endl;
+          pbrt_output << "]" << std::endl;
         } else {
+          pbrt_output << "AttributeBegin" << std::endl;
           const double color = 0.75;
           pbrt_output << "Material \"glass\" \"rgb Kr\" [0.5 0.5 0.5] \"rgb Kt\" [" << color << " " << color << " " << color << "]"
             << " \"float index\" [1.0]" << std::endl;
