@@ -8,7 +8,7 @@
 // pbrt_file root_folder hex_mesh_name rho_mesh_name depth
 // pbrt_file root_folder t
 // pbrt_file root_folder lattice_file displacement_file material_file lag_inf_point_file
-// sing_point_file fine_intf_flag_file f_point_file psi_D_file density_file plot_surrounding_cells
+// sing_point_file fine_intf_flag_file f_point_file psi_D_file density_file plot_surrounding_cells threshold.
 int main(int argc, char* argv[]) {
   if (argc == 6) {
     int argument_index = 1;
@@ -80,12 +80,15 @@ int main(int argc, char* argv[]) {
     if (argument_index < argc) {
       plot_surrounding_cells = atoi(argv[argument_index++]) != 0;
     }
+    double threshold = 0.5;
+    if (argument_index < argc) {
+      threshold = atof(argv[argument_index++]);
+    }
 
     HexMesh hex_mesh(lattice_file, displacement_file, material_file, lag_inf_point_file,
-      sing_point_file, fine_intf_flag_file, f_point_file, psi_D_file, density_file,
-      plot_surrounding_cells);
+      sing_point_file, fine_intf_flag_file, f_point_file, psi_D_file, density_file);
     hex_mesh.Normalize();
-    hex_mesh.ToPBRT(pbrt_file);
+    hex_mesh.ToPBRT(pbrt_file, plot_surrounding_cells, threshold);
     return 0;
   }
 }

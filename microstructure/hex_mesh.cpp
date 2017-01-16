@@ -13,9 +13,7 @@ HexMesh::HexMesh(const std::string& lattice_file, const std::string& displacemen
   const std::string& material_file, const std::string& lag_inf_point_file,
   const std::string& sing_point_file, const std::string& fine_intf_flag_file,
   const std::string& f_point_file, const std::string& psi_D_file,
-  const std::string& density_file,
-  const bool plot_surrounding_cells)
-  : plot_surrounding_cells_(plot_surrounding_cells) {
+  const std::string& density_file) {
   // Read cell_counts, dx and domain_min from lattice file.
   std::ifstream lattice;
   lattice.open(lattice_file, std::ios::binary);
@@ -188,7 +186,7 @@ HexMesh::HexMesh(const HexMesh& other)
   : domain_min_(other.domain_min_), node_count_(other.node_count_), dx_(other.dx_),
   displacement_(other.displacement_), material_(other.material_), lag_inf_point_(other.lag_inf_point_),
   sing_point_(other.sing_point_), fine_intf_flags_(other.fine_intf_flags_), f_point_(other.f_point_),
-  psi_D_(other.psi_D_), density_(other.psi_D_), plot_surrounding_cells_(other.plot_surrounding_cells_) {}
+  psi_D_(other.psi_D_), density_(other.psi_D_) {}
 
 HexMesh& HexMesh::operator*(const double t) {
   Scale(t);
@@ -255,7 +253,7 @@ void HexMesh::Normalize() {
   Translate(-BoundingBoxMin());
 }
 
-void HexMesh::ToPBRT(const std::string& pbrt_file) const {
+void HexMesh::ToPBRT(const std::string& pbrt_file, const bool plot_surrounding_cells, const double threshold) const {
   std::ofstream pbrt_output;
   pbrt_output.open(pbrt_file);
 
@@ -332,11 +330,15 @@ void HexMesh::ToPBRT(const std::string& pbrt_file) const {
           pbrt_output << "]" << std::endl;
         } else if (has_fine_intf_flags && has_density) {
           const int cell_idx = CellSubToIdx(i, j, k);
-          if (!fine_intf_flags_(cell_idx) && !plot_surrounding_cells_) continue;
-          pbrt_output << "AttributeBegin" << std::endl;
           double color = 0.0;
-          if (!fine_intf_flags_(cell_idx) && plot_surrounding_cells_) color = 0.75;
-          else color = 1.0 - density_(cell_idx);
+          if (plot_surrounding_cells) {
+            if (!fine_intf_flags_(cell_idx)) color = 0.75;
+            else color = 1.0 - density_(cell_idx);
+          } else {
+            if (!fine_intf_flags_(cell_idx) || density_(cell_idx) <= threshold) continue;
+            color = 1.0 - density_(cell_idx);
+          }
+          pbrt_output << "AttributeBegin" << std::endl;
           pbrt_output << "Material \"glass\" \"rgb Kr\" [0.5 0.5 0.5] \"rgb Kt\" [" << color << " " << color << " " << color << "]"
             << " \"float index\" [1.0]" << std::endl;
           pbrt_output << "Shape \"trianglemesh\"" << std::endl;
@@ -361,8 +363,8 @@ void HexMesh::ToPBRT(const std::string& pbrt_file) const {
         }
 
         pbrt_output << "\"point P\" [" << std::endl;
-        for (int j = 0; j < point_in_hex_element; ++j) {
-          pbrt_output << element(0, j) << " " << element(1, j) << " " << element(2, j) << std::endl;
+        for (int l = 0; l < point_in_hex_element; ++l) {
+          pbrt_output << element(0, l) << " " << element(1, l) << " " << element(2, l) << std::endl;
         }
         pbrt_output << "]" << std::endl;
 
@@ -371,8 +373,8 @@ void HexMesh::ToPBRT(const std::string& pbrt_file) const {
         // Write edges.
         pbrt_output << "AttributeBegin" << std::endl;
         pbrt_output << "Material \"metal\"" << std::endl;
-        for (int j = 0; j < max_edge_num; ++j) {
-          const int index0 = default_edges(0, j), index1 = default_edges(1, j);
+        for (int l = 0; l < max_edge_num; ++l) {
+          const int index0 = default_edges(0, l), index1 = default_edges(1, l);
           const Eigen::Vector3d p0 = element.col(index0), p1 = element.col(index1);
           const Eigen::Vector3d p01 = p1 - p0;
           pbrt_output << "TransformBegin" << std::endl;
