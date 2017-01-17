@@ -1,6 +1,7 @@
 // Tao Du
 // taodu@csail.mit.edu
 // Jan 12, 2017
+#include <iostream>
 #include <fstream>
 #include "hex_mesh.h"
 
@@ -13,7 +14,9 @@ HexMesh::HexMesh(const std::string& lattice_file, const std::string& displacemen
   const std::string& material_file, const std::string& lag_inf_point_file,
   const std::string& sing_point_file, const std::string& fine_intf_flag_file,
   const std::string& f_point_file, const std::string& psi_D_file,
-  const std::string& density_file) {
+  const std::string& density_file, const std::string& v0_file,
+  const std::string& v1_file, const std::string& v2_file,
+  const std::string& v3_file) {
   // Read cell_counts, dx and domain_min from lattice file.
   std::ifstream lattice;
   lattice.open(lattice_file, std::ios::binary);
@@ -166,7 +169,7 @@ HexMesh::HexMesh(const std::string& lattice_file, const std::string& displacemen
 
   // Read density.
   std::ifstream density;
-  density_ = Eigen::VectorXd::Ones(total_cell_num) * (-1.0);
+  density_ = -Eigen::Matrix3Xd::Ones(3, total_cell_num);
   if (density_file != "NULL") {
     density.open(density_file, std::ios::binary);
     Eigen::Vector3i density_count;
@@ -180,10 +183,70 @@ HexMesh::HexMesh(const std::string& lattice_file, const std::string& displacemen
     density.read(reinterpret_cast<char*>(density_data), sizeof(double) * total_cell_num);
 
     for (int i = 0; i < total_cell_num; ++i) {
-      density_(i) = density_data[i];
+      density_.col(i) = Eigen::Vector3d::Ones() * density_data[i];
     }
     delete[] density_data;
     density.close();
+  }
+
+  // Read v0 to v3.
+  if (v0_file != "NULL") {
+    std::ifstream v0, v1, v2, v3;
+    v0.open(v0_file, std::ios::binary);
+    v1.open(v1_file, std::ios::binary);
+    v2.open(v2_file, std::ios::binary);
+    v3.open(v3_file, std::ios::binary);
+
+    Eigen::Vector3i count;
+    v0.read(reinterpret_cast<char*>(&count), sizeof(Eigen::Vector3i));
+    v1.read(reinterpret_cast<char*>(&count), sizeof(Eigen::Vector3i));
+    v2.read(reinterpret_cast<char*>(&count), sizeof(Eigen::Vector3i));
+    v3.read(reinterpret_cast<char*>(&count), sizeof(Eigen::Vector3i));
+    double* v0_data = new double[total_cell_num];
+    double* v1_data = new double[total_cell_num];
+    double* v2_data = new double[total_cell_num];
+    double* v3_data = new double[total_cell_num];
+    v0.read(reinterpret_cast<char*>(v0_data), sizeof(double) * total_cell_num);
+    v1.read(reinterpret_cast<char*>(v1_data), sizeof(double) * total_cell_num);
+    v2.read(reinterpret_cast<char*>(v2_data), sizeof(double) * total_cell_num);
+    v3.read(reinterpret_cast<char*>(v3_data), sizeof(double) * total_cell_num);
+    const Eigen::Vector3d color0(0.9, 0.0, 0.0),
+      color1(0.0, 0.9, 0.0),
+      color2(0.0, 0.0, 0.9),
+      color3(0.1, 0.1, 0.1);
+    double v0_sum = 0.0, v1_sum = 0.0, v2_sum = 0.0, v3_sum = 0.0;
+    double v0_max = 0.0, v1_max = 0.0, v2_max = 0.0, v3_max = 0.0;
+    double v0_min = 1.0, v1_min = 1.0, v2_min = 1.0, v3_min = 1.0;
+    for (int i = 0; i < total_cell_num; ++i) {
+      density_.col(i) = color0 * v0_data[i] + color1 * v1_data[i]
+        + color2 * v2_data[i] + color3 * v3_data[i];
+      v0_sum += v0_data[i];
+      v1_sum += v1_data[i];
+      v2_sum += v2_data[i];
+      v3_sum += v3_data[i];
+      if (v0_data[i] > v0_max) v0_max = v0_data[i];
+      if (v1_data[i] > v1_max) v1_max = v1_data[i];
+      if (v2_data[i] > v2_max) v2_max = v2_data[i];
+      if (v3_data[i] > v3_max) v3_max = v3_data[i];
+      if (v0_data[i] < v0_min) v0_min = v0_data[i];
+      if (v1_data[i] < v1_min) v1_min = v1_data[i];
+      if (v2_data[i] < v2_min) v2_min = v2_data[i];
+      if (v3_data[i] < v3_min) v3_min = v3_data[i];
+    }
+//     std::cout << "sum: v0 = " << v0_sum << ", v1 = " << v1_sum << ", v2 = " << v2_sum << ", v3 = " << v3_sum << std::endl;
+//     std::cout << "max: v0 = " << v0_max << ", v1 = " << v1_max << ", v2 = " << v2_max << ", v3 = " << v3_max << std::endl;
+//     std::cout << "min: v0 = " << v0_min << ", v1 = " << v1_min << ", v2 = " << v2_min << ", v3 = " << v3_min << std::endl;
+//     std::cout << "average: v0 = " << v0_sum / total_cell_num << ", v1 = " << v1_sum / total_cell_num
+//       << ", v2 = " << v2_sum / total_cell_num << ", v3 = " << v3_sum / total_cell_num << std::endl;
+    density_ = density_ / density_.maxCoeff();
+    delete[] v0_data;
+    delete[] v1_data;
+    delete[] v2_data;
+    delete[] v3_data;
+    v0.close();
+    v1.close();
+    v2.close();
+    v3.close();
   }
 }
 
@@ -323,8 +386,9 @@ void HexMesh::ToPBRT(const std::string& pbrt_file, const bool plot_surrounding_c
             pbrt_output << "]" << std::endl;
         } else if (has_density && !has_fine_intf_flags) {
           pbrt_output << "AttributeBegin" << std::endl;
-          const double color = 1.0 - density_(CellSubToIdx(i, j, k));
-          pbrt_output << "Material \"glass\" \"rgb Kr\" [0.5 0.5 0.5] \"rgb Kt\" [" << color << " " << color << " " << color << "]"
+          const Eigen::Vector3d color = 1.0 - density_.col(CellSubToIdx(i, j, k)).array();
+          pbrt_output << "Material \"glass\" \"rgb Kr\" [0.5 0.5 0.5] \"rgb Kt\" [" << color.x()
+            << " " << color.y() << " " << color.z() << "]"
             << " \"float index\" [1.0]" << std::endl;
           pbrt_output << "Shape \"trianglemesh\"" << std::endl;
           pbrt_output << "\"integer indices\" [" << std::endl;
@@ -335,16 +399,17 @@ void HexMesh::ToPBRT(const std::string& pbrt_file, const bool plot_surrounding_c
           pbrt_output << "]" << std::endl;
         } else if (has_fine_intf_flags && has_density) {
           const int cell_idx = CellSubToIdx(i, j, k);
-          double color = 0.0;
+          Eigen::Vector3d color = Eigen::Vector3d::Zero();
           if (plot_surrounding_cells) {
-            if (!fine_intf_flags_(cell_idx)) color = 0.75;
-            else color = 1.0 - density_(cell_idx);
+            if (!fine_intf_flags_(cell_idx)) color = Eigen::Vector3d::Ones() * 0.75;
+            else color = 1.0 - density_.col(cell_idx).array();
           } else {
             if (!fine_intf_flags_(cell_idx) || density_(cell_idx) <= threshold) continue;
-            color = 1.0 - density_(cell_idx);
+            color = 1.0 - density_.col(cell_idx).array();
           }
           pbrt_output << "AttributeBegin" << std::endl;
-          pbrt_output << "Material \"glass\" \"rgb Kr\" [0.5 0.5 0.5] \"rgb Kt\" [" << color << " " << color << " " << color << "]"
+          pbrt_output << "Material \"glass\" \"rgb Kr\" [0.5 0.5 0.5] \"rgb Kt\" [" << color.x()
+            << " " << color.y() << " " << color.z() << "]"
             << " \"float index\" [1.0]" << std::endl;
           pbrt_output << "Shape \"trianglemesh\"" << std::endl;
           pbrt_output << "\"integer indices\" [" << std::endl;

@@ -3,8 +3,8 @@ writerObj.FrameRate = 30;
 % open the video writer
 open(writerObj);
 % write the frames to the video
-img_num = (length(dir('rendering')) - 2) / 2;
-for u = 0 : (img_num - 1)
+img_num = 78;
+for u = 0 : img_num
  % convert the image to a frame
  img = imread(['rendering/j15_bridge3_ale_64_3_defo_', num2str(u, '%03d'), '.tiff']);
  frame = im2frame(img(:, :, 1 : 3));

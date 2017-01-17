@@ -16,7 +16,11 @@ public:
     const std::string& fine_intf_flag_file = "NULL",
     const std::string& f_point_file = "NULL",
     const std::string& psi_D_file = "NULL",
-    const std::string& density_file = "NULL"
+    const std::string& density_file = "NULL",
+    const std::string& v0_file = "NULL",
+    const std::string& v1_file = "NULL",
+    const std::string& v2_file = "NULL",
+    const std::string& v3_file = "NULL"
   );
   HexMesh(const HexMesh& other);
   ~HexMesh() {}
@@ -59,7 +63,7 @@ private:
   Eigen::VectorXi fine_intf_flags_;
   Eigen::Matrix3Xd f_point_;
   Eigen::Matrix3Xd psi_D_;
-  Eigen::VectorXd density_;
+  Eigen::Matrix3Xd density_;
 };
 
 #endif
