@@ -9,7 +9,7 @@
 // pbrt_file root_folder t
 // pbrt_file root_folder lattice_file displacement_file material_file lag_inf_point_file
 // sing_point_file fine_intf_flag_file f_point_file psi_D_file density_file plot_surrounding_cells
-// threshold normalize.
+// threshold normalize v0 v1 v2 v3
 int main(int argc, char* argv[]) {
   if (argc == 6 || argc == 7) {
     int argument_index = 1;
@@ -93,9 +93,27 @@ int main(int argc, char* argv[]) {
     if (argument_index < argc) {
       normalize = atoi(argv[argument_index++]) != 0;
     }
+    std::string v0_file = "NULL", v1_file = "NULL", v2_file = "NULL", v3_file = "NULL";
+    if (argument_index < argc) {
+      v0_file = std::string(argv[argument_index++]);
+      if (v0_file != "NULL") v0_file = root_folder + "\\" + v0_file;
+    }
+    if (argument_index < argc) {
+      v1_file = std::string(argv[argument_index++]);
+      if (v1_file != "NULL") v1_file = root_folder + "\\" + v1_file;
+    }
+    if (argument_index < argc) {
+      v2_file = std::string(argv[argument_index++]);
+      if (v2_file != "NULL") v2_file = root_folder + "\\" + v2_file;
+    }
+    if (argument_index < argc) {
+      v3_file = std::string(argv[argument_index++]);
+      if (v3_file != "NULL") v3_file = root_folder + "\\" + v3_file;
+    }
 
     HexMesh hex_mesh(lattice_file, displacement_file, material_file, lag_inf_point_file,
-      sing_point_file, fine_intf_flag_file, f_point_file, psi_D_file, density_file);
+      sing_point_file, fine_intf_flag_file, f_point_file, psi_D_file, density_file,
+      v0_file, v1_file, v2_file, v3_file);
     if (normalize) hex_mesh.Normalize();
     hex_mesh.ToPBRT(pbrt_file, plot_surrounding_cells, threshold);
     return 0;
