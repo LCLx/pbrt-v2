@@ -19,5 +19,5 @@ if not os.path.exists(root_folder):
 
 for i in range(n_start, n_end + 1, n_step):
   # Rendering.
-  os.system('../../../src/bin/pbrt --ncores 36 --outfile %s/%s_%03d.exr %d/%s.pbrt' % (root_folder, name, i, i, name))
+  os.system('../../../src/bin/pbrt --ncores 64 --outfile %s/%s_%03d.exr %d/%s.pbrt' % (root_folder, name, i, i, name))
   os.system('../../../src/bin/exrtotiff -scale %f %s/%s_%03d.exr %s/%s_%03d.tiff' % (scale_factor, root_folder, name, i, root_folder, name, i))
