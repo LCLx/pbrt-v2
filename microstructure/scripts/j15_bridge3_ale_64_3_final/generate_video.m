@@ -1,4 +1,4 @@
-name = 'j16_ray_4_f509_print_final';
+name = 'j15_bridge3_ale_64_3_final';
 
 writerObj = VideoWriter([name, '.avi']);
 writerObj.FrameRate = 30;

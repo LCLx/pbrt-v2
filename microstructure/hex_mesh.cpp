@@ -404,7 +404,7 @@ void HexMesh::ToPBRT(const std::string& pbrt_file, const bool plot_surrounding_c
             if (!fine_intf_flags_(cell_idx)) color = Eigen::Vector3d::Ones() * 0.75;
             else color = 1.0 - density_.col(cell_idx).array();
           } else {
-            if (!fine_intf_flags_(cell_idx) || density_(cell_idx) <= threshold) continue;
+            if (!fine_intf_flags_(cell_idx) || density_(0, cell_idx) <= threshold) continue;
             color = 1.0 - density_.col(cell_idx).array();
           }
           pbrt_output << "AttributeBegin" << std::endl;
