@@ -16,7 +16,7 @@ HexMesh::HexMesh(const std::string& lattice_file, const std::string& displacemen
   const std::string& f_point_file, const std::string& psi_D_file,
   const std::string& density_file, const std::string& v0_file,
   const std::string& v1_file, const std::string& v2_file,
-  const std::string& v3_file) {
+  const std::string& v3_file, const std::string& fem_ale_dis_file) {
   // Read cell_counts, dx and domain_min from lattice file.
   std::ifstream lattice;
   lattice.open(lattice_file, std::ios::binary);
@@ -247,6 +247,24 @@ HexMesh::HexMesh(const std::string& lattice_file, const std::string& displacemen
     v1.close();
     v2.close();
     v3.close();
+  }
+
+  // Read fem_ale_dis file.
+  std::ifstream fem_ale_dis;
+  if (fem_ale_dis_file != "NULL") {
+    fem_ale_dis.open(fem_ale_dis_file, std::ios::binary);
+    Eigen::Vector3i fem_ale_dis_count;
+    fem_ale_dis.read(reinterpret_cast<char*>(&fem_ale_dis_count), sizeof(Eigen::Vector3i));
+    for (int i = 0; i < 3; ++i)
+      assert(fem_ale_dis_count(i) == node_count_(i));
+    const int total_node_num = node_count_.prod();
+    Eigen::Vector3d* fem_ale_dis_data = new Eigen::Vector3d[total_node_num];
+    fem_ale_dis.read(reinterpret_cast<char*>(fem_ale_dis_data), sizeof(Eigen::Vector3d) * total_node_num);
+    for (int i = 0; i < total_node_num; ++i) {
+      displacement_.col(i) = fem_ale_dis_data[i];
+    }
+    delete[] fem_ale_dis_data;
+    fem_ale_dis.close();
   }
 }
 

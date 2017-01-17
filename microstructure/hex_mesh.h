@@ -20,7 +20,8 @@ public:
     const std::string& v0_file = "NULL",
     const std::string& v1_file = "NULL",
     const std::string& v2_file = "NULL",
-    const std::string& v3_file = "NULL"
+    const std::string& v3_file = "NULL",
+    const std::string& fem_ale_dis_file = "NULL"
   );
   HexMesh(const HexMesh& other);
   ~HexMesh() {}
