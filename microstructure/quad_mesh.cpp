@@ -71,12 +71,14 @@ void QuadMesh::ToPBRT(const std::string& pbrt_file_name, const double extruded_d
   const int cell_num = NumOfCell();
   std::ofstream pbrt_file;
   pbrt_file.open(pbrt_file_name);
-  pbrt_file << "AttributeBegin" << std::endl;
-  pbrt_file << "Material \"matte\" \"rgb Kd\" [0.75 0.75 0.75]" << std::endl;
   for (int i = 0; i < cell_num; ++i) {
-    if (!CellType(i)) continue;
     // Draw this cube as white.
     const Eigen::Matrix<double, 3, 8> points = ExtrudedQuadElement(i, extruded_depth);
+    pbrt_file << "AttributeBegin" << std::endl;
+    if (!CellType(i))
+      pbrt_file << "Material \"matte\" \"rgb Kd\" [0.05 0.05 0.05]" << std::endl;
+    else
+      pbrt_file << "Material \"matte\" \"rgb Kd\" [0.75 0.75 0.75]" << std::endl;
     pbrt_file << "Shape \"trianglemesh\"" << std::endl;
     pbrt_file << "\"integer indices\" [" << std::endl
       << "4 6 7" << std::endl
@@ -97,7 +99,7 @@ void QuadMesh::ToPBRT(const std::string& pbrt_file_name, const double extruded_d
       pbrt_file << points(0, j) << " " << points(1, j) << " " << points(2, j) << std::endl;
     }
     pbrt_file << "]" << std::endl;
+    pbrt_file << "AttributeEnd" << std::endl;
   }
-  pbrt_file << "AttributeEnd" << std::endl;
   pbrt_file.close();
 }
