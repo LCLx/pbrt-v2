@@ -1,4 +1,4 @@
-name = 'j16_curved_grip_2d_64_f470_print_6_final';
+name = 'j16_ray_4_f509_print_final';
 
 writerObj = VideoWriter([name, '.avi']);
 writerObj.FrameRate = 30;
