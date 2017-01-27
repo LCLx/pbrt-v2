@@ -32,7 +32,7 @@ while true
     mkdir(pbrt_idx_folder);
   end
   pbrt_file_name = fullfile(pbrt_idx_folder, 'geometry.pbrt');
-  system(sprintf('%s %s %s %f', converter_location, density_file_name, pbrt_file_name, 0.01));
+  system(sprintf('%s -m mixed -d %s -p %s -t 0.5', converter_location, density_file_name, pbrt_file_name));
   copyfile('render.pbrt', pbrt_idx_folder);
   idx = idx + 1;
 end

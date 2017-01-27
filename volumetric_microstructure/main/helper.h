@@ -4,10 +4,12 @@
 #ifndef _HELPER_H_
 #define _HELPER_H_
 
+#include <fstream>
 #include <string>
 #include <vector>
 
-void ReadDensity(const std::string& file_name, std::vector<double>& density);
-void WriteDensityToPbrt(const std::string& file_name, const std::vector<double>& density);
+void ReadDensity(std::ifstream& fin, std::vector<double>& density);
+void WriteDensityToSolidPbrt(std::ofstream& fout, const std::vector<double>& density, const double threshold);
+void WriteDensityToVolumePbrt(std::ofstream& fout, const std::vector<double>& density, const double threshold);
 
 #endif

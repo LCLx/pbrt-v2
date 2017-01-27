@@ -1,11 +1,13 @@
 Film "image" "integer xresolution" [1600] "integer yresolution" [1200]
-LookAt 3.5 4 -10 0.0 0.0 0.0 0.0 1.0 0.0
+LookAt 2 4 -10 0.0 0.0 0.0 0.0 1.0 0.0
 Camera "perspective" "float fov" [15]
-Sampler "lowdiscrepancy" "integer pixelsamples" [64]
-SurfaceIntegrator "directlighting" "integer maxdepth" [3]
+Sampler "lowdiscrepancy" "integer pixelsamples" [128]
+SurfaceIntegrator "directlighting" "integer maxdepth" [5]
+VolumeIntegrator "emission" "float stepsize" [.1]
+
 WorldBegin
 AttributeBegin
-  LightSource "infinite" "rgb L" [.01 .01 .01]
+  LightSource "infinite" "rgb L" [1 1 1]
 AttributeEnd
 AttributeBegin
 TransformBegin
@@ -21,7 +23,7 @@ TransformBegin
 TransformEnd
 AttributeEnd
 AttributeBegin
-Material "matte" "rgb Kd" [0.28 0.3 0.34]
+Material "matte" "rgb Kd" [1 1 1]
 TransformBegin
   Translate 0 -0.3 0
   Scale 100 1 100
@@ -30,8 +32,8 @@ TransformBegin
 TransformEnd
 AttributeEnd
 TransformBegin
-  Scale 2 2 2
-  Translate -0.5 -0.4 0
+  Scale 1.9 1.9 1.9
+  Translate -0.5 -0.5 -0.5
   Include "geometry.pbrt"
 TransformEnd
 WorldEnd

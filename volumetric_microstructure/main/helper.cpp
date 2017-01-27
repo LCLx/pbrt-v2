@@ -2,11 +2,9 @@
 // taodu@csail.mit.edu
 // Jan 27, 2017
 #include <assert.h>
-#include <fstream>
 #include "helper.h"
 
-void ReadDensity(const std::string& file_name, std::vector<double>& density) {
-  std::ifstream fin(file_name, std::ios::binary);
+void ReadDensity(std::ifstream& fin, std::vector<double>& density) {
   int nx, ny, nz;
   fin.read(reinterpret_cast<char*>(&nx), sizeof(int));
   fin.read(reinterpret_cast<char*>(&ny), sizeof(int));
@@ -16,9 +14,9 @@ void ReadDensity(const std::string& file_name, std::vector<double>& density) {
   fin.read(reinterpret_cast<char*>(density.data()), sizeof(double) * nx * ny * nz);
 }
 
-void WriteDensityToPbrt(const std::string& file_name, const std::vector<double>& density) {
+void WriteDensityToSolidPbrt(std::ofstream& fout, const std::vector<double>& density, const double threshold) {
   const int n = 64;
-  assert(static_cast<int>(density.size()) == n);
+  assert(static_cast<int>(density.size()) == n * n * n);
   const double dx = 1.0 / n;
   const std::vector<std::vector<double>> points{
     {0, 0, 0},
@@ -30,13 +28,12 @@ void WriteDensityToPbrt(const std::string& file_name, const std::vector<double>&
     {dx, dx, 0},
     {dx, dx, dx}
   };
-  std::ofstream fout(file_name);
   for (int i = 0; i < n; ++i)
     for (int j = 0; j < n; ++j)
       for (int k = 0; k < n; ++k) {
         const double corner_x = i * dx, corner_y = j * dx, corner_z = k * dx;
-        const double d = density[i * n * n + j * n + k];
-        if (d == 0.0) continue;
+        const double d = density[i * n * n + j * n + k] * 0.9;
+        if (d <= threshold) continue;
         fout << "AttributeBegin" << std::endl;
         fout << "  Material \"matte\" \"rgb Kd\" [" << d << " " << d << " " << d << "]" << std::endl
           << "Shape \"trianglemesh\"" << std::endl
@@ -61,4 +58,19 @@ void WriteDensityToPbrt(const std::string& file_name, const std::vector<double>&
         fout << "]" << std::endl;
         fout << "AttributeEnd" << std::endl;
       }
+}
+
+void WriteDensityToVolumePbrt(std::ofstream& fout, const std::vector<double>& density, const double threshold) {
+  const int n = 64;
+  assert(static_cast<int>(density.size()) == n * n * n);
+  fout << "AttributeBegin" << std::endl;
+  fout << "  Volume \"volumegrid\" \"integer nx\" 64 \"integer ny\" 64 \"integer nz\" 64" << std::endl;
+  fout << "  \"float density\" [\n";
+  for (const double value : density) {
+    fout << (value < threshold ? value : 0.0) << std::endl;
+  }
+  fout << "]\n";
+  fout << "\"color sigma_a\" [80 80 80]" << std::endl;
+  fout << "\"color Le\" [5 5 5]" << std::endl;
+  fout << "AttributeEnd" << std::endl;
 }
