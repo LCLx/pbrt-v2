@@ -1,0 +1,6 @@
+.vs
+*.opensdf
+*.sdf
+x64
+Debug
+Release
