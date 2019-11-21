@@ -8,7 +8,7 @@ HAVE_EXR=1
 EXR_INCLUDES=-I/usr/local/include/OpenEXR -I/usr/include/OpenEXR -I/opt/local/include/OpenEXR 
 EXR_LIBDIR=-L/usr/local/lib -L/opt/local/lib
 
-HAVE_LIBTIFF=1
+HAVE_LIBTIFF=0
 TIFF_INCLUDES=-I/usr/local/include -I/opt/local/include
 TIFF_LIBDIR=-L/usr/local/lib -L/opt/local/lib
 
