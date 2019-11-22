@@ -161,7 +161,7 @@ float AuroraDensity::Density(const Point &Pobj) const
     float height = Dot(Vector(Pobj), upDir);
     return a * expf(-b * height);
 }
-
+//pbrt call
 Spectrum AuroraDensity::Lve(const Point &p, const Vector &, float) const
 {
 	const Point Pobj = WorldToVolume(p);
@@ -175,7 +175,7 @@ Spectrum AuroraDensity::Lve(const Point &p, const Vector &, float) const
 	
 	return Spectrum::FromRGB(rgb);
 }
-
+//pbrt call
 Spectrum AuroraDensity::tau(const Ray &r, float stepSize, float u) const 
 {
     float t0, t1;
@@ -194,6 +194,7 @@ Spectrum AuroraDensity::tau(const Ray &r, float stepSize, float u) const
 
 void AuroraDensity::GeneratePhotons()
 {
+	//init noise
     Perlin start_point_noise(0.5f,0.25,3,1);
     Perlin noise(persistence,frequency,level,seed);
 	//	generate photons
@@ -236,8 +237,12 @@ void AuroraDensity::GeneratePhotons()
 				//	generate a deflection point
 				float t = rand() * 1.f / RAND_MAX;
 				float alpha = Radians(alphaD - t * deltaAlpha);
+				//[0,2pi]randomly
 				float beta = 2 * M_PI * rand() * 1.f / RAND_MAX;
+				//dt: given constant in aurora_1.pbrt
 				float len = L * dt * t;
+				//cannot understand calculation of p. 
+				//p_new = p + sB + t*u*cos(beta)+t*v*sin(beta)
 				p += (len * u);
 				p += (tanf(alpha) * len * (cosf(beta) * v + sinf(beta) * w));
 				if (EleDensity(p) <= eleThreshold)
@@ -268,6 +273,7 @@ void AuroraDensity::GeneratePhotons()
 AuroraDensity *CreateAuroraVolumeRegion(const Transform &volume2world,
         const ParamSet &params) {
     // Initialize common volume region parameters
+	//the later one is the default value.
     Spectrum sigma_a = params.FindOneSpectrum("sigma_a", 0.);
     Spectrum sigma_s = params.FindOneSpectrum("sigma_s", 0.);
     float g = params.FindOneFloat("g", 0.);
@@ -295,6 +301,7 @@ AuroraDensity *CreateAuroraVolumeRegion(const Transform &volume2world,
 	float cg = params.FindOneFloat("gscale", 1.f);
 	float cb = params.FindOneFloat("bscale", 1.f);
 	float is = params.FindOneFloat("iscale", 1.f);
+	//.txt.even is the color of aurora.
 	string rcolor = params.FindOneFilename("aurora_r", "aurora_r.txt.even");
 	string gcolor = params.FindOneFilename("aurora_g", "aurora_g.txt.even");
 	string bcolor = params.FindOneFilename("aurora_b", "aurora_b.txt.even");

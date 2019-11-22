@@ -1,4 +1,5 @@
 Film "image"
+#Set screen resolution
 "integer xresolution" [1578] "integer yresolution" [1080]
 #"integer xresolution" [640] "integer yresolution" [438]
 #"integer xresolution" [640] "integer yresolution" [640]
@@ -38,7 +39,7 @@ WorldBegin
 #		"point from" [0 1 0]
 #		"point to" [0 0 0]
 #AttributeEnd
-
+#The aurora contains 3 auroras.
 Include "aurora_1.pbrt"
 
 Include "aurora_2.pbrt"
@@ -99,7 +100,8 @@ AttributeBegin
 #Texture "obj-kd" "color" "scale" "texture tex1" "obj-kd-img" "color tex2" [1.0000 1.0000 1.0000]
 #Texture "obj-ks" "color" "constant" "color value" [0.000000 0.000000 0.000000]
 #Material "uber" "texture Kd" "obj-kd" "texture Ks" "obj-ks" "float roughness" [0.400000] "rgb Kt" [0.000000 0.000000 0.000000] "float index" [1.500000] "rgb opacity" [1.000000 1.000000 1.000000] 
-Texture "night" "spectrum" "imagemap" "string filename" "textures/night_2.exr"
+#cannot find night_2, use night instead.
+Texture "night" "spectrum" "imagemap" "string filename" "textures/night.exr"
 Material "matte" "texture Kd" "night"
 	Translate 130 350 400
 	Rotate 40 -110 60 0

@@ -175,6 +175,8 @@ private:
 	Spectrum sig_a, sig_s;
     float g;
     Transform WorldToVolume;
+	//BBox is used to calculate the max and min point of 2 points.
+	//(0,0,2) and (1,1,1): extent.pMax = (1,1,2), extent.pMin = (0,0,1)
 	BBox extent;
 	
 	//	use a, b and upDir to compute density
@@ -198,7 +200,7 @@ private:
 	float L;		//	the length of the beam
 	float dt;			
 	float deltaAlpha;
-
+	//Catmull_Rom is a class used to interpolate, defined in core/splines.h
 	Catmull_Rom auroraColor[3];
 	Catmull_Rom auroraIntensity;
                        
