@@ -2,14 +2,15 @@ Include "geometry/footprint_3_1.5.pbrt"
   	"color sigma_a" [.01 .01 .01 ]
 	"color sigma_s" [.0 .0 .0]
 	"float g" [0]
-	"point p0" [ -11 100 0 ] "point p1" [ 77 300 160 ]
+	#"point p0" [ -11 100 0 ] "point p1" [ 77 300 160 ]
+	"point p0" [ -11 100 0 ] "point p1" [ 110 400 160 ]
 	"float a" [0.9]
 	"float b" [0.02]
 	"vector updir" [0 1 0]
 	"float radius" [0.5]
-	"string aurora_r" "../aurora/r.txt.even"
-	"string aurora_g" "../aurora/g.txt.even"
-	"string aurora_b" "../aurora/b.txt.even"
+	"string aurora_r" "../aurora/colors/aurora_r.txt.even"
+	"string aurora_g" "../aurora/colors/aurora_g.txt.even"
+	"string aurora_b" "../aurora/colors/aurora_b.txt.even"
 	"string aurora_intensity" "../aurora/rays.txt.even"
 	"vector B" [0.06 -1 0]
 	"integer beamNumber" [1000000]
