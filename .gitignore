@@ -36,3 +36,6 @@ src/hw4/manykilleroos/brdfs/
 src/hw4/manykilleroos/geometry/
 src/hw4/manykilleroos/spds/
 src/hw4/manykilleroos/textures/
+
+#Mac icon cache
+.DS_Store
