@@ -8,8 +8,8 @@ Film "image"
 Sampler "bestcandidate" "integer pixelsamples" [8]
 PixelFilter "gaussian"
 
-LookAt -40 40 -40    20 150 120    0 1 0
-#LookAt -28 62 -8 	20 150 120 	0 1 0	
+#LookAt -40 40 -40    20 150 120    0 1 0
+LookAt 60 40 -100 	10 180 120 	0 1 0	
 
 Camera "perspective" "float fov" [60]
 #Camera "realistic" 
@@ -42,9 +42,9 @@ WorldBegin
 #The aurora contains 3 auroras.
 Include "aurora_1.pbrt"
 
-Include "aurora_2.pbrt"
+#Include "aurora_2.pbrt"
 
-#Include "aurora_3.pbrt"
+Include "aurora_3.pbrt"
 
 AttributeBegin
 	Translate -28 40 -30
