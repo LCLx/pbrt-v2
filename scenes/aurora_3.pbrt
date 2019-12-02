@@ -11,9 +11,9 @@ Include "geometry/footprint_3_1.5.pbrt"
 	"float rscale" [1]
 	"float gscale" [1]
 	"float bscale" [1]
-	"string aurora_r" "../aurora/r.txt.even"
-	"string aurora_g" "../aurora/g.txt.even"
-	"string aurora_b" "../aurora/b.txt.even"
+	"string aurora_r" "../aurora/colors/aurora_r.txt.even"
+	"string aurora_g" "../aurora/colors/aurora_g.txt.even"
+	"string aurora_b" "../aurora/colors/aurora_b.txt.even"
 	"string aurora_intensity" "../aurora/rays.txt.even"
 	"vector B" [0.06 -1 0]
 	"integer beamNumber" [100000]
@@ -27,4 +27,4 @@ Include "geometry/footprint_3_1.5.pbrt"
     "integer seed" [150]
     "integer level" [3]
     "float magnitude" [30]
-    "float perturb" [-20]
+    "float perturb" [0]
