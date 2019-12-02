@@ -27,4 +27,4 @@ Include "geometry/footprint_3_1.5.pbrt"
     "integer seed" [150]
     "integer level" [3]
     "float magnitude" [30]
-    "float perturb" [0]
+    "float perturb" [1]

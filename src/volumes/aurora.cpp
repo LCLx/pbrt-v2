@@ -80,8 +80,12 @@ void AuroraGrid::SearchInGrid(const Point &p, float &r, float &g, float &b) cons
     //std::cout<<"Using radius "<<t_radius<<std::endl;
 	//	scan all the grids within the range above
 	float radiusSq = t_radius * t_radius;
-	//	sigam in gaussian kernel
+	//uncomment below to reduce noise
+	//float radiusSq = radius * radius;
+	//	sigma in gaussian kernel
 	float sigma = t_radius;
+	//uncomment below to reduce noise
+	//float sigma = radius;
 	float halfInvSigmaSq = .5f / sigma / sigma;
 	float sum = 0.f;
 	for (int i = xmin; i <= xmax; i++)
@@ -220,6 +224,7 @@ void AuroraDensity::GeneratePhotons()
 		offset.y *= dy;
 		offset.z *= dz;
 		Point start = extent.pMin + offset;
+		//comment below to reduce noise
         start+=upDir*(30.0f*(start_point_noise.Evaluate(dz)-0.0f));
 		float density = EleDensity(start);
 		if (density > eleThreshold)
@@ -254,6 +259,9 @@ void AuroraDensity::GeneratePhotons()
                     //h+=80.0f*(noise.Evaluate(dz)-0.5f);
 					float h0 = Dot(Vector(extent.pMin), upDir);
 					float intensity = auroraIntensity.Evaluate(h - h0);
+					//float r = auroraColor[0].Evaluate(h+perturb) * intensity;
+					//float g = auroraColor[1].Evaluate(h+perturb) * intensity;
+					//float b = auroraColor[2].Evaluate(h+perturb) * intensity;
 					float r = auroraColor[0].Evaluate(h+magnitude*(noise.Evaluate(dz)+perturb)) * intensity;
 					float g = auroraColor[1].Evaluate(h+magnitude*(noise.Evaluate(dz)+perturb)) * intensity;
 					float b = auroraColor[2].Evaluate(h+magnitude*(noise.Evaluate(dz)+perturb)) * intensity;

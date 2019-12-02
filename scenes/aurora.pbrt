@@ -1,7 +1,7 @@
 Film "image"
 #Set screen resolution
 #"integer xresolution" [1578] "integer yresolution" [1080]
-"integer xresolution" [320] "integer yresolution" [219]
+"integer xresolution" [1280] "integer yresolution" [720]
 #"integer xresolution" [640] "integer yresolution" [640]
   "string filename" "aurora.exr" 
 
@@ -45,67 +45,23 @@ Include "aurora_1.pbrt"
 #Include "aurora_2.pbrt"
 
 Include "aurora_3.pbrt"
-
-AttributeBegin
-	Translate -28 40 -30
-	Rotate -90 1 0 0
-	Scale 0.035 0.035 0.035
-#Include "geometry/tree_1.pbrt"
-    Include "geometry/tree_4.pbrt"
-AttributeEnd
-
-#ObjectBegin "Tree"
-#	Rotate -90 1 0 0
-#	Scale 0.035 0.035 0.035
-#	Include "geometry/tree_2.pbrt"
-#ObjectEnd
-#
-#AttributeBegin
-#	Translate 0 40 100
-#    Scale 4 4 4
-#    Include "geometry/tree_5.pbrt"
-##ObjectInstance "Tree"
-#AttributeEnd
-
-AttributeBegin
-#Translate -42 40 -30
-    Translate -38 39 -30
-    Include "geometry/tree_6.pbrt"
-AttributeEnd
-
-AttributeBegin
-#Translate -42 40 -30
-    Translate -42 40 -30
-	Rotate -90 1 0 0
-	Scale 0.035 0.035 0.035
-	Include "geometry/tree_2.pbrt"
-#ObjectInstance "Tree"
-AttributeEnd
-
-AttributeBegin
-#Translate -42 40 -30
-    Translate -44 40 -30
-    Include "geometry/tree_7.pbrt"
-AttributeEnd
-
 AttributeBegin
 LightSource "distant" "rgb L" [0.407 0.58 1.0]
     LightSource "distant" "rgb L" [1.5 2.5 3.5]
         "point from" [0.3 0.7 -0.8] 
 		"point to" [0 0 0] 
 AttributeEnd
-
 AttributeBegin
 #Texture "obj-kd-img" "color" "imagemap" "string filename" ["textures/night.exr"]
 #Texture "obj-kd" "color" "scale" "texture tex1" "obj-kd-img" "color tex2" [1.0000 1.0000 1.0000]
 #Texture "obj-ks" "color" "constant" "color value" [0.000000 0.000000 0.000000]
 #Material "uber" "texture Kd" "obj-kd" "texture Ks" "obj-ks" "float roughness" [0.400000] "rgb Kt" [0.000000 0.000000 0.000000] "float index" [1.500000] "rgb opacity" [1.000000 1.000000 1.000000] 
 #cannot find night_2, use night instead.
-Texture "night" "spectrum" "imagemap" "string filename" "textures/dark.exr"
+Texture "night" "spectrum" "imagemap" "string filename" "textures/night_new.exr"
 Material "matte" "texture Kd" "night"
-	Translate 130 350 400
-	Rotate 40 -110 60 0
-	Scale 5 5 1 
+	Translate -200 700 1000
+	Rotate 20 -180 -60 0
+	Scale 15 15 1 
     Shape "trianglemesh"  
 		"integer indices" [0 2 1 0 3 2 ] 
 		"point P" [-100 -100 0 100 -100 0 100 100 0 -100 100 0 ]
